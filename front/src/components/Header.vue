@@ -13,7 +13,7 @@
       </router-link>
       <ul :class="['nav-links', { active: isMenuActive }]">
         <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/my-booking">My Booking</router-link></li>
+        <li><router-link to="/pay">My Booking</router-link></li>
         <li><router-link to="/blogs">Blogs</router-link></li>
         <li><router-link to="/packages">Packages</router-link></li>
         <li><router-link to="/services">Services</router-link></li>

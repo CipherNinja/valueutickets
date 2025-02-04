@@ -1,0 +1,68 @@
+*-------Main Heading outside the Card------------*
+
+Code- <h2 class="main-heading">
+      <i class="fa fa-suitcase-rolling heading-icon"></i>
+      Lost Baggage Protection
+    </h2>
+
+Description- <h2 class="main-heading">: Defines the main heading.
+<i class="fa fa-suitcase-rolling heading-icon"></i>: Displays a suitcase icon from the Font Awesome library.
+The text "Lost Baggage Protection" is included alongside the icon.
+
+*----- Blue box at the top of the card ------*
+
+Code- <div class="blue-box">
+        <div class="recommended-heading">Recommended</div>
+        <!-- New heading below recommended heading -->
+        <div class="protection-heading">Baggage Protection</div>
+        <img src="./assets/images/bagg.jpg" alt="Baggage Protection" class="blue-box-image" />
+      </div>
+
+Description- <div class="blue-box">: A container styled as a blue background box.
+<div class="recommended-heading">: Displays the label "Recommended."
+<div class="protection-heading">: Adds a secondary heading, "Baggage Protection."
+<img class="blue-box-image">: Displays an image (e.g., baggage-related).
+This box highlights key information (e.g., a product recommendation) with an image and visually distinct headings.
+
+*-------Highlighted Fact Section (.bordered)------*
+
+Code-  <p class="bordered">Did you know: 20 million bags are mishandled by airlines every year!</p>
+.bordered {
+  border: 2px solid #EAFAF8;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #EAFAF8;
+}
+
+description-<p class="bordered">: A paragraph element styled to highlight an important fact or information.
+.bordered:
+Adds a light border with rounded corners.
+Provides padding for spacing within the box.
+Adds a light blue background for emphasis.
+Margins separate it from surrounding elements.
+
+
+*------Bordered Option Box for Baggage Protection----*
+Code-<div class="option">
+                <div class="option-box ">
+                    
+                    <div class="content">
+                        <p class="title bordered">
+                            <span class="circle-icon"></span>
+                            Yes, I want to protect my baggage <span class="price">$30.5 per person</span>
+                        </p>
+                        <ul class="description">
+              <li>✔ Receive real-time push notifications via email & SMS regarding the status of your delayed baggage</li>
+              <li>✔ Collect $1,000 per bag that is not returned within 96 hours</li>
+              <li>✔ No proof of contents or receipts are required in order to receive payment</li>
+            </ul>
+                    </div>
+                </div>
+
+
+description-This code creates a styled bordered box that presents an option for baggage protection. It includes:
+
+A title with a circular icon, a statement, and the price.
+A list of benefits displayed as bullet points (✔), replacing the need for a checkbox.
+The .bordered class provides styling to highlight the option.

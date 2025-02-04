@@ -6,6 +6,8 @@ import DealsReview from '../components/DealsReview.vue'
 import FAQ from '../components/Faq.vue'
 import Footer from '../components/Footer.vue'
 import PopularDestination from'../components/popular_destination.vue'
+import WhosFlying from '../components/WhosFlying.vue'
+import TravelProtection from '../components/TravelProtection.vue'
 </script>
 
 <template>
@@ -16,6 +18,8 @@ import PopularDestination from'../components/popular_destination.vue'
     <PopularDestination />
     <DealsReview />
     <FAQ />
+    <WhosFlying/>
+    <TravelProtection/>
     <Footer/>
   </main>
 </template>

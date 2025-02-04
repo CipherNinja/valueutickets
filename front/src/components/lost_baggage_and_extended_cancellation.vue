@@ -148,7 +148,6 @@ export default {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #EAF3F2;
     color: #333;
     padding: 20px;
 
@@ -156,9 +155,8 @@ body {
 
 .container {
     max-width: 100%;
-    margin: 0 auto;
-    background-color: #EAF3F2;
     padding: 20px;
+    background-color: #EAF3F2;
 }
 
 .main-heading {

@@ -18,34 +18,50 @@
         <p class="bordered">Did you know: 20 million bags are mishandled by airlines every year!</p>
 
         <div class="options">
-            <div class="option">
-                <div class="option-box ">
-                    
-                    <div class="content">
-                        <p class="title bordered">
-                            <span class="circle-icon"></span>
-                            Yes, I want to protect my baggage <span class="price">$30.5 per person</span>
-                        </p>
-                        <ul class="description">
-              <li>✔ Receive real-time push notifications via email & SMS regarding the status of your delayed baggage</li>
-              <li>✔ Collect $1,000 per bag that is not returned within 96 hours</li>
-              <li>✔ No proof of contents or receipts are required in order to receive payment</li>
-            </ul>
+
+            <!-- Lost Baggage Protection Option -->
+            <label class="option" :class="{ 'selected': selectedSupport === 'premium' }">
+                <div class="option-content">
+                    <div class="option-header">
+                        <!-- Left side: Radio button and title in one row -->
+                        <div class="option-left">
+                            <input type="radio" name="support" value="premium" v-model="selectedSupport" />
+                            <p class="option-title">Yes, I want to protect my baggage</p>
+                        </div>
+
+                        <!-- Right side: Price and "Per Person" text -->
+                        <div class="option-right">
+                            <p class="option-price">$305</p>
+                            <span class="persontext">Per Person</span>
+                        </div>
+                    </div>
+
+                    <ul class="option-list">
+                        <li>✔ Receive real-time push notifications via email & SMS regarding the status of your delayed baggage</li>
+                        <li>✔ Collect $1,000 per bag that is not returned within 96 hours</li>
+                        <li>✔ No proof of contents or receipts are required in order to receive payment</li>
+                    </ul>
+
+                </div>
+            </label>
+
+            <!-- No Thanks Option -->
+            <label class="option" :class="{ 'selected': selectedSupport === 'none' }">
+                <div class="option-content">
+                    <div class="option-header">
+                        <!-- Left side: Radio button and title in one row -->
+                        <div class="option-left">
+                            <input type="radio" name="support" value="none" v-model="selectedSupport" />
+                            <p class="option-title">No, I’m willing to risk losing my baggage</p>
+                        </div>
+
+                        <!-- Right side: Price and "Per Person" text -->
+                        <div class="option-right">
+                            <p class="option-price">$0.00</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="option">
-                <label for="no-protection" class="option-box">
-                    <input type="checkbox" id="no-protection" name="baggage-option" />
-                    <div class="content">
-                        <p class="title bordered">
-                            <span class="circle-icon"></span>
-                            No, I'm willing to risk losing my baggage <span class="price">$0.00</span>
-                        </p>
-                    </div>
-                </label>
-            </div>
+            </label>
         </div>
         <p class="terms">By adding baggage protection, you agree to the <a href="#">Blue Ribbon Bags Terms & Conditions</a>.</p>
     </div>
@@ -65,34 +81,51 @@
         <p class="bordered">Choose cancellation protection and receive a total refund of $181.83!</p>
 
         <div class="options">
-            <div class="option">
-                <div class="option-box">
 
-                    <div class="content">
-                        <p class="title bordered">
-                            <span class="circle-icon"></span>
-                            Yes, I want cancellation protection <span class="price">$30.5 per person</span>
-                        </p>
-                        <ul class="description">
-              <li>✔ Cancel or Re-book Your Booking For Any Reason Within 24 Hours</li>
-              <li>✔ If you wish to cancel, kindly email us at support@flightschannel.com</li>
-            
-            </ul>
+            <!-- Premium Support Option -->
+            <label class="option" :class="{ 'selected': selectedSupport === 'premium' }">
+                <div class="option-content">
+                    <div class="option-header">
+                        <!-- Left side: Radio button and title in one row -->
+                        <div class="option-left">
+                            <input type="radio" name="support" value="premium" v-model="selectedSupport" />
+                            <p class="option-title">Yes, I want to protect my baggage</p>
+                        </div>
+
+                        <!-- Right side: Price and "Per Person" text -->
+                        <div class="option-right">
+                            <p class="option-price">$305</p>
+                            <span class="persontext">Per Person</span>
+                        </div>
+                    </div>
+
+                    <ul class="option-list">
+                        <li>✔Cancel or Re-book Your Booking For Any Reason Within 24 Hours</li>
+                        <li>✔ If you wish to cancel, kindly email us at support@flightschannel.com</li>
+
+                    </ul>
+
+                </div>
+            </label>
+
+            <!-- No Thanks Option -->
+            <label class="option" :class="{ 'selected': selectedSupport === 'none' }">
+                <div class="option-content">
+                    <div class="option-header">
+                        <!-- Left side: Radio button and title in one row -->
+                        <div class="option-left">
+                            <input type="radio" name="support" value="none" v-model="selectedSupport" />
+                            <p class="option-title">No thanks</p>
+                        </div>
+
+                        <!-- Right side: Price and "Per Person" text -->
+                        <div class="option-right">
+                            <p class="option-price">$0.00</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </label>
 
-            <div class="option">
-                <label for="no-cancellation" class="option-box">
-                    <input type="checkbox" id="no-cancellation" name="cancellation-option" />
-                    <div class="content">
-                        <p class="title bordered">
-                            <span class="circle-icon"></span>
-                            No, I just want 2-hour free cancellation <span class="price">$0.00</span>
-                        </p>
-                    </div>
-                </label>
-            </div>
         </div>
         <p class="terms"> * Extended Cancellation Policy Is Non- Refundable Once Purchased.</p>
     </div>
@@ -105,7 +138,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
@@ -118,11 +151,14 @@ body {
     background-color: #EAF3F2;
     color: #333;
     padding: 20px;
+
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
+    background-color: #EAF3F2;
+    padding: 20px;
 }
 
 .main-heading {
@@ -134,6 +170,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 10px 10px;
 }
 
 .heading-icon {
@@ -190,60 +227,117 @@ body {
 }
 
 .options {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    padding: 16px;
 }
 
-.option-box {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    cursor: pointer;
-}
-
-.option-box input {
-    display: none;
-}
-
-.option-box .content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.option-box .content .title {
+/* Individual Option */
+.option {
     display: flex;
     align-items: center;
+    border: 2px solid #e5e7eb;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background-color: white;
+}
+
+/* Option content */
+.option-content {
+    flex-grow: 1;
+    background-color: white;
+}
+
+/* Header section for the option */
+.option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
     background-color: #EAFAF8;
 }
 
-.option-box .content .price {
-    font-size: 1.2em;
-    color: #007bff;
-    margin-left: auto;
+/* Left-side: Keeps input and title in the same row */
+.option-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.circle-icon {
-    width: 15px;
-    height: 15px;
-    background-color: black;
-    border-radius: 50%;
-    margin-right: 2px;
+/* Radio button */
+.option-left input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
 }
 
-.option-box .content .description {
+/* Title text */
+.option-title {
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Right-side: Price + "Per Person" text */
+.option-right {
+    text-align: right;
+    margin-right: 50px;
+}
+
+/* Price styling */
+.option-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2563eb;
+    margin: 0;
+}
+
+/* "Per Person" text */
+.persontext {
     font-size: 12px;
-  color: #6b7280;
-  padding: 15px 0;
-  list-style-type: none;
+    color: #0c0d0d;
+    font-weight: normal;
+    display: block;
 }
 
-.check-icon {
-    color: black;
-    font-size: 1.2em;
+/* Option price for no thanks */
+.option-price.gray {
+    color: #6b7280;
+}
+
+/* Option List */
+.option-list {
+    font-size: 12px;
+    color: #6b7280;
+    padding: 15px 0;
+    list-style-type: none;
+}
+
+/* Read More link */
+.read-more {
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #cacbce;
+    border-bottom: 1px solid #cacbce;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.read-more-icon {
+    font-size: 20px;
+    padding: 5px 30px;
+    font-weight: bold;
+}
+
+/* Disclaimer */
+.disclaimer {
+    font-size: 16px;
+    color: #6b7280;
+    margin-top: 15px;
 }
 
 .background-color {
@@ -280,31 +374,12 @@ body {
         left: 2rem;
     }
 
-    .option-box {
-        flex-direction: column;
-    }
-
-    .option-box .content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .option-box .content .price {
-        margin-top: 5px;
-        font-size: 15px;
-        margin-left: 2rem;
-    }
-
     .main-heading {
         font-size: 1.2em;
     }
 
     .blue-box {
         height: 120px;
-    }
-
-    .check-icon {
-        font-size: 1em;
     }
 
     .blue-box-image {
@@ -323,7 +398,7 @@ body {
         left: 20px;
         top: 15px;
         width: 100px;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .protection-heading {
@@ -336,24 +411,12 @@ body {
         height: 100px;
     }
 
-    .check-icon {
-        font-size: 0.9em;
-    }
-
     .blue-box-image {
         max-width: 80px;
         right: 10px;
     }
 
     .bordered {
-        font-size: 12px;
-    }
-
-    .option-box .content .price {
-        font-size: 12px;
-    }
-
-    .option-box .content .title {
         font-size: 12px;
     }
 
@@ -365,9 +428,14 @@ body {
         font-size: 12px;
     }
 
-    .circle-icon {
-        width: 11px;
-        height: 8px;
+    .option-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .option-right {
+        text-align: left;
+        padding-top: 5px;
     }
 }
 </style>

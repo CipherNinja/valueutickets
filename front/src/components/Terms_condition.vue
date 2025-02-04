@@ -14,7 +14,7 @@
       <div class="form-group outside-checkbox">
         <label>
           <input v-model="termsAccepted" type="checkbox" required />
-          By clicking 'Book Now', I agree to the 
+          By clicking 'Book Now', I agree to the &nbsp;
           <strong class="highlighted-text">Terms & Conditions</strong>, 
           <strong class="highlighted-text">privacy policy</strong>
         </label>
@@ -48,14 +48,14 @@
     margin-left: 0;
     color: #333;
     margin-bottom: 20px; 
-    font-size: 1.25rem;
+    font-size: 23px;
+    font-weight: bold;
   }
   
   
   .terms-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 30px;
+    max-width: 100%;
   }
   
   
@@ -98,7 +98,7 @@
   
   @media (max-width: 768px) {
     .terms-container {
-      padding: 10px;
+      padding: 20px;
       max-width: 100%;
     }
     .terms-box {
@@ -109,7 +109,6 @@
       font-size: 13px;
     }
     .terms-heading {
-      font-size: 1.1rem;
       margin-bottom: 15px;
     }
     .form-group label {
@@ -119,7 +118,7 @@
   
   @media (max-width: 480px) {
     .terms-container {
-      padding: 8px;
+      padding: 20px;
     }
     .terms-box {
       padding: 10px;
@@ -129,7 +128,6 @@
       font-size: 12px;
     }
     .terms-heading {
-      font-size: 1rem;
     }
     .form-group label {
       font-size: 11px;

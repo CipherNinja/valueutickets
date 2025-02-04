@@ -73,7 +73,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .travel-protection {
   max-width: 1100px;
   margin: auto;

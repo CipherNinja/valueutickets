@@ -105,7 +105,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
@@ -115,14 +115,14 @@ export default {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #EAF3F2;
     color: #333;
     padding: 20px;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 100%;
+    padding: 20px;
+    background-color: #EAF3F2;
 }
 
 .main-heading {

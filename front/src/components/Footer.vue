@@ -6,9 +6,9 @@
       </div>
       <div class="content-container">
         <p class="footer-desc">
-          Lorem Ipsum is simply dummy text of the printing and typesetting 
-          industry. Lorem Ipsum has been the industry's standard dummy text 
-          since the 1500s. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          
+Experience the spirit of America with ValueU Tickets, your trusted partner in exploring the heart of the nation.
+Proudly serving travelers with exceptional deals that reflect the American dream! 🇺🇸✈️
         </p>
       </div>
     </div>

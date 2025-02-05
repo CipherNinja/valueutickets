@@ -9,7 +9,7 @@ import resultlist from '../components/resultlist.vue';
   <main>
     <Header />
     <FlightSearch />  <!-- You can add comments like this within the template -->
-    <resultlist />
+    <resultlist/>
     <Footer/>
   </main>
 </template>

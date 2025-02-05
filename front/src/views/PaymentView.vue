@@ -9,6 +9,7 @@ import TravelProtection from '../components/TravelProtection.vue'
 import lost_cancel from '../components/lost_baggage_and_extended_cancellation.vue'
 import Bill_Pay from '../components/Billing_payment.vue'
 import T_C from '../components/Terms_condition.vue'
+
 </script>
 
 <template>

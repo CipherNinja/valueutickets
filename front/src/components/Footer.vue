@@ -58,16 +58,19 @@
     <div class="footer-contact">
       <span>
         <i class="fas fa-envelope"></i>
-        <a href="mailto:support123@gmail.com">support123@gmail.com</a>
+        <a href="mailto:support123@gmail.com">support@valueutickets.com</a>
       </span>
       <span>
         <i class="fa fa-phone-alt"></i>
-        <a href="tel:+1189564">+91 9628 2099 29</a>
+        <a href="tel:+1189564">+1 (833)931-6548</a>
       </span>
       <span>
         <i class="fas fa-map-marker-alt"></i>
-        Address: 1234 Street, City, <br>
-        Country Noida UP 
+        Travelove LLC
+30 N Gould St # 36918
+Sheridan, WY 82801
+United State
+
       </span>
     </div>
   </div>
@@ -83,10 +86,10 @@
       </ul>
 
       <div class="payment-icons">
-        <img src="@/assets/footer/visa.png" alt="Visa">
-        <img src="@/assets/footer/google.jpeg" alt="Google Pay">
-        <img src="@/assets/footer/visa.png" alt="Visa">
-        <img src="@/assets/footer/google.jpeg" alt="Google Pay">
+        <img src="@/assets/footer/Amx.jpeg" alt="Visa">
+        <img src="@/assets/footer/visa.png" alt="Google Pay">
+        <img src="@/assets/footer/masc.jpg" alt="Visa">
+        <img src="@/assets/footer/disc.png" alt="Google Pay">
         <!-- <img src="@/assets/footer/amex.png" alt="Amex"> -->
       </div>
     </div>
@@ -255,17 +258,24 @@ export default {
 .payment-icons {
   display: flex;
   gap: 10px;
+  cursor: pointer;
 }
 
 .payment-icons img {
   width: 40px;
   height: auto;
+  border-radius: 10px; /* Add curved edges */
+  overflow: hidden; /* Ensure the curve applies properly */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .payment-icons img:hover {
-  transform: translateY(-5px); 
-  transition: transform 0.3s ease; 
+  transform: scale(1.1); /* Slight hover effect */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3); /* Glow effect */
 }
+
+
+
 
 
 

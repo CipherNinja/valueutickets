@@ -7,9 +7,8 @@
       class="offer-card"
       @click="handleCardClick(offer)"
     >
-      <img :src="offer.image" :alt="offer.title" class="offer-image" />
+      <img :src="offer.image" :alt="offer.description" class="offer-image" />
       <div class="offer-content">
-        <h3 class="offer-title">{{ offer.title }}</h3>
         <p class="offer-description">{{ offer.description }}</p>
       </div>
     </div>
@@ -22,6 +21,13 @@
 </template>
 
 <script>
+// Importing images dynamically
+import Image12Percent from '@/assets/images/12percent.png';
+import ImageMMT12 from '@/assets/images/mmt12.jpg';
+import ImagePaytm from '@/assets/images/paytm.jpg';
+import ImageMMT from '@/assets/images/mmt.jpg';
+import ImageCruise from '@/assets/images/cruise.jpg';
+
 export default {
   name: "Offers",
   data() {
@@ -29,23 +35,23 @@ export default {
       offers: [
         {
           description: "*Get 12% off on your first domestic flight booking with ValueU Tickets! Book now and save big on your travel.",
-          image: "/images/12percent.png", // Replace with your image path
+          image: Image12Percent,
         },
         {
           description: "*Your first flight just got more affordable! Book now and save up to 12% on flights across the USA.",
-          image: "/images/mmt12.jpg",
+          image: ImageMMT12,
         },
         {
           description: "*Enjoy $50 cashback when you book your first flight with ValueU Tickets! Travel smart and save more.",
-          image: "/images/paytm.jpg",
+          image: ImagePaytm,
         },
         {
           description: "*Book now and get $100 off on your flight! Exclusive deal only on ValueU Tickets—don't miss out.",
-          image: "/images/mmt.jpg",
+          image: ImageMMT,
         },
         {
           description: "Exclusive Deals Await! Experience the ultimate sea voyage with luxury cruise deals starting at just $299! Book today for an unforgettable journey.",
-          image: "/images/cruise.jpg",
+          image: ImageCruise,
         },
       ],
       visibleRows: 1, // Number of rows initially visible
@@ -65,14 +71,13 @@ export default {
       this.showAll = !this.showAll;
     },
     handleCardClick(offer) {
-      alert(`You clicked on: ${offer.title}`); // Replace with desired navigation logic
+      alert(`You clicked on: ${offer.description}`); // Replace with desired navigation logic
     },
   },
 };
 </script>
 
 <style scoped>
-
 .offers-title {
   text-align: center;
   font-size: 24px;
@@ -106,12 +111,6 @@ export default {
 
 .offer-content {
   padding: 15px;
-}
-
-.offer-title {
-  font-size: 18px;
-  color: #007bff;
-  margin: 0 0 10px;
 }
 
 .offer-description {

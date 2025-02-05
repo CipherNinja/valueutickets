@@ -1,0 +1,255 @@
+
+ 
+"query": {
+        "market": "US",
+        "currency": "USD",
+        "locale": "en-GB",
+        "adults": 1,
+        "child_ages": [],
+        "cabin_class": "economy",
+
+//"query":-it is defines the main query of this file.. 
+//"market":-it is defines the market. present time use 'US' ke liye kiya ja rha hai.
+//"Currency"- The price of the passenger's flight will be in (USD)
+//"locale":- The results will be in English (British) language.
+//"adults":-searched for the adults passenger.
+//child_age":-age of child traveling.
+//"cabin class":-it is defines to cabin class.
+
+
+
+"legs": [
+            {
+                "origin": 12712,
+                "alternative_origins": [],
+                "destination": 10959,
+                "alternative_destinations": [],
+                "date": "2025-02-03"
+            }
+        ],
+
+//"legs":- This is a list (array) that contains flight information.
+//"origin":-It identifies the departure location of the flight. or identifies the 'ID'  
+//"alternative_origins":-There is no alternative departure location, so it is empty ([]).
+//"destination":-It shows the destination of the flight. or airport 'ID'.
+//"date":-shows the date of the flight.
+
+"children": 0,  // no children are travelling
+"infants": 0},  //no infants are travelling
+
+
+*  code used? *
+(1).To provide the correct data to the flight search system – This tells the API which flights to search for.
+(2).To standardize user input – converts information selected by the user into a structured format.
+
+
+conclusion:-
+
+This JSON code is part of an API query that tells a Flight Search Service:
+
+(1)In which market and currency to search for flights.
+(2)How many passengers are travelling?
+(3)In which cabin class (Economy) should one travel?
+(4)From which date and place to take the flight.
+
+
+"context": {
+    "request_id": "",
+    "session_id": "add3c3ea-828e-4958-80dd-306b78ec065b"
+}
+* 'in context' both is a unique ID..(1)."request_id":-track this request (2)"session_id":-track this user session. *
+
+
+"itineraries": [
+    {
+        "id": "12712-2502031555--32171-1-10959-2502032259",
+        "leg_ids": [
+            "12712-2502031555--32171-1-10959-2502032259"
+        ],
+*
+"itineraries":- it is a (travel plans). which include 'id & leg_ids 
+                both are unique ID..
+*
+
+
+
+"pricing_options": [
+    {
+        "id": "b7oVKQyotojK",
+        "agent_ids": ["fara"],
+
+*
+"pricing_options":-in pricing_options id & agent_ids, both are unique id. 
+(1). "id":- Is the unique ID of (price option).
+(2). "agent_ids":-Is the unique ID of (agent).
+*
+
+"segment_ids": [
+    "12712-10081-2502031555-2502031712--32171",
+    "10081-10959-2502032015-2502032259--32171"
+],
+
+*
+in 'segment_ids 'Unique IDs for different parts of the flight include:
+*
+
+"booking_proposition": "PBOOK",
+"transfer_protection": "",
+"max_redirect_age": 10,
+
+*
+"booking_proposition": - "PBOOK" means that this flight can be booked directly.
+"transfer_protection": -Some security is provided during flight transfers.
+"max_redirect_age": -The user will be redirected to the booking page within 10 seconds.
+*
+
+ In summary:-
+
+(1).itineraries:-information about flights
+(2).pricing_options:-Prices and availability
+(3).agent_ids:-travel agency 
+
+(4).segment_ids:-Provides flight routes and stopovers
+(5).  (Origin):-12712
+(6). (Destination):-10959
+
+
+
+{
+    "id": "12712-2502030759--32289-1-10959-2502031840",
+    "origin_place_id": 12712,
+    "destination_place_id": 10959,
+    "stop_ids": [[13411]]
+}
+
+
+
+
+* Why is origin used:-
+(!).For flight tracking and searching
+(2).To decide the right travel route
+(3).To give correct information about stops and transfers
+*
+
+*
+why is destination used:-
+"destination_place_id" is used to specify the place (destination) where the journey will end. Its main function is to ensure that the system knows clearly where the journey will end, so that the correct route, flight, or transportation mode can be determined."
+*
+
+ "segments": [
+        {
+            "id": "12712-10081-2502031555-2502031712--32171",
+            "origin_place_id": 12712,
+            "destination_place_id": 10081,
+            "arrival": "2025-02-03T17:12:00",
+            "departure": "2025-02-03T15:55:00",
+            "duration": 77,
+            "marketing_flight_number": "1618",
+            "marketing_carrier_id": -32171,
+            "operating_carrier_id": -32171,
+            "mode": "flight"
+        },
+
+*
+Why are segments used:-
+(1). To track different parts of the journey
+(2).To manage travel time and stops correctly
+(3).To represent different travel modes like flight, train, bus
+(4).To keep track of airlines and flights
+*
+
+*
+Why is "Duration" used:-
+(1).To calculate travel time
+(2).To find total travel time
+(3).to compare travel
+(4).To allow time for layovers
+(5).For schedule and time management
+*
+
+      {
+            "id": "13933-10959-2502032059-2502032328--32289",
+            "origin_place_id": 13933,
+            "destination_place_id": 10959,
+            "arrival": "2025-02-03T23:28:00",
+            "departure": "2025-02-03T20:59:00",
+            "duration": 269,
+            "marketing_flight_number": "3311",
+            "marketing_carrier_id": -32289,
+            "operating_carrier_id": -32289,
+            "mode": "flight"
+        },
+
+
+*
+Why is marketing_carrier_id used:-
+(1).It refers to the branded airline for a flight or travel.
+(2).Assistant in Booking and Ticketing System.
+
+(3).Helps in comparing flights
+(4).The airline sells the ticket
+*
+
+
+
+"marketing_carrier_id": -32289,
+"operating_carrier_id": -32171,
+*
+Note:- ( marketing_carrier_id )-means the airline is selling tickets.( operating_carrier_id )-means it is operating &  is also flying 
+
+Why is operating_carrier_id used:-
+(1).“operating_carrier_id” tells us which airline is actually operating the flight. 
+(2)."operating_carrier_id" indicates which airline will fly the aircraft.
+*
+
+"agents": [
+        {
+            "id": "pcln",
+            "name": "Priceline",
+            "is_carrier": false,
+            "update_status": "pending",
+            "optimised_for_mobile": true,
+            "live_update_allowed": true,
+            "rating_status": "available",
+            "rating": 2.97,
+            "feedback_count": 1112,
+            "rating_breakdown": {
+                "reliable_prices": 0,
+                "clear_extra_fees": 0,
+                "customer_service": 0,
+                "ease_of_booking": 0,
+                "other": 0
+            }
+        },
+
+*
+Why are agents used:-agents is used to store information about travel agents who are selling flight tickets.
+(1).This API returns information about agents (such as Priceline, Expedia, or other online travel agencies) in the results.
+(2).The "agents" section tells us which agents are offering booking for this ticket, what their rating is, and how trustworthy they are.
+*
+
+{
+    "id": "pcln",
+    "name": "Priceline"
+    "is_carrier": false
+    "update_status": "pending",
+    "live_update_allowed": true
+    "optimised_for_mobile": true
+
+}
+
+Note:- 'id'-it is the unique ID of the agent 'Name'-it is the Name of the agent . 'is_carrier' means it is the Agent an Airline (True/false) check by is_carrier. 'update_status' it is check the status. 'live_update_allowed' it is check the live update..
+'optimised_for_mobile' So the website works well on mobile.
+
+
+
+(conclusion):-
+
+(1).The agents section stores information about travel agencies and ticket selling platforms in the API.
+(2).It tells us which agents are offering flight tickets, what their ratings are, and whether they are mobile-friendly or not.
+(3).Like “operating_carrier_id”, “agents” also decides how good the ticket booking experience will be.
+(4).This data helps users make better decisions about which agent they should choose.
+
+
+
+

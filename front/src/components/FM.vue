@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="FM">
     <!-- Mobile Filter Button -->
     <button class="mobile-filter-btn" @click="isMobileMenuOpen = true">
       <i class="bi bi-filter-left"></i> Filter
@@ -197,9 +197,9 @@ export default {
 <style scoped>
 /* Mobile Filter Button */
 .mobile-filter-btn {
-  position: sticky;
-  bottom: 20px;
-  right: 20px;
+  position: absolute;
+  top: -5px;
+  left: 20px;
   background: #71aeffe5;
   color: white;
   padding: 10px 15px;
@@ -218,7 +218,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 300px;
   height: 100vh;
   background: white;
   z-index: 1000;

@@ -5,7 +5,7 @@
       <button @click="toggleDropdown" class="dropdown-button">
         Sort By: {{ activeTab }}
       </button>
-      <div v-if="dropdownOpen" class="dropdown-menu">
+      <div v-if="dropdownOpen" class="dropdown-menu-list">
         <button
           v-for="tab in tabs"
           :key="tab"
@@ -87,7 +87,8 @@ onUnmounted(() => {
 .tab {
   font-size: 15px;
   font-weight: bold;
-  width: 130px;
+  max-width: auto;
+  min-width: 130px;
   padding: 10px 0;
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -116,7 +117,7 @@ onUnmounted(() => {
 
 .dropdown-button {
   position: absolute;
-  left: 20px;
+  right: 20px;
   width: 200px;
   padding: 5px;
   font-size: 15px;
@@ -134,11 +135,11 @@ onUnmounted(() => {
   border-radius: 10px;
 }
 
-.dropdown-menu {
+.dropdown-menu-list {
   position: absolute;
   padding: 0px;
   top: 32px;
-  left: 20px;
+  right: 20px;
   width: 200px;
   background: white;
   border: 1px solid #ccc;

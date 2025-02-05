@@ -3,33 +3,12 @@
     <h2 class="title">Travel Protection Plan</h2>
     <div class="protection-container">
       <div class="protection-options">
-        <div class="option">
+        <div v-for="(option, index) in protectionOptions" :key="index" class="option">
           <div class="icon-heading">
-            <img src="/images/cancel.png" alt="Trip Cancellation" class="icon" />
-            <h3 class="heading">Trip Cancellation</h3>
+            <img :src="option.image" :alt="option.title" class="icon" />
+            <h3 class="heading">{{ option.title }}</h3>
           </div>
-          <p class="description">Covers cancellations due to unexpected illnesses (like Covid-19) and more.</p>
-        </div>
-        <div class="option">
-          <div class="icon-heading">
-            <img src="/images/clock.png" alt="Travel Delay" class="icon" />
-            <h3 class="heading">Travel Delay</h3>
-          </div>
-          <p class="description">Delayed while en route to or from your trip? This can help cover your costs.</p>
-        </div>
-        <div class="option">
-          <div class="icon-heading">
-            <img src="/images/bandage.png" alt="Medical Expenses" class="icon" />
-            <h3 class="heading">Medical Expenses</h3>
-          </div>
-          <p class="description">Injure yourself on your trip? This can help cover medical expenses.</p>
-        </div>
-        <div class="option">
-          <div class="icon-heading">
-            <img src="/images/healthcare.png" alt="Medical Evacuation" class="icon" />
-            <h3 class="heading">Medical Evacuation</h3>
-          </div>
-          <p class="description">This can help in the most urgent medical situations.</p>
+          <p class="description">{{ option.description }}</p>
         </div>
       </div>
 
@@ -73,7 +52,29 @@
   </div>
 </template>
 
-<style>
+<script>
+// Importing images
+import CancelImage from '@/assets/images/cancel.png';
+import ClockImage from '@/assets/images/clock.png';
+import BandageImage from '@/assets/images/bandage.png';
+import HealthcareImage from '@/assets/images/healthcare.png';
+
+export default {
+  data() {
+    return {
+      protectionOptions: [
+        { title: "Trip Cancellation", description: "Covers cancellations due to unexpected illnesses (like Covid-19) and more.", image: CancelImage },
+        { title: "Travel Delay", description: "Delayed while en route to or from your trip? This can help cover your costs.", image: ClockImage },
+        { title: "Medical Expenses", description: "Injure yourself on your trip? This can help cover medical expenses.", image: BandageImage },
+        { title: "Medical Evacuation", description: "This can help in the most urgent medical situations.", image: HealthcareImage },
+      ]
+    };
+  }
+};
+</script>
+
+
+<style scoped>
 .travel-protection {
   max-width: 1100px;
   margin: auto;

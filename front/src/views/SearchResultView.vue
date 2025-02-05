@@ -1,4 +1,4 @@
-
+<script setup>
 import Header from '../components/Header.vue'
 import FlightSearch from '../components/FlightSearchResults.vue'
 import Footer from '../components/Footer.vue'
@@ -8,17 +8,14 @@ import resultlist from '../components/resultlist.vue';
 <template>
   <main>
     <Header />
+    <FlightSearch />  <!-- You can add comments like this within the template -->
+    <resultlist/>
+    <Footer/>
   </main>
 </template>
 
 <style scoped>
-main {
-  background: #f9f2f2;
-}
-</style>
 
-<style scoped>
-main {
-  background: #f9f2f2;
-}
+main{  background: #F9F2F2;  }
+
 </style>

@@ -77,9 +77,9 @@
         </div>
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
 export default {
   data() {
     return {
@@ -157,7 +157,9 @@ export default {
 </script>
 
   
-  <style scoped>
+
+<style scoped>
+
  /* Universal box-sizing */
 *,
 *::before,

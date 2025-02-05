@@ -1,0 +1,157 @@
+1. Toggle Flight Details (toggleDetails Method)
+
+/*---------------------------Functionality Explanation--------------------*/
+
+This feature allows users to show or hide the flight details when they click the "Show All" or "Hide Details" button. It uses a boolean variable (detailsVisible) to toggle the visibility of the flight details.
+
+/*-------------------------------Code------------------------*/
+<button class="hide-details" @click="toggleDetails">
+  {{ detailsVisible ? 'Hide Details' : 'Show All' }} <span class="dot"></span>
+</button>
+
+<div v-if="detailsVisible" class="itinerary-card">
+  <!-- Flight details here -->
+</div>
+
+/*----------------------------Logic-------------------------------*/
+
+1.The @click="toggleDetails" binds the toggleDetails method to the button click event.
+2.The detailsVisible variable determines if the itinerary card is visible or hidden.
+3.When detailsVisible is true, the flight details are shown (v-if="detailsVisible"), and when false, they are hidden.
+
+Method:----
+
+toggleDetails() {
+  this.detailsVisible = !this.detailsVisible;
+}
+
+
+2. Phone and Email Validation
+
+/*-----------------------Functionality Explanation---------------------------*/
+The form checks if the entered phone number and email are valid based on regular expressions. The user receives error messages if the values don't match the expected patterns.
+/*---------------------------Code----------------------------*/
+
+<input type="text" v-model="phoneNumber" placeholder="Phone Number *" required :class="{'invalid': phoneNumberError}" />
+<span v-if="phoneNumberError" class="error-message">Invalid phone number. Format: (xxx) xxx-xxxx</span>
+
+<input type="email" v-model="email" placeholder="Email *" required :class="{'invalid': emailError}" />
+<span v-if="emailError" class="error-message">Please enter a valid email address.</span>
+
+/*----------------------------Logic-------------------------------*/
+
+1.v-model binds the input fields to the phoneNumber and email data properties.
+2.The validation runs every time the input changes, showing error messages if the validation fails.
+3.The :class="{'invalid': phoneNumberError}" adds a red border to the input field if there’s an error.
+
+
+Validation Methods:
+/*-------------------------code--------------------------*/
+validateForm() {
+  this.phoneNumberError = !this.validatePhoneNumber(this.phoneNumber);
+  this.emailError = !this.validateEmail(this.email);
+}
+
+validatePhoneNumber(phone) {
+  const phoneRegex = /^(?:\(\d{3}\)\s?)?\d{3}[-\s]?\d{4}$/;
+  return phoneRegex.test(phone);
+}
+
+validateEmail(email) {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+}
+/*-------------------------Explain-----------------------*/
+validateForm runs both the phone and email validation whenever either input changes.
+validatePhoneNumber checks the phone number format against a regular expression ((xxx) xxx-xxxx).
+validateEmail checks the email format for valid structure.
+
+
+3. Animations and Hover Effects
+Functionality Explanation:
+This code uses CSS keyframes to create animations for buttons and icons, adding a dynamic effect to the UI.
+
+*----------------------------Code----------------------------------*
+
+@keyframes pulseAnimation {
+  0% {
+    color: #5366AE;
+    transform: scale(1);
+  }
+  50% {
+    color:  #5366AE;
+    transform: scale(1.1);
+  }
+  100% {
+    color: #5366AE;
+    transform: scale(1);
+  }
+}
+
+@keyframes move-plane {
+  0% { left: 0; }
+  50% { left: 50%; transform: translateX(-50%); }
+  100% { left: calc(100% - 15px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+*-------------------------------------Logic-----------------------------------*
+1.pulseAnimation: This is used to animate the text color and scale of the "Show All/Hide Details" button. The button grows slightly and pulses with color changes.
+2.move-plane: Animates the plane icon on the flight path. The plane moves from left to right (along the dashed line).
+bounce: Adds a slight bounce effect to the "Book Now" button when hovered over.
+
+
+4. Responsive Design
+
+*-----------------------------Functionality Explanation---------------------------*
+This section ensures that the layout adjusts based on the screen size, making it user-friendly on mobile, tablet, and desktop devices.
+
+@media (max-width: 1200px) {
+  .container, .itinerary-card, .info-box {
+    padding: 20px;
+  }
+  .price {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .route, .actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .inputs {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+
+  .inputs input {
+    width: 100%;
+  }
+}
+
+*-------------------------------Logic----------------------------*
+1.The layout uses @media queries to check the screen width and change styles based on different device sizes:
+2.For screens smaller than 1200px, the padding is reduced, and the price moves to the right.
+3.For screens smaller than 768px, the layout shifts to a column layout for easier readability and interaction on smaller devices.
+4.Input fields in the contact form are adjusted to be 100% width and have more spacing to accommodate touch interactions.
+

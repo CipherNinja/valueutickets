@@ -52,6 +52,7 @@
   </div>
 </template>
 
+
 <script>
 // Importing images
 import CancelImage from '@/assets/images/cancel.png';
@@ -72,7 +73,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .travel-protection {

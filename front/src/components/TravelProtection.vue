@@ -76,8 +76,8 @@ export default {
 
 <style scoped>
 .travel-protection {
-  max-width: 1100px;
-  margin: auto;
+  max-width: 100%;
+  margin: 20px;
   margin-bottom: 40px;
   padding: 20px;
   background: #ffffff;

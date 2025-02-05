@@ -172,7 +172,7 @@ export default {
   padding: 20px;
   border-radius: 8px;
   width: 90%;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   min-height: 400px;
   margin-bottom: 60px;

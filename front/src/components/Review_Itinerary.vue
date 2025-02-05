@@ -94,12 +94,11 @@ export default {
 </script>
 
 
-/*-------------------######-----------------*/
 <style scoped>
 .container {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background: #eef9f9;
+  background: #EAF3F2;
   width:100%;
   max-width:100%;
 }

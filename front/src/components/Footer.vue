@@ -86,10 +86,10 @@ United State
       </ul>
 
       <div class="payment-icons">
-        <img src="@/assets/footer/visa.png" alt="Visa">
-        <img src="@/assets/footer/google.jpeg" alt="Google Pay">
-        <img src="@/assets/footer/visa.png" alt="Visa">
-        <img src="@/assets/footer/google.jpeg" alt="Google Pay">
+        <img src="@/assets/footer/Amx.jpeg" alt="Visa">
+        <img src="@/assets/footer/visa.png" alt="Google Pay">
+        <img src="@/assets/footer/masc.jpg" alt="Visa">
+        <img src="@/assets/footer/disc.png" alt="Google Pay">
         <!-- <img src="@/assets/footer/amex.png" alt="Amex"> -->
       </div>
     </div>
@@ -258,17 +258,24 @@ export default {
 .payment-icons {
   display: flex;
   gap: 10px;
+  cursor: pointer;
 }
 
 .payment-icons img {
   width: 40px;
   height: auto;
+  border-radius: 10px; /* Add curved edges */
+  overflow: hidden; /* Ensure the curve applies properly */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .payment-icons img:hover {
-  transform: translateY(-5px); 
-  transition: transform 0.3s ease; 
+  transform: scale(1.1); /* Slight hover effect */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3); /* Glow effect */
 }
+
+
+
 
 
 

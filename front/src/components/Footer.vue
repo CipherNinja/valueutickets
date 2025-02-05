@@ -58,16 +58,19 @@
     <div class="footer-contact">
       <span>
         <i class="fas fa-envelope"></i>
-        <a href="mailto:support123@gmail.com">support123@gmail.com</a>
+        <a href="mailto:support123@gmail.com">support@valueutickets.com</a>
       </span>
       <span>
         <i class="fa fa-phone-alt"></i>
-        <a href="tel:+1189564">+91 9628 2099 29</a>
+        <a href="tel:+1189564">+1 (833)931-6548</a>
       </span>
       <span>
         <i class="fas fa-map-marker-alt"></i>
-        Address: 1234 Street, City, <br>
-        Country Noida UP 
+        Travelove LLC
+30 N Gould St # 36918
+Sheridan, WY 82801
+United State
+
       </span>
     </div>
   </div>

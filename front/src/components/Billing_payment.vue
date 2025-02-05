@@ -89,9 +89,22 @@ export default {
       expiryMonth: '',
       expiryYear: '',
       cvv: '',
-      cardHolderName: ''
+      cardHolderName: '',
+      isVertical: window.innerWidth < 725
     };
   },
+  mounted() {
+    window.addEventListener("resize", this.updateLayout);
+    this.updateLayout(); // Initial check
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.updateLayout);
+  },
+  methods: {
+    updateLayout() {
+      this.isVertical = window.innerWidth < 725;
+    }
+  }
 };
 </script>
 
@@ -113,10 +126,10 @@ body {
 }
 
 .heading {
-  margin-left: 15px;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 15px; /* Adds space between the heading and container */
+  margin-left: 14px;
+  margin-bottom: 12px;
 }
 
 .container {
@@ -124,7 +137,9 @@ body {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
   width: 100%;
+  transition: width 0.3s ease-in-out;
 }
 
 .form-group {
@@ -152,33 +167,46 @@ select {
   background-color: white;
 }
 
-.required {
+.required, .require, .requir {
   color: red;
   position: absolute;
+  font-weight: bold;
+}
+
+.required {
   left: 120px;
   top: 15px;
-  font-weight: bold;
 }
 
 .require {
-  color: red;
-  position: absolute;
   left: 150px;
   top: 14px;
-  font-weight: bold;
 }
 
 .requir {
-  color: red;
-  position: absolute;
   left: 190px;
   top: 14px;
-  font-weight: bold;
 }
 
-/* Specific style for Card Holder Name input */
 .small-input input {
-  width: 32%; /* Reduce the size to 70% of the width */
+  width: 32%;
 }
 
+/* Media queries for responsiveness */
+@media (max-width: 725px) {
+  .form-group {
+    flex-direction: column;
+  }
+
+  .form-group div {
+    margin: 0;
+    margin-bottom: 15px;
+  }
+
+  .small-input input {
+    width: 100%;
+  }
+}
 </style>
+
+  

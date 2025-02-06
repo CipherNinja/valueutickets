@@ -33,7 +33,7 @@
     <!-- Conditional rendering based on screen size -->
     <div class="main-box">  
       <Filter v-if="windowWidth >770" /><FM v-else />
-      <div><resultlist/></div>
+      <resultlist/>
     </div>
     <Footer/>
   </main>

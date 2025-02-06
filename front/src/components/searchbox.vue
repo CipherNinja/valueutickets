@@ -1,6 +1,135 @@
 <script setup>
-import passclass from './passclass.vue'
+import { ref } from 'vue'
+import axios from 'axios'
+import { RouterLink, useRouter } from 'vue-router'
+import { useFlightStore } from "@/stores/flightStore";
+import { usePostDataStore } from "@/stores/postDataStore";
+import PassClass from './passclass.vue'
 import AirportAuto from './AirportAuto.vue'
+
+// API Data
+const postdata = ref(null)
+const getApiData = ref(null)
+
+// Trip Details
+const source_iata = ref("")
+const destination_iata = ref("")
+const oneWay = ref({ date: '', from: '', to: '' })
+const roundTrip = ref({ date: '', returnDate: '', from: '', to: '' })
+const multiCity = ref([{ from: '', to: '', date: '' }])
+
+const tripType = ref('oneWay')
+
+// ✅ Initialize `passengerData` to prevent `null` errors
+const passengerData = ref({
+  adults: 1,
+  children: 0,
+  infants: 0,
+  ticket_class: 'Economy'
+})
+
+// Handle Passenger Data from Child Component
+function handlePassengerUpdate(data) {
+  passengerData.value = data || { adults: 1, children: 0, infants: 0, ticket_class: 'Economy' }
+  console.log("Received data from child:", data)
+}
+
+// Collect and Prepare Data for API Request
+function collectPostData() {
+  if (!passengerData.value) {
+    console.error("Passenger data is missing!")
+    return
+  }
+
+  let tripDetails = {}
+
+  if (tripType.value === 'oneWay') {
+    tripDetails = {
+      source_iata: source_iata.value,
+      destination_iata: destination_iata.value,
+      date: oneWay.value.date,
+      adults: passengerData.value.adults || 1,
+      children: passengerData.value.children || 0,
+      infants: passengerData.value.infants || 0,
+      ticket_class: passengerData.value.ticket_class || 'Economy'
+    }
+  } else if (tripType.value === 'roundTrip') {
+    tripDetails = {
+      source_iata: roundTrip.value.from,
+      destination_iata: roundTrip.value.to,
+      date: roundTrip.value.date,
+      return_date: roundTrip.value.returnDate,
+      adults: passengerData.value.adults || 1,
+      children: passengerData.value.children || 0,
+      infants: passengerData.value.infants || 0,
+      ticket_class: passengerData.value.ticket_class || 'Economy'
+    }
+  } else if (tripType.value === 'multiCity') {
+    tripDetails = multiCity.value.map((segment) => ({
+      source_iata: segment.from,
+      destination_iata: segment.to,
+      date: segment.date,
+      adults: passengerData.value.adults || 1,
+      children: passengerData.value.children || 0,
+      infants: passengerData.value.infants || 0,
+      ticket_class: passengerData.value.ticket_class || 'Economy'
+    }))
+  }
+
+  postdata.value = tripDetails
+  console.log('Post Data:', postdata.value)
+
+  const postDataStore = usePostDataStore()
+  const flightStore = useFlightStore()
+  const router = useRouter()
+
+  postDataStore.setPostData(postdata.value) // Store it in Pinia
+  console.log("Stored postdata:", postDataStore.postdata)
+
+  // API Call
+  axios.post("https://gcp.agratasinfotech.com/api/v1/flight/search/onewaytrip/", postdata.value)
+    .then(response => {
+      flightStore.setFlightData(response.data) // Store data in Pinia
+      router.push({ name: "results" }) // Navigate to results page
+    })
+    .catch(error => console.error('Error:', error))
+}
+
+
+  const today = new Date().toISOString().split('T')[0]
+
+  const activeTab = ref('flight')
+
+  function formatTripType(type) {
+    const tripTypes = {
+      oneWay: "One Way",
+      roundTrip: "Round Trip",
+      multiCity: "Multi-City"
+    };
+    return tripTypes[type] || "Unknown";
+  }
+
+  function addSegment() {
+    if (multiCity.value.length < 4) {
+      multiCity.value.push({ from: '', to: '', date: '' })
+    }
+  }
+
+  function removeSegment(index) {
+    multiCity.value.splice(index, 1)
+  }
+
+  function autoFillFrom(index) {
+    if (index > 0 && !multiCity.value[index].from) {
+      multiCity.value[index].from = multiCity.value[index - 1].to
+    }
+  }
+
+  function swap(segment) {
+    if (segment.from && segment.to) {
+      [segment.from, segment.to] = [segment.to, segment.from];
+    }
+  }
 </script>
 
 <template>
@@ -20,175 +149,94 @@ import AirportAuto from './AirportAuto.vue'
           <input type="radio" v-model="tripType" :value="type" /> {{ formatTripType(type) }}
         </label>
       </div>
-      
+
       <!-- One Way Trip -->
-      <div v-if="tripType === 'oneWay'" class="input-group">
-        <div class="input-box">
-          <label>From</label>
-          <span>
-            <i class="fas fa-plane-departure"></i>
-            <!-- Replace plain input with AirportAuto -->
-            <AirportAuto 
-              placeholder="From" 
-              v-model="oneWay.from" 
-            />
-          </span>
-          <button class="swap-btn" @click="swap(oneWay)">🔄</button>
-        </div>
-        <div class="input-box">
-          <label>To</label>
-          <span>
-            <i class="fas fa-plane-arrival"></i>
-            <AirportAuto 
-              placeholder="To" 
-              v-model="oneWay.to" 
-            />
-          </span>
-        </div>
-        <div class="input-box">
-          <label>Departure Date</label>
-          <span>
-            <i class="fas fa-calendar-alt"></i>
-            <input type="date" v-model="oneWay.date" :min="today" />
-          </span>
-        </div>
-        <div class="input-box">
-          <label>Travellers, Class</label>
-          <passclass />
-        </div>
-      </div>
-      
-      <!-- Round Trip -->
-      <div v-if="tripType === 'roundTrip'" class="input-group">
-        <div class="input-box">
-          <label>From</label>
-          <span>
-            <i class="fas fa-plane-departure"></i>
-            <AirportAuto 
-              placeholder="From" 
-              v-model="roundTrip.from" 
-            />
-          </span>
-          <button class="swap-btn" @click="swap(roundTrip)">🔄</button>
-        </div>
-        <div class="input-box">
-          <label>To</label>
-          <span>
-            <i class="fas fa-plane-arrival"></i>
-            <AirportAuto 
-              placeholder="To" 
-              v-model="roundTrip.to" 
-            />
-          </span>
-        </div>
-        <div class="input-box">
-          <label>Departure Date</label>
-          <span>
-            <i class="fas fa-calendar-alt"></i>
-            <input type="date" v-model="roundTrip.date" :min="today" />
-          </span>
-        </div>
-        <div class="input-box">
-          <label>Return Date</label>
-          <span>
-            <i class="fas fa-calendar-alt"></i>
-            <input type="date" v-model="roundTrip.returnDate" :min="roundTrip.date" />
-          </span>
-        </div>
-        <div class="input-box">
-          <label>Travellers, Class</label>
-          <passclass />
-        </div>
-      </div>
-      
-      <!-- Multi City -->
-      <div v-if="tripType === 'multiCity'">
-        <div v-for="(segment, index) in multiCity" :key="index" class="multi-city-segment input-group">
+        <div v-if="tripType === 'oneWay'" class="input-group">
           <div class="input-box">
             <label>From</label>
             <span>
               <i class="fas fa-plane-departure"></i>
-              <AirportAuto 
-                placeholder="From" 
-                v-model="segment.from"
-                @input="autoFillFrom(index)" 
-              />
+              <AirportAuto @update:iata="source_iata = $event" />
+              <button class="swap-btn" @click="swap(oneWay)">🔄</button>
             </span>
-            <div class="swap-btn" @click="swap(segment)">🔄</div>
           </div>
           <div class="input-box">
             <label>To</label>
             <span>
-              <i class="fas fa-plane-arrival"></i>
-              <AirportAuto 
-                placeholder="To" 
-                v-model="segment.to" 
-              />
+              <i class="fas fa-plane-arrival"></i>  
+              <AirportAuto @update:iata="destination_iata = $event" />
             </span>
           </div>
           <div class="input-box">
             <label>Departure Date</label>
             <span>
               <i class="fas fa-calendar-alt"></i>
-              <input type="date" v-model="segment.date" :min="today" />
+              <input type="date" v-model="oneWay.date" :min="today" />
             </span>
           </div>
-          <div class="input-box" v-if="index === 0">
-            <label>Travellers, Class</label>
-            <passclass />
+          <div class="input-box">
+            <label>Traveller's Class</label>
+            <PassClass @update-passenger="handlePassengerUpdate" />
           </div>
-          <button v-if="index === 1 || index >= 2" @click="addSegment"><i class="fa fa-plus"></i></button>
-          <button v-if="index >= 2" @click="removeSegment(index)"><i class="fa fa-minus"></i></button>
+        </div>
+      <!-- Round Trip -->
+        <div v-if="tripType === 'roundTrip'" class="input-group">
+          <div class="input-box">
+            <label>From</label>
+            <span>
+              <i class="fas fa-plane-departure"></i>
+              <AirportAuto @update:iata="roundTrip.from = $event" />
+              <button class="swap-btn" @click="swap(roundTrip)">🔄</button>
+            </span>
+          </div>
+          <div class="input-box">
+            <label>To</label>
+            <span>
+              <i class="fas fa-plane-arrival"></i>
+              <AirportAuto @update:iata="roundTrip.to = $event" />
+            </span>
+          </div>
+          <div class="input-box">
+            <label>Departure Date</label>
+            <span>
+              <i class="fas fa-calendar-alt"></i>
+              <input type="date" v-model="roundTrip.date" :min="today" />
+            </span>
+          </div>
+          <div class="input-box">
+            <label>Return Date</label>
+            <span>
+              <i class="fas fa-calendar-alt"></i>
+              <input type="date" v-model="roundTrip.returnDate" :min="roundTrip.date || today" />
+            </span>
+          </div>
+          <div class="input-box">
+            <label>Traveller's Class</label>
+            <PassClass @update-passenger="handlePassengerUpdate" />
+          </div>
+        </div>
+
+      <!-- Multi-City -->
+      <div v-if="tripType === 'multiCity'">
+        <div v-for="(segment, index) in multiCity" :key="index" class="multi-city-segment">
+          <AirportAuto v-model="segment.from" @input="autoFillFrom(index)" />
+          <AirportAuto v-model="segment.to" />
+          <input type="date" v-model="segment.date" :min="today" />
+          <button v-if="index >= 1" @click="removeSegment(index)">➖</button>
+          <button v-if="index === multiCity.length - 1 && index < 3" @click="addSegment">➕</button>
         </div>
       </div>
-      
-      <router-link to="/results"><button class="search-button">Search Flight</button></router-link>
+
+      <router-link to="/results"><button class="search-button" @click="collectPostData">Search Flight</button></router-link>
     </div>
-    
+
     <div v-else>
       <p>Tour section (same content for now)</p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      activeTab: 'flight',
-      tripType: 'oneWay',
-      today: new Date().toISOString().split('T')[0],
-      oneWay: { from: '', to: '', date: '', travelClass: '' },
-      roundTrip: { from: '', to: '', date: '', returnDate: '', travelClass: '' },
-      multiCity: [
-        { from: '', to: '', date: '', travelClass: '' },
-        { from: '', to: '', date: '' }
-      ]
-    };
-  },
-  methods: {
-    formatTripType(type) {
-      return type === 'oneWay' ? 'One Way' : type === 'roundTrip' ? 'Round Trip' : 'Multi-City';
-    },
-    addSegment() {
-      if (this.multiCity.length < 4) {
-        this.multiCity.push({ from: '', to: '', date: '' });
-      }
-    },
-    removeSegment(index) {
-      this.multiCity.splice(index, 1);
-    },
-    autoFillFrom(index) {
-      if (index > 0 && !this.multiCity[index].from) {
-        this.multiCity[index].from = this.multiCity[index - 1].to;
-      }
-    },
-    swap(segment) {
-      [segment.from, segment.to] = [segment.to, segment.from];
-    }
-  }
-};
-</script>
+
 
 <style scoped>
 /* (Your existing styles remain unchanged) */

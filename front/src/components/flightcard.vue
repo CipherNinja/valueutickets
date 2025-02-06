@@ -1,292 +1,213 @@
+<script setup>
+import { computed, onMounted } from "vue";
+import { useFlightStore } from "@/stores/flightStore";
+//import flights from '@/assets/dummy.json';
+import { usePostDataStore } from "@/stores/postDataStore";
+
+const flightStore = useFlightStore();
+const postDataStore = usePostDataStore();
+
+// Function to format duration (minutes to hours & minutes)
+const formatDuration = (minutes) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours}h ${mins}m`;
+};
+// Function to format date-time
+const formatDateTime = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+  }).format(date);
+};
+
+
+// Retrieve flight data from store
+const flights = computed(() => flightStore.flightData || []);
+
+// Placeholder for airline logos
+const airlineLogos = {
+  "jetBlue": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
+  "American Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png",
+  "Delta Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/220px-Delta_logo.svg.png",
+  "United Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png",
+  "Frontier Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Frontier_Airlines_logo.svg/220px-Frontier_Airlines_logo.svg.png",
+  "Hawaiian Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Hawaiian_Airlines_logo_2017.svg/137px-Hawaiian_Airlines_logo_2017.svg.png",
+  "Southwest Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Southwest_Airlines_logo_2014.svg/220px-Southwest_Airlines_logo_2014.svg.png",
+  "Alaska Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Alaska_Airlines_logo.svg/220px-Alaska_Airlines_logo.svg.png",
+};
+
+// Default logo for undefined airlines
+const defaultLogo = "https://via.placeholder.com/150?text=No+Logo";
+
+onMounted(() => {
+  console.log("Flight data:", flights.value); // Check the length and content of flights array
+  if (!flights.value.length) {
+    console.warn("No flight data found! Make sure it's stored before navigating.");
+  }
+});
+</script>
+
 <template>
-  <div class="flight-card">
-    <!-- Row 0: Color Bar -->
-    <div class="color-bar"></div>
+  <div class="results-container">
+    <div v-for="flight in flights" :key="flight.flight_name" class="flight-card">
+      <div class="color-bar"></div>
+      <!-- Airline Details -->
+      <div class="airline-info" style="text-align: center;">
+        <img :src="airlineLogos[flight.flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo"/>
+        <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.flight_name }}</span>
+      </div>
 
-    <!-- Row 1: Airline (Separate on Mobile) -->
-    <div class="airline-container">
-      <img :src="airlineLogo" :alt="airlineName" class="airline-logo" />
-      <span class="airline-name">{{ airlineName }}</span>
-    </div>
+      <!-- Flight Details -->
+      <div class="flight-details">
+        <div class="departure">
+          <i class="fas fa-plane-departure"></i>
+          <p><strong>Departure:</strong>&nbsp;From: {{ postDataStore.postdata?.source_iata || 'N/A' }}</p>
+          <p>{{ formatDateTime(flight.departure) || 'N/A' }}</p>
+          
+        </div>
 
-    <!-- Row 2: Flight Details -->
-    <div class="flight-info">
-      <!-- Departure -->
-      <div class="flight-detail">
-        <i class="fas fa-plane-departure"></i>
-        <div class="div-type-row">
-          <span class="airport">{{ departureAirport }}</span>
-          <span class="datetime">{{ departureDateTime }}</span>
+        <div class="duration">
+          <i class="fas fa-stopwatch"></i>&nbsp;
+          <strong>Duration:</strong>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ formatDuration(flight.duration) || 'N/A' }}</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong> {{ flight.stop_count || 0 }}</p>
+        </div>
+
+        <div class="arrival">
+          <i class="fas fa-plane-arrival"></i>&nbsp;
+          <p><strong>Arrival:</strong>&nbsp;To: {{ postDataStore.postdata?.destination_iata || 'N/A' }}</p>
+          <p>{{ formatDateTime(flight.arrival) || 'N/A' }}</p>
         </div>
       </div>
 
-      <!-- Dashed Line with Floating Duration -->
-      <div class="flight-duration">
-        <span class="duration">{{ duration }}</span>
-        <div class="dashed-line"></div>
-      </div>
-
-      <!-- Arrival -->
-      <div class="flight-detail">
-        <i class="fas fa-plane-arrival"></i>
-        <div class="div-type-row">
-          <span class="airport">{{ arrivalAirport }}</span>
-          <span class="datetime">{{ arrivalDateTime }}</span>
+      <!-- Pricing & Stops -->
+      <div class="pricing">
+        <button class="office-number">+1 (833)931-6548</button>
+        <div>
+          <span><strong>Price per Person:</strong></span>
+          <br><span>Incl. Taxes and Fees</span>
         </div>
-      </div>
-    </div>
-
-    <!-- Row 3: Contact, Pricing & Book Button -->
-    <div class="pricing-info">
-      <!-- USA Contact Number -->
-      <span class="contact">📞 +1-800-555-1234</span>
-
-      <!-- Price per Person -->
-      <div class="price-details">
-        <span class="price-label">Price per Person</span>
-        <span class="tax-info">Incl. Taxes & Fees</span>
-      </div>
-
-      <div class="spacer"></div>
-
-      <!-- Price & Book Now -->
-      <div class="booking">
-        <span class="price">${{ price }}</span>
+        <p><strong>${{ flight.price || 'N/A' }}</strong> </p>
         <button class="book-now">Book Now</button>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-const airlineName = ref("American Airlines");
-const airlineLogo = ref("https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png");
-
-const departureAirport = ref("New York - JFK");
-const arrivalAirport = ref("Los Angeles - LAX");
-const departureDateTime = ref("Feb 10, 2025 - 08:30 AM");
-const arrivalDateTime = ref("Feb 10, 2025 - 11:45 AM");
-const duration = ref("6h 15m");
-const price = ref("399");
-</script>
-
 <style scoped>
-.flight-card {
-  justify-self: center;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 0px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+.results-container {
   width: 100%;
-  max-width: 800px;
+  margin: auto;
 }
 
-/* Row 0: Color Bar */
+.flight-card {
+  background-color: #FFF;
+  border: 1px solid #ddd;
+  padding: 0%;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .color-bar {
-  height: 18px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  background: linear-gradient(45deg, #ff5733, #ff8c00);
+  height: 35px;
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  background-color: #ff7b00;
 }
 
-/* Row 1: Airline */
-.airline-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 10px;
-  padding-bottom: 0px;
+.airline-info {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 15px;
+  text-align: center;
 }
 
 .airline-logo {
-  max-width: 140px;
-  max-height: 25px;
-  object-fit: scale-down;
+  max-width: 100px;
+  max-height: 50px;
 }
 
-.airline-name {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Row 2: Flight Info */
-.flight-info {
+.flight-details {
   display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+/* Pricing Section */
+.pricing {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
+  padding: 15px;
 }
 
-.flight-detail {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.pricing p {
+  margin: 0;
+  color: #ff7b00;
+  font-size: 27px;
 }
 
-.div-type-row {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.airport {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.datetime {
-  font-size: 12px;
-  color: #666;
-}
-
-/* Flight Duration with Dashed Line */
-.flight-duration {
-  position: relative;
-  text-align: center;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.duration {
-  position: absolute;
-  top: -12px;
-  background: rgba(255, 255, 255, 1);
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  z-index: 10;
-}
-
-.dashed-line {
-  width: 100%;
-  border-bottom: 2px dashed gray;
-  margin-top: 7px;
-  margin: 0px 0px;
-}
-
-/* Row 3: Pricing & Book Button */
-.pricing-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px;
-  padding-top: 0px;
-}
-
-.contact {
-  background-color: rgb(0, 119, 255);
-  font-size: 14px;
-  padding: 5px 8px;
-  font-weight: bold;
-  color: #ffffff;
-  border-radius: 5px;
-}
-
-.price-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.price-label {
-  font-size: 15px;
-  font-weight: bold;
-  color: #333;
-}
-
-.tax-info {
-  font-size: 10px;
-  color: #666;
-}
-
-.spacer {
-  flex-grow: 1;
-}
-
-.booking {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #e63946;
+.office-number {
+  background-color: #ff7b00;
+  color: white;
+  font-weight: 700;
+  padding: 7px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: auto;
+  margin-top: 10px;
 }
 
 .book-now {
-  background: linear-gradient(45deg, #ff5733, #ff8c00);
+  background-image: linear-gradient(to right, #dbac13, #e77911);
   color: white;
-  padding: 10px 18px;
+  padding: 7px;
+  font-weight: 700;
   border: none;
-  border-radius: 50px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: transform 0.2s ease-in-out;
+  width: 100px;
+  margin-top: 10px;
+  transform: scale(1.2);
+  margin-right: 20px;
 }
 
-.book-now:hover {
-  transform: scale(1.05);
-}
-
-/* Responsive Layout for Mobile (Below 430px) */
-@media (max-width: 430px) {
+/* Responsive Styles */
+@media (max-width: 620px) {
+  .results-container {
+    display: flex;
+    flex-direction: column;
+  }
   .flight-card {
-    padding: 3px;
-    gap: 5px;
-  }
-
-  .airline-container {
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 2px;
   }
 
-  .flight-info {
-    flex-direction: column;
-    text-align: center;
-    border-bottom: none;
-    gap: 25px;
-  }
-
-  .flight-detail {
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  .duration {
-    top: -20px;
-  }
-  .dashed-line {
-    width: 0%;
-  }
-
-  .pricing-info {
-    font-size: 20px;
+  .flight-details {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 2px;
   }
 
-  .spacer {
-    display: none;
-    gap: 5px;
-  }
-
-  .booking {
+  .pricing {
     flex-direction: column;
-    gap: 3px;
+    align-items: center;
+  }
+
+  .office-number, .book-now {
+    width: 100%;
+    max-width: 250px;
   }
 }
 </style>

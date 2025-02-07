@@ -10,7 +10,7 @@
     <div v-if="detailsVisible" class="itinerary-card">
       <div class="flight-info">
         <div class="route">
-          <div class="super-saver">Super <span class="saver">Saver</span></div>
+          <div class="super-saver">Time <span class="saver">Saver</span></div>
           <div class="from">
             <strong class="CityName">New York (JFK)</strong>
             <p class="Date">Mon, Feb 10</p>
@@ -167,7 +167,7 @@ export default {
   color: #00c896;
   font-weight: bold;
   margin-bottom: 10px;
-  font-size: 20px;
+  font-size: 22px;
   display: inline-block;
 }
 

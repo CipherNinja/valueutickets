@@ -15,6 +15,7 @@ const router = createRouter({
       path: '/results',
       name: 'searchresult',
       component: SearchResultView,
+      //props: route => ({ data: JSON.parse(route.query.data) })
     },
     {
       path: '/pay',

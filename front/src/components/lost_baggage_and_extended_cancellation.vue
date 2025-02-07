@@ -12,7 +12,7 @@
             <div class="recommended-heading">Recommended</div>
             <!-- New heading below recommended heading -->
             <div class="protection-heading">Baggage Protection</div>
-            <img src="/images/bagg.jpg" alt="Baggage Protection" class="blue-box-image" />
+            <img src="../assets/images/bagg.jpg" alt="Baggage Protection" class="blue-box-image" />
         </div>
 
         <p class="bordered">Did you know: 20 million bags are mishandled by airlines every year!</p>
@@ -75,7 +75,7 @@
             <div class="recommended-heading">Recommended</div>
             <!-- New heading below recommended heading -->
             <div class="protection-heading">Cancellation protection </div>
-            <img src="/images/a man.jpg" alt="Baggage Protection" class="blue-box-image" />
+            <img src="../assets/images/a man.jpg" alt="Baggage Protection" class="blue-box-image" />
         </div>
 
         <p class="bordered">Choose cancellation protection and receive a total refund of $181.83!</p>

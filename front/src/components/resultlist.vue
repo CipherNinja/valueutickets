@@ -1,11 +1,26 @@
 <template>
+  <div class="results-container">
     <div class="tab-container">
-    <!-- Mobile Dropdown -->
-    <div class="mobile-dropdown" v-if="isMobile">
-      <button @click="toggleDropdown" class="dropdown-button">
-        Sort By: {{ activeTab }}
-      </button>
-      <div v-if="dropdownOpen" class="dropdown-menu">
+      <!-- Mobile Dropdown -->
+      <div class="mobile-dropdown" v-if="isMobile">
+        <button @click="toggleDropdown" class="dropdown-button">
+          Sort By: {{ activeTab }}
+        </button>
+        <div v-if="dropdownOpen" class="dropdown-menu-list" ref="dropdownMenu">
+          <button
+            v-for="tab in tabs"
+            :key="tab"
+            @click="selectTab(tab)"
+            class="tab"
+            :class="{ active: activeTab === tab }"
+          >
+            {{ tab }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop Tabs -->
+      <div class="desktop-tabs" v-else>
         <button
           v-for="tab in tabs"
           :key="tab"
@@ -17,65 +32,83 @@
         </button>
       </div>
     </div>
-
-    <!-- Desktop Tabs -->
-    <div class="desktop-tabs" v-else>
-      <button
-        v-for="tab in tabs"
-        :key="tab"
-        @click="activeTab = tab"
-        class="tab"
-        :class="{ active: activeTab === tab }"
-      >
-        {{ tab }}
-      </button>
+    <div class="class-group">
+      <flightcard />
     </div>
-  </div>
-  <div class="class-group">
-    <flightcard />
-    <flightcard />
-    <flightcard />
-    <flightcard />
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted, watch, onBeforeUnmount } from "vue";
 import flightcard from "./flightcard.vue";
-import { ref, onMounted, onUnmounted } from "vue";
 
 const tabs = ["Recommended", "Cheapest", "Quickest", "Lowest Emission"];
 const activeTab = ref(tabs[0]);
-const isMobile = ref(window.innerWidth < 770);
+const isMobile = ref(false);
 const dropdownOpen = ref(false);
+const dropdownMenu = ref(null);
 
 const checkScreenSize = () => {
-  isMobile.value = window.innerWidth < 770;
+  if (typeof window !== "undefined") {
+    isMobile.value = window.innerWidth < 770;
+  }
 };
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
 };
 
-const selectTab = (tab) => {
-  activeTab.value = tab;
-  dropdownOpen.value = false; // Close dropdown after selection
+// Close dropdown when clicking outside
+const handleClickOutside = (event) => {
+  if (dropdownMenu.value && !dropdownMenu.value.contains(event.target)) {
+    dropdownOpen.value = false;
+  }
 };
 
-// Listen for screen resize
+// Update active tab and emit event for filtering
+const selectTab = (tab) => {
+  activeTab.value = tab;
+  dropdownOpen.value = false;
+  emit("update:activeTab", tab); // Notify parent to update flight list
+};
+
+// Optimize resize event listener using debounce
+let resizeTimeout;
+const onResize = () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(checkScreenSize, 200);
+};
+
+// Add event listeners
 onMounted(() => {
-  window.addEventListener("resize", checkScreenSize);
+  checkScreenSize();
+  if (typeof window !== "undefined") {
+    window.addEventListener("resize", onResize);
+    document.addEventListener("click", handleClickOutside);
+  }
 });
 
-onUnmounted(() => {
-  window.removeEventListener("resize", checkScreenSize);
+// Remove event listeners
+onBeforeUnmount(() => {
+  if (typeof window !== "undefined") {
+    window.removeEventListener("resize", onResize);
+    document.removeEventListener("click", handleClickOutside);
+  }
 });
 </script>
 
 <style scoped>
+/* General Styles */
+.results-container {
+  width: 100%;
+  margin: auto;
+}
 .tab-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding: 10px;
 }
 
 /* Desktop Tabs */
@@ -87,7 +120,7 @@ onUnmounted(() => {
 .tab {
   font-size: 15px;
   font-weight: bold;
-  width: 130px;
+  min-width: 130px;
   padding: 10px 0;
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -116,7 +149,7 @@ onUnmounted(() => {
 
 .dropdown-button {
   position: absolute;
-  left: 20px;
+  right: 20px;
   width: 200px;
   padding: 5px;
   font-size: 15px;
@@ -131,14 +164,12 @@ onUnmounted(() => {
 
 .dropdown-button:hover {
   background-color: #f0f0f0;
-  border-radius: 10px;
 }
 
-.dropdown-menu {
+.dropdown-menu-list {
   position: absolute;
-  padding: 0px;
   top: 32px;
-  left: 20px;
+  right: 20px;
   width: 200px;
   background: white;
   border: 1px solid #ccc;
@@ -149,29 +180,12 @@ onUnmounted(() => {
   z-index: 1000;
 }
 
-.dropdown-menu .tab {
-  width: 100%;
-  text-align: center;
-  border-radius: 0px;
-  padding: 5px;
-}
-.dropdown-menu .tab:first-child {
-  border-radius: 10px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
-.dropdown-menu .tab:last-child {
-  border-radius: 10px;
-  border-top-right-radius: 0px;
-  border-top-left-radius: 0px;
-}
-
 .class-group {
   display: flex;
-  flex-wrap: wrap;
   padding: 15px;
   gap: 15px;
   justify-content: center;
+  width: 100%;
 }
 
 @media (max-width: 770px) {
@@ -179,7 +193,6 @@ onUnmounted(() => {
     display: none; /* Hide desktop tabs on small screens */
   }
 }
-
 @media (min-width: 770px) {
   .mobile-dropdown {
     display: none; /* Hide mobile dropdown on larger screens */

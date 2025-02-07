@@ -157,7 +157,9 @@ export default {
 </script>
 
   
+
 <style scoped>
+
  /* Universal box-sizing */
 *,
 *::before,
@@ -170,10 +172,11 @@ export default {
   padding: 20px;
   border-radius: 8px;
   width: 90%;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   min-height: 400px;
   margin-bottom: 60px;
+  margin-top: 50px;
 }
 
 .passenger-card {

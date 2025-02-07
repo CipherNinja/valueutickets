@@ -114,12 +114,16 @@ export default {
       else if (type === 'infant' && this.infantCount > 0) this.infantCount--;
     },
     doneSelection() {
-      console.log("Selection done:", {
-        adult: this.adultCount,
-        child: this.childCount,
-        infant: this.infantCount,
-        cabin: this.selectedCabin
-      });
+      const selectedData = {
+        adults: this.adultCount,
+        children: this.childCount,
+        infants: this.infantCount,
+        ticket_class: this.cabinClasses.find(c => c.value === this.selectedCabin)?.label || "Economy"
+      };
+      
+      // Emit data to parent
+      this.$emit("update-passenger", selectedData);
+
       this.isPopupVisible = false;
     },
   },

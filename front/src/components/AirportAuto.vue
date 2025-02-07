@@ -2,7 +2,6 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
 
-// Define props for v-model binding and placeholder text
 const props = defineProps({
   modelValue: {
     type: String,
@@ -10,25 +9,20 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: 'Enter airport'
+    default: 'Enter airport',
+    required: true,
   }
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'update:iata'])
 
-// Local reactive state
 const query = ref(props.modelValue)
 const suggestions = ref([])
-// This will hold all fetched airport data
 const allAirports = ref([])
-
-// Reference to the component's container element
 const autocompleteContainer = ref(null)
 
-// Function to fetch all airports from the API on mount
 const fetchAllAirports = async () => {
   try {
     const response = await axios.get('https://gcp.agratasinfotech.com/api/v1/airports/')
-    // Assuming response.data is an array of airport objects
     allAirports.value = response.data
   } catch (error) {
     console.error('Error fetching airports:', error)
@@ -36,8 +30,6 @@ const fetchAllAirports = async () => {
   }
 }
 
-// Helper function to determine match priority
-// Lower number means higher priority (1 is best)
 const getPriority = (airport, search) => {
   const s = search.toLowerCase()
   if (airport.city?.toLowerCase().includes(s)) return 1
@@ -47,7 +39,6 @@ const getPriority = (airport, search) => {
   return 5
 }
 
-// Function to perform local filtering and sorting of airports
 const filterAirports = (searchTerm) => {
   const term = searchTerm.toLowerCase()
   const filtered = allAirports.value.filter(airport => {
@@ -62,7 +53,6 @@ const filterAirports = (searchTerm) => {
   filtered.sort((a, b) => {
     const pa = getPriority(a, term)
     const pb = getPriority(b, term)
-    // If same priority, sort alphabetically by city name (if available)
     if (pa === pb && a.city && b.city) {
       return a.city.localeCompare(b.city)
     }
@@ -71,10 +61,8 @@ const filterAirports = (searchTerm) => {
   suggestions.value = filtered
 }
 
-// Watch for changes in the query
 watch(query, (newValue) => {
   emit('update:modelValue', newValue)
-  // Only search if query is at least 3 characters long
   if (newValue && newValue.length >= 3) {
     filterAirports(newValue)
   } else {
@@ -82,45 +70,38 @@ watch(query, (newValue) => {
   }
 })
 
-// When the component mounts, fetch the airports data
 onMounted(() => {
   fetchAllAirports()
-  // Add event listener to detect clicks outside the component
   document.addEventListener('click', handleClickOutside)
 })
 
-// Remove the event listener when the component unmounts
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 
-// Event handler to detect clicks outside the component
 const handleClickOutside = (event) => {
-  // Check if the click target is outside the component's container
   if (autocompleteContainer.value && !autocompleteContainer.value.contains(event.target)) {
     suggestions.value = []
   }
 }
 
-// When a suggestion is selected, update the input field and clear suggestions
 const selectSuggestion = (suggestion) => {
-  // Display both airport name and IATA (if available)
-  query.value =
-    suggestion.city +
-    (suggestion.iata ? ` (${suggestion.iata})` : '')
+  query.value = `${suggestion.city} (${suggestion.iata})`
   suggestions.value = []
+  
+  // Emit both input text & IATA code separately
   emit('update:modelValue', query.value)
+  emit('update:iata', suggestion.iata) // This is the IATA code
 }
 </script>
 
 <template>
-  <!-- Bind the container ref here -->
   <div class="airport-autocomplete" ref="autocompleteContainer">
     <input 
       type="text" 
       :placeholder="placeholder" 
       v-model="query" 
-      autocomplete="off"
+      autocomplete="on"
     />
     <ul v-if="suggestions.length">
       <li 

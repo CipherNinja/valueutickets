@@ -169,10 +169,10 @@ body {
   background-repeat: no-repeat;
   
   /* Ensure no default background (no white screen) */
-  background-image: url('/images/mountainn.png'), 
-                    url('/images/plane.jpg'), 
-                    url('/images/city.jpg'), 
-                    url('/images/dark.jpg');
+  background-image: url('@/assets/images/mountainn.png'), 
+                    url('@/assets/images/plane.jpg'), 
+                    url('@/assets/images/city.jpg'), 
+                    url('@/assets/images/dark.jpg');
 
   /* Animation */
   animation: backgroundAnimation 16s infinite;
@@ -180,28 +180,28 @@ body {
 
 @keyframes backgroundAnimation {
   0%, 100% {
-    background-image: url('/images/mountainn.png'), 
-                      url('/images/plane.jpg'), 
-                      url('/images/city.jpg'), 
-                      url('/images/dark.jpg');
+    background-image: url('@/assets/images/mountainn.png'), 
+                      url('@/assets/images/plane.jpg'), 
+                      url('@/assets/images/city.jpg'), 
+                      url('@/assets/images/dark.jpg');
   }
   25% {
-    background-image: url('/images/plane.jpg'), 
-                      url('/images/mountainn.png'), 
-                      url('/images/city.jpg'), 
-                      url('/images/dark.jpg');
+    background-image: url('@/assets/images/plane.jpg'), 
+                      url('@/assets/images/mountainn.png'), 
+                      url('@/assets/images/city.jpg'), 
+                      url('@assets/images/dark.jpg');
   }
   50% {
-    background-image: url('/images/city.jpg'), 
-                      url('/images/plane.jpg'), 
-                      url('/images/mountainn.png'), 
-                      url('/images/dark.jpg');
+    background-image: url('@/assets/images/city.jpg'), 
+                      url('@/assets/images/plane.jpg'), 
+                      url('@/assets/images/mountainn.png'), 
+                      url('@/assets/images/dark.jpg');
   }
   75% {
-    background-image: url('/images/dark.jpg'), 
-                      url('/images/plane.jpg'), 
-                      url('/images/city.jpg'), 
-                      url('/images/mountainn.png');
+    background-image: url('@/assets/images/dark.jpg'), 
+                      url('@/assets/images/plane.jpg'), 
+                      url('@/assets/images/city.jpg'), 
+                      url('@/assets/images/mountainn.png');
   }
 }
 

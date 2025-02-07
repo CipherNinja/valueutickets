@@ -1,7 +1,7 @@
 <template>
   <div
-    class="card shadow-lg border m-5"
-    style="width: 30rem; border-radius: 5%; font-family: 'Inter', sans-serif"
+    class="card shadow-lg border m-3"
+    style="min-width: 280px; border-radius: 5%; font-family: 'Inter', sans-serif"
   >
     <div class="card-body text-center">
       <p class="card-title fw-bold" style="font-size: 20px; font-weight: bold">

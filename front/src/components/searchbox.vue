@@ -87,7 +87,7 @@ function collectPostData() {
   console.log("Stored postdata:", postDataStore.postdata)
 
   // API Call
-  axios.post("https://gcp.agratasinfotech.com/api/v1/flight/search/onewaytrip/", postdata.value)
+  axios.post("https://crm.valueutickets.com/api/v1/flight/search/onewaytrip/", postdata.value)
     .then(response => {
       flightStore.setFlightData(response.data) // Store data in Pinia
       router.push({ name: "results" }) // Navigate to results page

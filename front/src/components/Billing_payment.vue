@@ -2,139 +2,66 @@
   <div class="container-wrapper">
     <div class="heading">Payment & Billing Details</div>
     <div class="container">
-      <!-- Row 1 -->
+      <!-- Address Fields -->
       <div class="form-group">
-        <div>
-          <input type="text" v-model="addressLine1" placeholder="Address Line 1" required />
-          <span class="required">*</span>
-        </div>
-        <div>
-          <input type="text" v-model="addressLine2" placeholder="Address Line 2" />
-        </div>
-        <div>
-          <select v-model="country">
-            <option disabled selected value="">Country</option>
-            <option value="United States">United States</option>
-          </select>
-        </div>
+        <input type="text" v-model="payment.address_line1" placeholder="Address Line 1" required @input="updateParent"/>
+        <input type="text" v-model="payment.address_line2" placeholder="Address Line 2" @input="updateParent"/>
+        <input type="text" v-model="payment.postal_code" placeholder="Postal/Zip Code" required @input="updateParent"/>
       </div>
 
-      <!-- Row 2 -->
+      <!-- State, City, Country -->
       <div class="form-group">
-        <div>
-          <select v-model="state">
-            <option disabled selected value="">Select State</option>
-            <option value="Alabama">Alabama</option>
-            <option value="Alaska">Alaska</option>
-            <option value="Arizona">Arizona</option>
-            <option value="Arkansas">Arkansas</option>
-            <option value="California">California</option>
-            <option value="Colorado">Colorado</option>
-            <option value="Connecticut">Connecticut</option>
-            <option value="Delaware">Delaware</option>
-            <option value="Florida">Florida</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Hawaii">Hawaii</option>
-            <option value="Idaho">Idaho</option>
-            <option value="Illinois">Illinois</option>
-            <option value="Indiana">Indiana</option>
-            <option value="Iowa">Iowa</option>
-            <option value="Kansas">Kansas</option>
-            <option value="Kentucky">Kentucky</option>
-            <option value="Louisiana">Louisiana</option>
-            <option value="Maine">Maine</option>
-            <option value="Maryland">Maryland</option>
-            <option value="Massachusetts">Massachusetts</option>
-            <option value="Michigan">Michigan</option>
-            <option value="Minnesota">Minnesota</option>
-            <option value="Mississippi">Mississippi</option>
-            <option value="Missouri">Missouri</option>
-            <option value="Montana">Montana</option>
-            <option value="Nebraska">Nebraska</option>
-            <option value="Nevada">Nevada</option>
-            <option value="New Hampshire">New Hampshire</option>
-            <option value="New Jersey">New Jersey</option>
-            <option value="New Mexico">New Mexico</option>
-            <option value="New York">New York</option>
-            <option value="North Carolina">North Carolina</option>
-            <option value="North Dakota">North Dakota</option>
-            <option value="Ohio">Ohio</option>
-            <option value="Oklahoma">Oklahoma</option>
-            <option value="Oregon">Oregon</option>
-            <option value="Pennsylvania">Pennsylvania</option>
-            <option value="Rhode Island">Rhode Island</option>
-            <option value="South Carolina">South Carolina</option>
-            <option value="South Dakota">South Dakota</option>
-            <option value="Tennessee">Tennessee</option>
-            <option value="Texas">Texas</option>
-            <option value="Utah">Utah</option>
-            <option value="Vermont">Vermont</option>
-            <option value="Virginia">Virginia</option>
-            <option value="Washington">Washington</option>
-            <option value="West Virginia">West Virginia</option>
-            <option value="Wisconsin">Wisconsin</option>
-            <option value="Wyoming">Wyoming</option>
-          </select>
-        </div>
-        <div>
-          <input type="text" v-model="city" placeholder="City" />
-        </div>
-        <div>
-          <input type="text" v-model="postalCode" placeholder="Postal/Zip Code" />
-        </div>
+        <input type="text" v-model="payment.city" placeholder="City" required @input="updateParent"/>
+        <select v-model="payment.state" required @change="updateParent">
+          <option disabled value="">Select State</option>
+          <option v-for="state in states" :key="state" :value="state">{{ state }}</option>
+        </select>
+        <select v-model="payment.country" required @change="updateParent">
+          <option disabled value="">Country</option>
+          <option value="USA" selected>United States of America</option>
+        </select>
       </div>
 
-      <!-- Row 3 -->
+      <!-- Card Details -->
       <div class="form-group">
-        <div>
-          <input type="text" v-model="cardNumber" placeholder="Enter Card Number" required />
-          <span class="require">*</span>
-        </div>
-        <div class="month">
-          <select v-model="expiryMonth">
-            <option disabled selected value="">Month</option>
-            <option value="1">01</option>
-            <option value="2">02</option>
-            <option value="3">03</option>
-            <option value="4">04</option>
-            <option value="5">05</option>
-            <option value="6">06</option>
-            <option value="7">07</option>
-            <option value="8">08</option>
-            <option value="9">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-        </div>
-        <div class="year">
-          <select v-model="expiryYear">
-            <option disabled selected value="">Year</option>
-            <option value="2025">2025</option>
-            <option value="2026">2026</option>
-            <option value="2027">2027</option>
-            <option value="2028">2028</option>
-            <option value="2029">2029</option>
-            <option value="2030">2030</option>
-            <option value="2031">2031</option>
-            <option value="2032">2032</option>
-            <option value="2033">2033</option>
-            <option value="2034">2034</option>
-            <option value="2035">2035</option>
-            <option value="2036">2036</option>
-          </select>
-        </div>
-        <div>
-          <input type="text" v-model="cvv" placeholder="CVV/CVC" />
-        </div>
+        <input 
+          type="text" 
+          v-model="payment.card_number" 
+          placeholder="Enter Card Number" 
+          required 
+          @input="validateCardNumber"
+        />
+        <span v-if="cardType" class="card-type">{{ cardType }}</span>
+        <p v-if="cardError" class="error">{{ cardError }}</p>
+
+        <input 
+          type="text" 
+          v-model="payment.cardholder_name" 
+          placeholder="Enter Card Holder Name" 
+          required 
+          @input="updateParent"
+        />
       </div>
 
-      <!-- Row 4 -->
+      <!-- Expiry and CVV -->
       <div class="form-group">
-        <div class="small-input">
-          <input type="text" v-model="cardHolderName" placeholder="Enter Card Holder Name" required />
-          <span class="requir">*</span>
-        </div>
+        <select v-model="payment.card_expiry_month" @change="updateParent">
+          <option disabled value="">Month</option>
+          <option v-for="n in 12" :key="n" :value="n">{{ n.toString().padStart(2, '0') }}</option>
+        </select>
+
+        <select v-model="payment.card_expiry_year" @change="updateParent">
+          <option disabled value="">Year</option>
+          <option v-for="year in expiryYears" :key="year" :value="year">{{ year }}</option>
+        </select>
+
+        <input 
+          type="text" 
+          v-model="payment.cvv" 
+          placeholder="CVV/CVC" 
+          @input="validateCVV"
+        />
+        <p v-if="cvvError" class="error">{{ cvvError }}</p>
       </div>
     </div>
   </div>
@@ -142,38 +69,105 @@
 
 <script>
 export default {
+  emits: ["update-payment"], // Define the event for Vue 3
   data() {
     return {
-      addressLine1: '',
-      addressLine2: '',
-      country: '',
-      state: '',
-      city: '',
-      postalCode: '',
-      cardNumber: '',
-      expiryMonth: '',
-      expiryYear: '',
-      cvv: '',
-      cardHolderName: '',
-      isVertical: window.innerWidth < 725
+      payment: {
+        address_line1: "",
+        address_line2: "",
+        country: "USA",
+        state: "",
+        city: "",
+        postal_code: "",
+        card_number: "",
+        card_expiry_month: "",
+        card_expiry_year: "",
+        cvv: "",
+        cardholder_name: ""
+      },
+      cardType: "",
+      cardError: "",
+      cvvError: "",
+      states: [
+        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
+        "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+        "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan",
+        "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
+        "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+        "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
+        "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+      ],
+      expiryYears: Array.from({ length: 12 }, (_, i) => new Date().getFullYear() + i),
+      cardPatterns: {
+        visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
+        mastercard: /^5[1-5][0-9]{14}$/,
+        amex: /^3[47][0-9]{13}$/,
+        discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
+        maestro: /^(?:5[06789]|6[0-9])[0-9]{10,17}$/,
+        general: /^[0-9]{13,19}$/ // General fallback validation
+      }
     };
   },
-  mounted() {
-    window.addEventListener("resize", this.updateLayout);
-    this.updateLayout(); // Initial check
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.updateLayout);
-  },
   methods: {
-    updateLayout() {
-      this.isVertical = window.innerWidth < 725;
+    updateParent() {
+      this.$emit("update-payment", this.payment); // Send data to parent
+    },
+    validateCardNumber() {
+      const num = this.payment.card_number.replace(/\D/g, ""); // Remove non-numeric characters
+      this.payment.card_number = num;
+      this.cardError = "";
+
+      if (!num) {
+        this.cardType = "";
+        return;
+      }
+
+      if (this.cardPatterns.visa.test(num)) {
+        this.cardType = "Visa";
+      } else if (this.cardPatterns.mastercard.test(num)) {
+        this.cardType = "MasterCard";
+      } else if (this.cardPatterns.amex.test(num)) {
+        this.cardType = "American Express";
+      } else if (this.cardPatterns.discover.test(num)) {
+        this.cardType = "Discover";
+      } else if (this.cardPatterns.maestro.test(num)) {
+        this.cardType = "Maestro";
+      } else if (this.cardPatterns.general.test(num)) {
+        this.cardType = "Unknown Card Type";
+      } else {
+        this.cardError = "Invalid Card Number";
+        this.cardType = "";
+      }
+
+      this.updateParent();
+    },
+    validateCVV() {
+      const cvvLength = this.cardType === "American Express" ? 4 : 3;
+      const cvvPattern = new RegExp(`^[0-9]{${cvvLength}}$`);
+      this.cvvError = "";
+
+      if (!cvvPattern.test(this.payment.cvv)) {
+        this.cvvError = `CVV must be ${cvvLength} digits`;
+      }
+
+      this.updateParent();
     }
   }
 };
 </script>
 
+
 <style scoped>
+.card-type {
+  color: green;
+  font-weight: bold;
+}
+.error {
+  color: red;
+  font-size: 12px;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #e8f5e9;
@@ -210,7 +204,8 @@ body {
 .form-group {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 7px;
+  gap: 10px;
 }
 
 .form-group div {

@@ -31,15 +31,16 @@
           <div class="option-content">
             <div class="option-header">
               <!-- Left side: Radio button and title in one row -->
-              <div class="option-left">
+              <!-- Yes Option -->
+              <label class="option-left">
                 <input 
                   type="radio" 
-                  name="support" 
-                  value="premium" 
-                  v-model="selectedSupport" 
+                  name="sms" 
+                  :checked="smsSupport" 
+                  @change="updateSmsSelection(true)" 
                 />
                 <p class="option-title">Yes, I want SMS Support</p>
-              </div>
+              </label>
 
               <!-- Right side: Price and "Per Person" text -->
               <div class="option-right">
@@ -69,16 +70,16 @@
           <div class="option-content">
             <div class="option-header">
               <!-- Left side: Radio button and title in one row -->
-              <div class="option-left">
+              <!-- No Option -->
+              <label class="option-left">
                 <input 
                   type="radio" 
-                  name="support" 
-                  value="none" 
-                  v-model="selectedSupport" 
+                  name="sms" 
+                  :checked="!smsSupport" 
+                  @change="updateSmsSelection(false)" 
                 />
                 <p class="option-title">No thanks</p>
-              </div>
-
+              </label>
               <!-- Right side: Price and "Per Person" text -->
               <div class="option-right">
                 <p class="option-price">$0.00</p>
@@ -98,11 +99,18 @@
 export default {
   data() {
     return {
-      selectedSupport: 'none', // Default selection
+      smsSupport: false, // Default: No SMS Support
     };
+  },
+  methods: {
+    updateSmsSelection(value) {
+      this.smsSupport = value;
+      this.$emit("update-sms-support", value); // Emit value to parent
+    }
   }
 };
 </script>
+
 
 <style scoped>
 /* Page container */

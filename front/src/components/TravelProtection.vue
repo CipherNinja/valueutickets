@@ -15,13 +15,9 @@
       <div class="selection-box">
         <div class="selection-container">
           <label class="selection">
-            <input type="radio" name="protection" />
+            <input type="radio" name="protection" :checked="selectedProtection" @change="updateSelection(true)" />
             <div class="text">
               <strong>Yes, I want Cancellation Protection Plan for my flights.</strong>
-              <p>
-                The quoted price for the travel protection plan includes the plan premium and a fee for non-insurance assistance services.
-                You may obtain information on the plan fees by emailing <a href="mailto:support@flightschannel.com">support@flightschannel.com</a>.
-              </p>
             </div>
             <div class="price-text">
               <p class="price">$305</p>
@@ -32,12 +28,9 @@
 
         <div class="selection-container">
           <label class="selection selected">
-            <input type="radio" name="protection" checked />
+            <input type="radio" name="protection" :checked="!selectedProtection" @change="updateSelection(false)" />
             <div class="text">
               <strong>No, I'm willing to risk my flight.</strong>
-              <p>
-                I understand by declining this coverage that I may be responsible for cancellation fees and delay expenses personally or through alternate coverage.
-              </p>
             </div>
             <div class="price-text">
               <p class="price">$000.00</p>
@@ -54,7 +47,6 @@
 
 
 <script>
-// Importing images
 import CancelImage from '@/assets/images/cancel.png';
 import ClockImage from '@/assets/images/clock.png';
 import BandageImage from '@/assets/images/bandage.png';
@@ -68,11 +60,19 @@ export default {
         { title: "Travel Delay", description: "Delayed while en route to or from your trip? This can help cover your costs.", image: ClockImage },
         { title: "Medical Expenses", description: "Injure yourself on your trip? This can help cover medical expenses.", image: BandageImage },
         { title: "Medical Evacuation", description: "This can help in the most urgent medical situations.", image: HealthcareImage },
-      ]
+      ],
+      selectedProtection: false, // Default: No Protection
     };
+  },
+  methods: {
+    updateSelection(value) {
+      this.selectedProtection = value;
+      this.$emit("update-protection", value); // Emit the selected option to the parent
+    }
   }
 };
 </script>
+
 
 <style scoped>
 .travel-protection {

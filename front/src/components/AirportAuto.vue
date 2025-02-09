@@ -142,7 +142,7 @@ const selectSuggestion = (suggestion) => {
   border-radius: 10px;
   max-height: 250px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 5000;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -151,6 +151,8 @@ const selectSuggestion = (suggestion) => {
   padding: 5px;
   border-block: 1px solid #000000;
   cursor: pointer;
+  z-index: 5000;
+
 }
 .airport-autocomplete li:hover {
   background-color: #f0f0f0;

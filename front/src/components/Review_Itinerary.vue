@@ -13,6 +13,7 @@
           <div class="super-saver">Time <span class="saver">Saver</span></div>
           <div class="from">
             <strong class="CityName">{{ flightDetails.flight_name }}</strong>
+            <p class="SRC">{{ flightDetails.src }}</p>
             <p class="Date">{{ formatDateTime(flightDetails.departure) }}</p>
           </div>
           <div class="flight-path">
@@ -22,6 +23,7 @@
           </div>
           <div class="to">
             <strong class="CityName">{{ flightDetails.destination_iata }}</strong>
+            <p class="DEST">{{ flightDetails.dest }}</p>
             <p class="Date">{{ formatDateTime(flightDetails.arrival) }}</p>
           </div>
         </div>
@@ -38,16 +40,31 @@
       </div>
     </div>
     <div class="contact-form">
-      <h4 class="heading-contact-info">How do we contact you?</h4>
-      <div class="info-box">
-        <div class="inputs">
-          <input type="text" v-model="phoneNumber" placeholder="Phone Number *" required :class="{'invalid': phoneNumberError}" />
-          <span v-if="phoneNumberError" class="error-message">Invalid phone number. Format: (xxx) xxx-xxxx</span>
-          <input type="email" v-model="email" placeholder="Email *" required :class="{'invalid': emailError}" />
-          <span v-if="emailError" class="error-message">Please enter a valid email address.</span>
-        </div>
+    <h4 class="heading-contact-info">How do we contact you?</h4>
+    <div class="info-box">
+      <div class="inputs">
+        <input
+          type="text"
+          v-model="phone_number"
+          @input="updateContactInfo"
+          placeholder="Phone Number *"
+          required
+          :class="{ 'invalid': phone_numberError }"
+        />
+        <span v-if="phone_numberError" class="error-message">Invalid phone number. Format: (xxx) xxx-xxxx</span>
+        
+        <input
+          type="email"
+          v-model="email"
+          @input="updateContactInfo"
+          placeholder="Email *"
+          required
+          :class="{ 'invalid': emailError }"
+        />
+        <span v-if="emailError" class="error-message">Please enter a valid email address.</span>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -59,22 +76,26 @@ export default {
   data() {
     return {
       detailsVisible: true, // Initially, the details are visible
-      phoneNumber: "",
+      phone_number: "",
       email: "",
-      phoneNumberError: false,
+      phone_numberError: false,
       emailError: false,
       flightDetails: {},
     };
   },
   methods: {
+    updateContactInfo() {
+      this.validateForm();
+      this.$emit("update-contact", { email: this.email, phone_number: this.phone_number });
+    },
     toggleDetails() {
       this.detailsVisible = !this.detailsVisible; // Toggle the visibility of the details
     },
     validateForm() {
-      this.phoneNumberError = !this.validatePhoneNumber(this.phoneNumber);
+      this.phone_numberError = !this.validatephone_number(this.phone_number);
       this.emailError = !this.validateEmail(this.email);
     },
-    validatePhoneNumber(phone) {
+    validatephone_number(phone) {
       // USA phone number regex: (xxx) xxx-xxxx
       const phoneRegex = /^(?:\(\d{3}\)\s?)?\d{3}[-\s]?\d{4}$/;
       return phoneRegex.test(phone);
@@ -103,7 +124,7 @@ export default {
     this.flightDetails = route.query;
   },
   watch: {
-    phoneNumber() {
+    phone_number() {
       this.validateForm();
     },
     email() {

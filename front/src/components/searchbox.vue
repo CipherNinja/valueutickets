@@ -218,20 +218,20 @@ function collectPostData() {
 
       <!-- Multi-City -->
       <div v-if="tripType === 'multiCity'">
-        <div v-for="(segment, index) in multiCity" :key="index" class="multi-city-segment">
+        <!--<div v-for="(segment, index) in multiCity" :key="index" class="multi-city-segment">
           <AirportAuto v-model="segment.from" @input="autoFillFrom(index)" />
           <AirportAuto v-model="segment.to" />
           <input type="date" v-model="segment.date" :min="today" />
           <button v-if="index >= 1" @click="removeSegment(index)">➖</button>
           <button v-if="index === multiCity.length - 1 && index < 3" @click="addSegment">➕</button>
-        </div>
+        </div>-->(currently disabled for maintainance)
       </div>
 
       <router-link to="/results"><button class="search-button" @click="collectPostData">Search Flight</button></router-link>
     </div>
 
     <div v-else>
-      <p>Tour section (same content for now)</p>
+      <p>Tour section (content will be added soon)</p>
     </div>
   </div>
 </template>

@@ -1,11 +1,12 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useFlightStore } from "@/stores/flightStore";
-//import flights from '@/assets/dummy.json';
 import { usePostDataStore } from "@/stores/postDataStore";
+import { useRouter } from "vue-router";
 
 const flightStore = useFlightStore();
 const postDataStore = usePostDataStore();
+const router = useRouter();
 
 // Function to format duration (minutes to hours & minutes)
 const formatDuration = (minutes) => {
@@ -13,6 +14,7 @@ const formatDuration = (minutes) => {
   const mins = minutes % 60;
   return `${hours}h ${mins}m`;
 };
+
 // Function to format date-time
 const formatDateTime = (dateTimeString) => {
   const date = new Date(dateTimeString);
@@ -22,17 +24,16 @@ const formatDateTime = (dateTimeString) => {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true
+    hour12: true,
   }).format(date);
 };
-
 
 // Retrieve flight data from store
 const flights = computed(() => flightStore.flightData || []);
 
 // Placeholder for airline logos
 const airlineLogos = {
-  "jetBlue": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
+  jetBlue: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
   "American Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png",
   "Delta Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/220px-Delta_logo.svg.png",
   "United Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png",
@@ -51,15 +52,30 @@ onMounted(() => {
     console.warn("No flight data found! Make sure it's stored before navigating.");
   }
 });
+
+// New method to handle booking
+const bookFlight = (flight) => {
+  router.push({
+    path: "/pay",
+    query: {
+      flight_name: flight.flight_name,
+      departure: flight.departure,
+      arrival: flight.arrival,
+      duration: flight.duration,
+      stop_count: flight.stop_count,
+      price: flight.price,
+    },
+  });
+};
 </script>
 
 <template>
   <div class="results-container">
-    <div v-for="flight in flights" :key="flight.flight_name" class="flight-card">
+    <div v-for="(flight, index) in flights" :key="index" class="flight-card" :id="(index + 1)">
       <div class="color-bar"></div>
       <!-- Airline Details -->
       <div class="airline-info" style="text-align: center;">
-        <img :src="airlineLogos[flight.flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo"/>
+        <img :src="airlineLogos[flight.flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo" />
         <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.flight_name }}</span>
       </div>
 
@@ -67,22 +83,21 @@ onMounted(() => {
       <div class="flight-details">
         <div class="departure">
           <i class="fas fa-plane-departure"></i>
-          <p><strong>Departure:</strong>&nbsp;From: {{ postDataStore.postdata?.source_iata || 'N/A' }}</p>
-          <p>{{ formatDateTime(flight.departure) || 'N/A' }}</p>
-          
+          <p><strong>Departure:</strong>&nbsp;From: {{ postDataStore.postdata?.source_iata || "N/A" }}</p>
+          <p>{{ formatDateTime(flight.departure) || "N/A" }}</p>
         </div>
 
         <div class="duration">
           <i class="fas fa-stopwatch"></i>&nbsp;
           <strong>Duration:</strong>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ formatDuration(flight.duration) || 'N/A' }}</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ formatDuration(flight.duration) || "N/A" }}</p>
           <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong> {{ flight.stop_count || 0 }}</p>
         </div>
 
         <div class="arrival">
           <i class="fas fa-plane-arrival"></i>&nbsp;
-          <p><strong>Arrival:</strong>&nbsp;To: {{ postDataStore.postdata?.destination_iata || 'N/A' }}</p>
-          <p>{{ formatDateTime(flight.arrival) || 'N/A' }}</p>
+          <p><strong>Arrival:</strong>&nbsp;To: {{ postDataStore.postdata?.destination_iata || "N/A" }}</p>
+          <p>{{ formatDateTime(flight.arrival) || "N/A" }}</p>
         </div>
       </div>
 
@@ -91,10 +106,10 @@ onMounted(() => {
         <button class="office-number">+1 (833)931-6548</button>
         <div>
           <span><strong>Price per Person:</strong></span>
-          <br><span>Incl. Taxes and Fees</span>
+          <br /><span>Incl. Taxes and Fees</span>
         </div>
-        <p><strong>${{ flight.price || 'N/A' }}</strong> </p>
-        <button class="book-now">Book Now</button>
+        <p><strong>${{ flight.price || "N/A" }}</strong></p>
+        <button @click="bookFlight(flight)" class="book-now">Book Now</button>
       </div>
     </div>
   </div>
@@ -107,7 +122,7 @@ onMounted(() => {
 }
 
 .flight-card {
-  background-color: #FFF;
+  background-color: #fff;
   border: 1px solid #ddd;
   padding: 0%;
   margin: 10px 0;
@@ -187,6 +202,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
   }
+
   .flight-card {
     display: flex;
     flex-direction: column;
@@ -205,7 +221,8 @@ onMounted(() => {
     align-items: center;
   }
 
-  .office-number, .book-now {
+  .office-number,
+  .book-now {
     width: 100%;
     max-width: 250px;
   }

@@ -6,14 +6,14 @@
         {{ detailsVisible ? 'Hide Details' : 'Show All' }} <span class="dot"></span>
       </button>
     </div>
-    <!----------------- Conditionally render the itinerary card based on detailsVisible ------------>
+    <!-- Conditionally render the itinerary card based on detailsVisible -->
     <div v-if="detailsVisible" class="itinerary-card">
       <div class="flight-info">
         <div class="route">
           <div class="super-saver">Time <span class="saver">Saver</span></div>
           <div class="from">
-            <strong class="CityName">New York (JFK)</strong>
-            <p class="Date">Mon, Feb 10</p>
+            <strong class="CityName">{{ flightDetails.flight_name }}</strong>
+            <p class="Date">{{ formatDateTime(flightDetails.departure) }}</p>
           </div>
           <div class="flight-path">
             <div class="icon">✈️</div>
@@ -21,8 +21,8 @@
             <div class="destination-point"></div>
           </div>
           <div class="to">
-            <strong class="CityName">Denver (DEN)</strong>
-            <p class="Date">Mon, Feb 10</p>
+            <strong class="CityName">{{ flightDetails.destination_iata }}</strong>
+            <p class="Date">{{ formatDateTime(flightDetails.arrival) }}</p>
           </div>
         </div>
         <hr class="separator">
@@ -32,7 +32,7 @@
             <p class="Price-per-person">Price Per Person</p>
             <span class="additional-info">(incl. Taxes & Fees)</span>
           </div>
-          <div class="price">$98.48</div>
+          <div class="price">${{ flightDetails.price }}</div>
           <button class="book-now">Book Now</button>
         </div>
       </div>
@@ -50,8 +50,10 @@
     </div>
   </div>
 </template>
-/*---------------------##################-----------------------*/
+
 <script>
+import { useRoute } from "vue-router";
+
 export default {
   name: "FlightItinerary",
   data() {
@@ -61,6 +63,7 @@ export default {
       email: "",
       phoneNumberError: false,
       emailError: false,
+      flightDetails: {},
     };
   },
   methods: {
@@ -81,6 +84,23 @@ export default {
       const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       return emailRegex.test(email);
     },
+    formatDateTime(dateTimeString) {
+      if (!dateTimeString) return "N/A"; // Return a default value if the dateTimeString is undefined
+      const date = new Date(dateTimeString);
+      if (isNaN(date)) return "N/A"; // Return a default value if the date is invalid
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }).format(date);
+    },
+  },
+  mounted() {
+    const route = useRoute();
+    this.flightDetails = route.query;
   },
   watch: {
     phoneNumber() {

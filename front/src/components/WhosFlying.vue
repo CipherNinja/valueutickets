@@ -1,4 +1,3 @@
-@ -1,172 +1,128 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useFlightStore } from "@/stores/flightStore";

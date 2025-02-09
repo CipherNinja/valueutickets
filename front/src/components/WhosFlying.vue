@@ -1,50 +1,12 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { useFlightStore } from "@/stores/flightStore";
-import { usePostDataStore } from "@/stores/postDataStore";
+import { computed } from "vue";
+import { usePassengerStore } from "@/stores/passengerStore";
 
-const postDataStore = usePostDataStore();
-const flightStore = useFlightStore();
+const passengerStore = usePassengerStore();
+const passengers = computed(() => passengerStore.passengers);
 
-const passengers = ref([]);
-
-onMounted(() => {
-  passengers.value = generatePassengers();
-});
-
-const generatePassengers = () => {
-  const types = [];
-  for (let i = 0; i < postDataStore.postdata?.adults; i++) types.push({ type: "Adult" });
-  for (let i = 0; i < postDataStore.postdata?.children; i++) types.push({ type: "Child" });
-  for (let i = 0; i < postDataStore.postdata?.infants; i++) types.push({ type: "Infant" });
-
-  return types.map((passenger) => ({
-    type: passenger.type,
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    dob: "",
-    gender: "",
-  }));
-};
-
-// Helper function to calculate date limits
-const getDateLimit = (type) => {
-  const today = new Date();
-  let minDate, maxDate;
-
-  if (type === "Adult") {
-    maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split("T")[0];
-    minDate = "1900-01-01"; // Arbitrary old date
-  } else if (type === "Child") {
-    maxDate = new Date(today.getFullYear() - 2, today.getMonth(), today.getDate()).toISOString().split("T")[0];
-    minDate = new Date(today.getFullYear() - 17, today.getMonth(), today.getDate()).toISOString().split("T")[0];
-  } else if (type === "Infant") {
-    maxDate = new Date().toISOString().split("T")[0];
-    minDate = new Date(today.getFullYear() - 2, today.getMonth(), today.getDate()).toISOString().split("T")[0];
-  }
-
-  return { minDate, maxDate };
+const updatePassengerData = (index, field, value) => {
+  passengerStore.updatePassenger(index, field, value);
 };
 </script>
 
@@ -60,28 +22,22 @@ const getDateLimit = (type) => {
       <h4 class="passenger-title">Passenger {{ index + 1 }}: {{ passenger.type }}</h4>
       <div class="form-group">
         <div class="input-box">
-          <input type="text" v-model="passenger.firstName" placeholder="First Name *" class="form-input" />
+          <input type="text" :value="passenger.first_name" @input="updatePassengerData(index, 'first_name', $event.target.value)" placeholder="First Name *" class="form-input" />
         </div>
         <div class="input-box">
-          <input type="text" v-model="passenger.middleName" placeholder="Middle Name" class="form-input" />
+          <input type="text" :value="passenger.middle_name" @input="updatePassengerData(index, 'middle_name', $event.target.value)" placeholder="Middle Name" class="form-input" />
         </div>
         <div class="input-box">
-          <input type="text" v-model="passenger.lastName" placeholder="Last Name *" class="form-input" />
+          <input type="text" :value="passenger.last_name" @input="updatePassengerData(index, 'last_name', $event.target.value)" placeholder="Last Name *" class="form-input" />
         </div>
       </div>
 
       <div class="form-group">
         <div class="input-box">
-          <input
-            type="date"
-            v-model="passenger.dob"
-            class="form-input"
-            :min="getDateLimit(passenger.type).minDate"
-            :max="getDateLimit(passenger.type).maxDate"
-          />
+          <input type="date" :value="passenger.dob" @input="updatePassengerData(index, 'dob', $event.target.value)" class="form-input" />
         </div>
         <div class="input-box">
-          <select v-model="passenger.gender" class="form-select">
+          <select :value="passenger.gender" @change="updatePassengerData(index, 'gender', $event.target.value)" class="form-select">
             <option disabled value="">Gender</option>
             <option>Male</option>
             <option>Female</option>
@@ -90,37 +46,9 @@ const getDateLimit = (type) => {
         </div>
       </div>
     </div>
-    <pre>{{ passenger }}</pre>
   </div>
 </template>
 
-
-
-<script>
-export default {
-  data() {
-    return {
-      passengers: [],
-      maxDate: new Date().toISOString().split("T")[0] // Sets max date to today
-    };
-  },
-  methods: {
-    addPassenger() {
-      this.passengers.push({
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        dob: "",
-        gender: "",
-        type: "Adult"
-      });
-    },
-    removePassenger(index) {
-      this.passengers.splice(index, 1);
-    }
-  }
-};
-</script>
 
 <style scoped>
 .passenger-section {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { computed } from "vue";
 import axios from 'axios';
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
@@ -12,6 +13,11 @@ import TravelProtection from '../components/TravelProtection.vue';
 import lost_cancel from '../components/lost_baggage_and_extended_cancellation.vue';
 import Bill_Pay from '../components/Billing_payment.vue';
 import T_C from '../components/Terms_condition.vue';
+import { usePassengerStore } from "@/stores/passengerStore";
+
+const passengerStore = usePassengerStore();
+const passengersmaintemp = computed(() => passengerStore.passengers);
+const passengersmain = (passengersmaintemp.value.map(({ type, ...rest }) => rest));
 
 const itineraryDetails = ref({});
 const passengerDetails = ref([]);
@@ -58,6 +64,8 @@ const updatePaymentDetails = (data) => {
 const route = useRoute();
 const flightDetails = route.query;
 
+const totalamount = flightDetails.price || 0.0;
+
 const collectData = () => {
   return {
     phone_number: itineraryDetails.value.phone_number || 'NA',
@@ -68,9 +76,7 @@ const collectData = () => {
     arrival_iata: flightDetails.dest || 'NA',
     departure_date: flightDetails.departure || 'NA',
     arrival_date: flightDetails.arrival || 'NA',
-    passengers: passengerDetails.value.length > 0 ? passengerDetails.value : [{
-      first_name: 'NA', middle_name: 'NA', last_name: 'NA', dob: 'NA', gender: 'NA'
-    }],
+    passengers: passengersmain,
     payment: {
       address_line1: billingDetails.value.address_line1 || 'NA',
       address_line2: billingDetails.value.address_line2 || 'NA',
@@ -130,6 +136,7 @@ const sendDataToBackend = async () => {
     </div>
     <Review_Itinerary v-model="itineraryDetails" @update-contact="handleContactUpdate" />
     <WhosFlying v-model="passengerDetails" @update-personal="updatePersonalDetails" />
+    <pre>{{ passengersmain }}</pre>
     <TravelProtection v-model="travelProtection" @update-protection="updateProtection" />
     <lost_cancel 
       v-model="lostBaggageProtection" v-model:cancellationProtection="cancellationProtection" 
@@ -139,6 +146,7 @@ const sendDataToBackend = async () => {
     <BookingNumSMS @update-sms-support="updateSmsSupport" />
     <Bill_Pay v-model="billingDetails" @update-payment="updatePaymentDetails" />
     <T_C v-model="termsAccepted"/>
+    <p class="total-price">Total Price: {{ totalamount }}</p>
     <button class="book-button" @click="sendDataToBackend">Submit</button>
     <Footer />
   </main>

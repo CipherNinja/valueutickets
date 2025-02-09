@@ -139,7 +139,7 @@ const sendDataToBackend = async () => {
     <BookingNumSMS @update-sms-support="updateSmsSupport" />
     <Bill_Pay v-model="billingDetails" @update-payment="updatePaymentDetails" />
     <T_C v-model="termsAccepted"/>
-    <button @click="sendDataToBackend">Submit</button>
+    <button class="book-button" @click="sendDataToBackend">Submit</button>
     <Footer />
   </main>
 </template>
@@ -147,6 +147,9 @@ const sendDataToBackend = async () => {
 <style scoped>
 main {
   background: #EAF3F2;
+  justify-content: center;
+  justify-items: center
+;
 }
 .header-bar {
   display: flex;
@@ -202,5 +205,18 @@ main {
   height: 2px;
   background-color: white;
   margin-top: 0px;
+}
+.book-button{
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  background-color: #4B4DC8;
+  justify-self: center;
+  align-self: center;
+  text-align: center;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
 }
 </style>

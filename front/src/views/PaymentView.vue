@@ -218,6 +218,8 @@ const validateForm = () => {
 };
 
 const sendDataToBackend = async () => {
+  const data = collectData();
+  console.log("Collected Data:", JSON.stringify(data, null, 2));
   if (validateForm()) {
     const data = collectData();
     console.log("Collected Data:", JSON.stringify(data, null, 2));

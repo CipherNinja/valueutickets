@@ -96,8 +96,8 @@ export default {
       this.emailError = !this.validateEmail(this.email);
     },
     validatephone_number(phone) {
-      // USA phone number regex: (xxx) xxx-xxxx
-      const phoneRegex = /^(?:\(\d{3}\)\s?)?\d{3}[-\s]?\d{4}$/;
+      // USA phone number regex: xxxxxxxxxx
+      const phoneRegex = /^(?:\d{3}\s?)?\d{3}[-\s]?\d{4}$/;
       return phoneRegex.test(phone);
     },
     validateEmail(email) {

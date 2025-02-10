@@ -105,7 +105,6 @@ export default {
         amex: /^3[47][0-9]{13}$/,
         discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
         maestro: /^(?:5[06789]|6[0-9])[0-9]{10,17}$/,
-        general: /^[0-9]{13,19}$/ // General fallback validation
       }
     };
   },
@@ -133,8 +132,6 @@ export default {
         this.cardType = "Discover";
       } else if (this.cardPatterns.maestro.test(num)) {
         this.cardType = "Maestro";
-      } else if (this.cardPatterns.general.test(num)) {
-        this.cardType = "Unknown Card Type";
       } else {
         this.cardError = "Invalid Card Number";
         this.cardType = "";

@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { usePostDataStore } from "@/stores/postDataStore";
 
 export const usePassengerStore = defineStore("passenger", () => {
   const postDataStore = usePostDataStore();
-  //const postDataStore = {postdata: {adults: 1, children: 1, infants: 1}};
   const passengers = ref([]);
 
   const generatePassengers = () => {
@@ -24,10 +23,20 @@ export const usePassengerStore = defineStore("passenger", () => {
     }));
   };
 
+  // Initialize passengers
   passengers.value = generatePassengers();
 
+  // Watch for changes in postDataStore and regenerate passengers if needed
+  watch(
+    () => postDataStore.postdata,
+    () => {
+      passengers.value = generatePassengers();
+    },
+    { deep: true, immediate: true }
+  );
+
   const updatePassenger = (index, field, value) => {
-    passengers.value[index][field] = value || "NA";
+    passengers.value[index][field] = value;
   };
 
   return { passengers, updatePassenger };

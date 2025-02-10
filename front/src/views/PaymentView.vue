@@ -17,7 +17,7 @@ import { usePassengerStore } from "@/stores/passengerStore";
 
 const passengerStore = usePassengerStore();
 const passengersmaintemp = computed(() => passengerStore.passengers);
-const passengersmain = (passengersmaintemp.value.map(({ type, ...rest }) => rest));
+const passengersmain = computed(() => passengersmaintemp.value.map(({ type, ...rest }) => rest));
 
 const itineraryDetails = ref({});
 const passengerDetails = ref([]);
@@ -64,7 +64,7 @@ const updatePaymentDetails = (data) => {
 const route = useRoute();
 const flightDetails = route.query;
 
-const totalamount = flightDetails.price || 0.0;
+const totalamount = computed(() => flightDetails.price || 0.0);
 
 const collectData = () => {
   return {
@@ -76,7 +76,7 @@ const collectData = () => {
     arrival_iata: flightDetails.dest || 'NA',
     departure_date: flightDetails.departure || 'NA',
     arrival_date: flightDetails.arrival || 'NA',
-    passengers: passengersmain,
+    passengers: passengersmain.value,
     payment: {
       address_line1: billingDetails.value.address_line1 || 'NA',
       address_line2: billingDetails.value.address_line2 || 'NA',
@@ -105,33 +105,33 @@ const responseMessage = ref("");
 const validateForm = () => {
   errors.value = {};
 
-  if (!/^\d{10}$/.test(collectData.phone_number)) {
+  const data = collectData();
+
+  if (!/^\d{10}$/.test(data.phone_number)) {
     errors.value.phone_number = "Please enter a valid 10-digit phone number.";
   }
 
-  if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(collectData.email)) {
+  if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.email)) {
     errors.value.email = "Invalid email format.";
   }
 
-  // Additional validation for required fields, dates, passengers, etc.
   const requiredFields = ["date", "flight_name", "departure_iata", "arrival_iata", "departure_date", "arrival_date"];
   requiredFields.forEach(field => {
-    if (!collectData[field]) {
+    if (!data[field]) {
       errors.value[field] = "This field is required.";
     }
   });
 
-  if (collectData.departure_date && collectData.arrival_date) {
-    let departure = new Date(collectData.departure_date);
-    let arrival = new Date(collectData.arrival_date);
+  if (data.departure_date && data.arrival_date) {
+    let departure = new Date(data.departure_date);
+    let arrival = new Date(data.arrival_date);
 
     if (arrival <= departure) {
       errors.value.arrival_date = "Arrival date must be after departure date.";
     }
   }
 
-  // Validate passengers details
-  if (collectData.passengers.length > 8) {
+  if (data.passengers.length > 8) {
     errors.value.passengers = "A maximum of 8 passengers is allowed.";
   }
 
@@ -139,8 +139,7 @@ const validateForm = () => {
   let infants = 0;
   const today = new Date();
 
-  collectData.passengers.forEach((passenger, index) => {
-
+  data.passengers.forEach((passenger, index) => {
     if (!passenger.first_name || !passenger.last_name || !passenger.dob || !passenger.gender) {
       errors.value[`passenger_${index}`] = `Passenger ${index + 1} details are incomplete.`;
     }
@@ -167,8 +166,6 @@ const validateForm = () => {
     errors.value.passengers = "If there are more than 3 infants, at least 2 adults must travel.";
   }
 
-
-  // Validate required fields
   const requiredField = [
     { key: "cardholder_name", message: "Cardholder name is required." },
     { key: "address_line1", message: "Address Line 1 is required." },
@@ -178,43 +175,35 @@ const validateForm = () => {
   ];
 
   requiredField.forEach(field => {
-    if (!collectData.payment[field.key]) {
+    if (!data.payment[field.key]) {
       errors.value[field.key] = field.message;
     }
   });
 
-
-  // Validate postal code
-  if (!/^\d{4,10}$/.test(collectData.payment.postal_code)) {
+  if (!/^\d{4,10}$/.test(data.payment.postal_code)) {
     errors.value.postal_code = "Invalid postal code";
   }
 
-  // Validate card number
-  if (!/^\d{16}$/.test(collectData.payment.card_number)) {
+  if (!/^\d{16}$/.test(data.payment.card_number)) {
     errors.value.card_number = "Card number must be exactly 16 digits.";
   }
 
-  // Validate card expiry month
-  if (!/^(0?[1-9]|1[0-2])$/.test(collectData.payment.card_expiry_month)) {
+  if (!/^(0?[1-9]|1[0-2])$/.test(data.payment.card_expiry_month)) {
     errors.value.card_expiry_month = "Enter a valid month.";
   }
 
-  // Validate expiry year
   const currentYear = new Date().getFullYear();
-  if (!/^\d{4}$/.test(collectData.payment.card_expiry_year) || collectData.payment.card_expiry_year < currentYear) {
+  if (!/^\d{4}$/.test(data.payment.card_expiry_year) || data.payment.card_expiry_year < currentYear) {
     errors.value.card_expiry_year = "Enter a valid expiry year.";
   }
 
-  // Validate CVV
-  if (!/^\d{3}$/.test(collectData.payment.cvv)) {
+  if (!/^\d{3}$/.test(data.payment.cvv)) {
     errors.value.cvv = "CVV must be exactly 3 digits.";
   }
 
-  // Validate payable amount
-  if (collectData.payment.payble_amount <= 0) {
+  if (data.payble_amount <= 0) {
     errors.value.payble_amount = "Payable amount cannot be 0.";
   }
-
 
   return Object.keys(errors.value).length === 0;
 };
@@ -238,7 +227,6 @@ const sendDataToBackend = async () => {
   }
 };
 </script>
-
 
 <template>
   <main>
@@ -264,6 +252,7 @@ const sendDataToBackend = async () => {
     </div>
     <Review_Itinerary v-model="itineraryDetails" @update-contact="handleContactUpdate" />
     <WhosFlying v-model="passengerDetails" @update-personal="updatePersonalDetails" />
+    <pre>{{ passengersmain }}</pre>
     <TravelProtection v-model="travelProtection" @update-protection="updateProtection" />
     <lost_cancel 
       v-model="lostBaggageProtection" v-model:cancellationProtection="cancellationProtection" 
@@ -283,8 +272,7 @@ const sendDataToBackend = async () => {
 main {
   background: #EAF3F2;
   justify-content: center;
-  justify-items: center
-;
+  justify-items: center;
 }
 .header-bar {
   display: flex;
@@ -341,7 +329,7 @@ main {
   background-color: white;
   margin-top: 0px;
 }
-.book-button{
+.book-button {
   color: white;
   font-size: 20px;
   font-weight: 600;

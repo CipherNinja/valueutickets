@@ -15,10 +15,10 @@ export const usePassengerStore = defineStore("passenger", () => {
 
     return types.map((passenger) => ({
       type: passenger.type,
-      first_name: " ",
-      middle_name: " ",
-      last_name: " ",
-      dob: " ",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      dob: "",
       gender: "Prefer not to say",
     }));
   };
@@ -29,14 +29,14 @@ export const usePassengerStore = defineStore("passenger", () => {
   // Watch for changes in postDataStore and regenerate passengers if needed
   watch(
     () => postDataStore.postdata,
-    () => {
-      passengers.value = generatePassengers();
+    (newPostData) => {
+      passengers.value = generatePassengers(newPostData);
     },
     { deep: true, immediate: true }
   );
 
   const updatePassenger = (index, field, value) => {
-    passengers.value[index][field] = value;
+    passengers.value[index] = { ...passengers.value[index], [field]: value };
   };
 
   return { passengers, updatePassenger };

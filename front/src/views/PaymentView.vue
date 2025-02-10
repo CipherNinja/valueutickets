@@ -99,14 +99,138 @@ const collectData = () => {
   };
 };
 
+const errors = ref({});
+const responseMessage = ref("");
+
+const validateForm = () => {
+  errors.value = {};
+
+  if (!/^\d{10}$/.test(itineraryDetails.value.phone_number)) {
+    errors.value.phone_number = "Please enter a valid 10-digit phone number.";
+  }
+
+  if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(itineraryDetails.value.email)) {
+    errors.value.email = "Invalid email format.";
+  }
+
+  // Additional validation for required fields, dates, passengers, etc.
+  const requiredFields = ["date", "flight_name", "departure_iata", "arrival_iata", "departure_date", "arrival_date"];
+  requiredFields.forEach(field => {
+    if (!itineraryDetails.value[field]) {
+      errors.value[field] = "This field is required.";
+    }
+  });
+
+  if (flightDetails.departure && flightDetails.arrival) {
+    let departure = new Date(flightDetails.departure);
+    let arrival = new Date(flightDetails.arrival);
+
+    if (arrival <= departure) {
+      errors.value.arrival_date = "Arrival date must be after departure date.";
+    }
+  }
+
+  // Validate passengers details
+  if (passengerDetails.value.length > 8) {
+    errors.value.passengers = "A maximum of 8 passengers is allowed.";
+  }
+
+  let adults = 0;
+  let infants = 0;
+  const today = new Date();
+
+  passengerDetails.value.forEach((passenger, index) => {
+
+    if (!passenger.first_name || !passenger.last_name || !passenger.dob || !passenger.gender) {
+      errors.value[`passenger_${index}`] = `Passenger ${index + 1} details are incomplete.`;
+    }
+
+    let dob = new Date(passenger.dob);
+    let age = today.getFullYear() - dob.getFullYear();
+    let monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+
+    if (age < 3) {
+      infants++;
+    } else {
+      adults++;
+    }
+  });
+
+  if (infants > 0 && adults === 0) {
+    errors.value.passengers = "Infants cannot travel alone.";
+  }
+
+  if (infants > 3 && adults < 2) {
+    errors.value.passengers = "If there are more than 3 infants, at least 2 adults must travel.";
+  }
+
+
+  // Validate required fields
+  const requiredField = [
+    { key: "cardholder_name", message: "Cardholder name is required." },
+    { key: "address_line1", message: "Address Line 1 is required." },
+    { key: "country", message: "Country is required." },
+    { key: "state", message: "State is required." },
+    { key: "city", message: "City is required." }
+  ];
+
+  requiredField.forEach(field => {
+    if (!billingDetails.value[field.key]) {
+      errors.value[field.key] = field.message;
+    }
+  });
+
+  // Validate postal code
+  if (!/^\d{4,10}$/.test(billingDetails.value.postal_code)) {
+    errors.value.postal_code = "Invalid postal code";
+  }
+
+  // Validate card number
+  if (!/^\d{16}$/.test(billingDetails.value.card_number)) {
+    errors.value.card_number = "Card number must be exactly 16 digits.";
+  }
+
+  // Validate card expiry month
+  if (!/^(0?[1-9]|1[0-2])$/.test(billingDetails.value.card_expiry_month)) {
+    errors.value.card_expiry_month = "Enter a valid month.";
+  }
+
+  // Validate expiry year
+  const currentYear = new Date().getFullYear();
+  if (!/^\d{4}$/.test(billingDetails.value.card_expiry_year) || billingDetails.value.card_expiry_year < currentYear) {
+    errors.value.card_expiry_year = "Enter a valid expiry year.";
+  }
+
+  // Validate CVV
+  if (!/^\d{3}$/.test(billingDetails.value.cvv)) {
+    errors.value.cvv = "CVV must be exactly 3 digits.";
+  }
+
+  // Validate payable amount
+  if (billingDetails.value.payble_amount <= 0) {
+    errors.value.payble_amount = "Payable amount cannot be 0.";
+  }
+
+  return Object.keys(errors.value).length === 0;
+};
+
 const sendDataToBackend = async () => {
-  const data = collectData();
-  console.log("Collected Data:", JSON.stringify(data, null, 2));
-  try {
-    const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', data);
-    console.log('Data sent successfully:', response.data);
-  } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
+  if (validateForm()) {
+    const data = collectData();
+    console.log("Collected Data:", JSON.stringify(data, null, 2));
+    try {
+      const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', data); 
+      console.log('Data sent successfully:', response.data);
+      responseMessage.value = response.data.message; 
+    } catch (error) {
+      console.error('Error:', error.response?.data || error.message);
+      responseMessage.value = "Failed to save data. Please try again."; 
+    }
+  } else {
+    alert("Please fill all the details.");
   }
 };
 </script>

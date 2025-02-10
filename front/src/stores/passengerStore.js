@@ -8,10 +8,11 @@ export const usePassengerStore = defineStore("passenger", () => {
   const passengers = ref([]);
 
   const generatePassengers = () => {
+    const postData = postDataStore.postdata || { adults: 1, children: 0, infants: 0 };
     const types = [];
-    for (let i = 0; i < postDataStore.postdata?.adults; i++) types.push({ type: "Adult" });
-    for (let i = 0; i < postDataStore.postdata?.children; i++) types.push({ type: "Child" });
-    for (let i = 0; i < postDataStore.postdata?.infants; i++) types.push({ type: "Infant" });
+    for (let i = 0; i < (postData.adults || 0); i++) types.push({ type: "Adult" });
+    for (let i = 0; i < (postData.children || 0); i++) types.push({ type: "Child" });
+    for (let i = 0; i < (postData.infants || 0); i++) types.push({ type: "Infant" });
 
     return types.map((passenger) => ({
       type: passenger.type,

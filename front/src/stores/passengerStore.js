@@ -15,10 +15,10 @@ export const usePassengerStore = defineStore("passenger", () => {
 
     return types.map((passenger) => ({
       type: passenger.type,
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-      dob: "",
+      first_name: " ",
+      middle_name: " ",
+      last_name: " ",
+      dob: " ",
       gender: "Prefer not to say",
     }));
   };

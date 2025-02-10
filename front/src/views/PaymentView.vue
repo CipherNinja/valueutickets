@@ -219,9 +219,6 @@ const validateForm = () => {
   return Object.keys(errors.value).length === 0;
 };
 
-const data = collectData();
-console.log("Collected Data:", JSON.stringify(data, null, 2));
-
 const sendDataToBackend = async () => {
   const data = collectData();
   console.log("Collected Data:", JSON.stringify(data, null, 2));
@@ -229,7 +226,7 @@ const sendDataToBackend = async () => {
     const data = collectData();
     console.log("Collected Data:", JSON.stringify(data, null, 2));
     try {
-      const response = await axios.post('', data); 
+      const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', data); 
       console.log('Data sent successfully:', response.data);
       responseMessage.value = response.data.message; 
     } catch (error) {

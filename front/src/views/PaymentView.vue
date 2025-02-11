@@ -252,7 +252,6 @@ const sendDataToBackend = async () => {
     </div>
     <Review_Itinerary v-model="itineraryDetails" @update-contact="handleContactUpdate" />
     <WhosFlying v-model="passengerDetails" @update-personal="updatePersonalDetails" />
-    <pre>{{ passengersmain }}</pre>
     <TravelProtection v-model="travelProtection" @update-protection="updateProtection" />
     <lost_cancel 
       v-model="lostBaggageProtection" v-model:cancellationProtection="cancellationProtection" 

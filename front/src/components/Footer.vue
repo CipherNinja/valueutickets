@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="footerimg">
       <div class="image-container">
-        <img src="@/assets/logo-nobg.png" alt="logo">
+        <img src="@/assets/logo.png" alt="logo">
       </div>
       <div class="content-container">
         <p class="footer-desc">
@@ -140,6 +140,7 @@ export default {
 .image-container img {
   width: 100px;
   height: auto;
+  border-radius: 100%;
 }
 
 .content-container {

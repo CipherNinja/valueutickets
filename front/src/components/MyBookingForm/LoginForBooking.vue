@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-      <h2>Access Trip Itinerary</h2>
       <div class="icon-container">
-        <img src="@/assets/logo.png" alt="Plane Icon" class="icon" />
+        <img src="@/assets/logo-nobg.png" alt="Plane Icon" class="icon" />
       </div>
+      <h2>Access Trip Itinerary</h2>
       <div class="form-container">
         <label>BookingID / PNR No.</label>
         <input type="text" placeholder="BookingID / PNR No." id="bookingId" />
@@ -33,24 +33,25 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    background-color: #f3f4f6;
+    min-height: 70dvh;
+    background-color: #F9F2F2;
     padding: 20px;
   }
   
   h2 {
-    font-size: 24px;
+    font-size: 29px;
     font-weight: bold;
     margin-bottom: 20px;
   }
   
   .icon-container {
     margin-bottom: 20px;
+    background-color: #F9F2F2;
   }
   
   .icon {
-    width: 50px;
-    height: 50px;
+    width: auto;
+    height: 100px;
   }
   
   .form-container {
@@ -59,24 +60,26 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
   }
   
   label {
     display: block;
-    font-size: 14px;
+    font-size: 19px;
     margin-bottom: 5px;
   }
   
   input {
     width: 100%;
-    padding: 10px;
+    font-size: 19px;
+    padding: 20px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
   
   button {
+    font-size: 19px;
     width: 100%;
     background-color: #1d4ed8;
     color: white;

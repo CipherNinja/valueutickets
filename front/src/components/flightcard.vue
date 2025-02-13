@@ -121,7 +121,7 @@ watch(flights, (newFlights) => {
 
         <!-- Pricing & Stops -->
         <div class="pricing">
-          <button class="office-number">+1 (833)931-6548</button>
+          <button class="office-number"><a href="tel:+18339316548">Contact us: +1 (833)931-6548</a></button >
           <div>
             <span><strong>Price per Person:</strong></span>
             <br /><span>Incl. Taxes and Fees</span>
@@ -200,6 +200,12 @@ watch(flights, (newFlights) => {
   width: auto;
   margin-top: 10px;
 }
+.office-number a{  color: white; }
+.office-number:hover {
+  background: #c96603;
+  transform: scale(1.1);
+}
+
 
 .book-now {
   background-image: linear-gradient(to right, #dbac13, #e77911);

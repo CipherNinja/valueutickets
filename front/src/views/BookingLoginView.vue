@@ -1,27 +1,24 @@
 <script setup>
-import Footer from '@/components/Footer.vue';
-import Header from '@/components/Header.vue';
-import LoginForBooking from '@/components/MyBookingForm/LoginForBooking.vue';
+import Footer from '../components/Footer.vue';
+import Header from '../components/Header.vue';
+import LoginForBooking from '../components/MyBookingForm/LoginForBooking.vue';
 </script>
 
 <template>
-  <div class="page-container">
-    <Header />
     <main>
+      <Header />
       <LoginForBooking />
+      <Footer/>
     </main>
-    <Footer />
-  </div>
 </template>
 
 <style scoped>
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 main {
-  flex-grow: 1;
+  background: #F9F2F2;
 }
 </style>

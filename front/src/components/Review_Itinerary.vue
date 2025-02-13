@@ -29,7 +29,8 @@
         </div>
         <hr class="separator">
         <div class="actions">
-          <button class="call-now">Call now: +1-888-898-****</button>
+          <button class="call-now"><a href="tel:+18339316548">Contact us: +1 (833)931-6548</a></button >
+
           <div class="price-info">
             <p class="Price-per-person">Price Per Person</p>
             <span class="additional-info">(incl. Taxes & Fees)</span>
@@ -96,8 +97,8 @@ export default {
       this.emailError = !this.validateEmail(this.email);
     },
     validatephone_number(phone) {
-      // USA phone number regex: (xxx) xxx-xxxx
-      const phoneRegex = /^(?:\(\d{3}\)\s?)?\d{3}[-\s]?\d{4}$/;
+      // USA phone number regex: xxxxxxxxxx
+      const phoneRegex = /^(?:\d{3}\s?)?\d{3}[-\s]?\d{4}$/;
       return phoneRegex.test(phone);
     },
     validateEmail(email) {
@@ -298,6 +299,7 @@ export default {
   font-weight: bold;
   transition: transform 0.3s ease, background 0.3s ease;
 }
+.call-now a{  color: white; }
 
 .call-now:hover {
   background: #00a37f;

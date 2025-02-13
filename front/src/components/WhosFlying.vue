@@ -49,7 +49,6 @@ const updatePassengerData = (index, field, value) => {
   </div>
 </template>
 
-
 <style scoped>
 .passenger-section {
   background-color: #e7f1ee;
@@ -91,5 +90,4 @@ const updatePassengerData = (index, field, value) => {
   font-size: 16px;
   background: white;
 }
-
 </style>

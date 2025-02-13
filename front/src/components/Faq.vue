@@ -43,39 +43,51 @@ export default {
     return {
       faqs: [
         {
-          question: "Why should you book tickets from Valuetickets?",
+          question: "How does the ValueuTickets Referral Program work?",
           answer:
-            "Valuetickets provides the best deals and exclusive offers on flights, tours, and accommodations. Their platform also offers competitive prices on events, making booking travel and entertainment easy and affordable.",
+            "The referral program allows you to share your unique referral link with friends, family, and colleagues. When someone books a flight using your link, both you and the referred person receive rewards like discounts or eCredits for future bookings.",
           open: false,
         },
         {
-          question: "What is the best possible way to buy air tickets at a reasonable cost?",
+          question: "What rewards do I get for referring someone?",
           answer:
-            "Unlock the best deals by booking early, using our powerful search tools, and discovering exclusive offers just for you!",
+            "You can earn discounts on future bookings, accumulate eCredits to use towards travel, and gain exclusive early access to sales and limited-time offers.",
           open: false,
         },
         {
-          question: "Do you offer last-minute air tickets?",
+          question: "Are there any conditions for receiving referral rewards?",
           answer:
-            "Yes, we offer last-minute air tickets at competitive prices. Check our website for availability.",
+            "Yes, referral rewards are only granted after the referred customer completes a booking and payment. The booking must be made through the provided referral link, and rewards are non-transferable.",
           open: false,
         },
         {
-          question: "How to search for the best deal or find the latest offer on WebsiteName?",
+          question: "Can I use my referral rewards for someone else’s booking?",
           answer:
-            "Use the search bar and filter tools on our website to find the latest deals tailored to your needs.",
+            "No, referral rewards can only be used for your personal bookings made through ValueuTickets.",
           open: false,
         },
         {
-          question: "Can I book round-trip or one-way air tickets?",
+          question: "Do referral rewards expire?",
           answer:
-            "Yes, you can book round-trip or one-way tickets based on your travel requirements.",
+            "Yes, rewards may be subject to restrictions or expiration dates. You can check the details in your account.",
           open: false,
         },
         {
-          question: "How can you confirm that your flight reservation with WebsiteName is successful?",
+          question: "How can I participate in social media contests and promotions?",
           answer:
-            "You will receive a confirmation email with your ticket details after completing the booking process.",
+            "Follow ValueuTickets on platforms like Facebook, Instagram, and Twitter to stay updated on exclusive promotions, giveaways, and contests where you can win free flight tickets and other rewards.",
+          open: false,
+        },
+        {
+          question: "How does ValueuTickets support social causes?",
+          answer:
+            "A portion of every booking goes toward supporting local communities, travel education, and environmental sustainability initiatives. By booking with us, you contribute to making a positive impact.",
+          open: false,
+        },
+        {
+          question: "Can ValueuTickets modify or discontinue the Referral Program?",
+          answer:
+            "Yes, ValueuTickets reserves the right to change or discontinue the referral program at any time without prior notice.",
           open: false,
         },
       ],

@@ -1,9 +1,9 @@
 <template>
-    <div class="container">
-      <h2>Access Trip Itinerary</h2>
+    <div class="container-main">
       <div class="icon-container">
-        <img src="@/assets/logo.png" alt="Plane Icon" class="icon" />
+        <img src="@/assets/logo-nobg.png" alt="Plane Icon" class="icon" />
       </div>
+      <h2>Access Trip Itinerary</h2>
       <div class="form-container">
         <label>BookingID / PNR No.</label>
         <input type="text" placeholder="BookingID / PNR No." id="bookingId" />
@@ -28,14 +28,16 @@
   </script>
   
   <style scoped>
-  .container {
+  .container-main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
     justify-content: center;
-    min-height: 100vh;
-    background-color: #f3f4f6;
-    padding: 20px;
+    min-height: 600px;
+    background-color: #F9F2F2;
+    padding: 0px;
+    margin: 0px;
   }
   
   h2 {
@@ -46,11 +48,12 @@
   
   .icon-container {
     margin-bottom: 20px;
+    background-color: #F9F2F2;
   }
   
   .icon {
-    width: 50px;
-    height: 50px;
+    width: auto;
+    height: 100px;
   }
   
   .form-container {

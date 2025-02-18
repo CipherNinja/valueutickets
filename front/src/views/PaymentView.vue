@@ -1,7 +1,6 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onUnmounted , computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { computed } from "vue";
 import axios from 'axios';
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
@@ -17,7 +16,7 @@ import { usePassengerStore } from "@/stores/passengerStore";
 
 const passengerStore = usePassengerStore();
 const passengersmaintemp = computed(() => passengerStore.passengers);
-const passengersmain = (passengersmaintemp.value.map(({ type, ...rest }) => rest));
+const passengersmain = computed(() => passengersmaintemp.value?.map(({ type, ...rest }) => rest) || []);
 
 const itineraryDetails = ref({});
 const passengerDetails = ref([]);
@@ -76,7 +75,7 @@ const collectData = () => {
     arrival_iata: flightDetails.dest || 'NA',
     departure_date: flightDetails.departure || 'NA',
     arrival_date: flightDetails.arrival || 'NA',
-    passengers: passengersmain,
+    passengers:  JSON.parse(JSON.stringify(passengersmain.value)),
     payment: {
       address_line1: billingDetails.value.address_line1 || 'NA',
       address_line2: billingDetails.value.address_line2 || 'NA',
@@ -216,23 +215,50 @@ const validateForm = () => {
 
   return Object.keys(errors.value).length === 0;
 };
+console.log("Not click");
 
 const sendDataToBackend = async () => {
+  console.log("Yes do click");
+  const datamain = collectData();
+  console.log("Collected Data:", JSON.stringify(datamain, null, 2));
   if (validateForm()) {
-    const data = collectData();
-    console.log("Collected Data:", JSON.stringify(data, null, 2));
+    const datamain = collectData();
+    console.log("Collected Data:", JSON.stringify(datamain, null, 2));
     try {
-      const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', data); 
+      const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', datamain); 
       console.log('Data sent successfully:', response.data);
       responseMessage.value = response.data.message; 
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
-      responseMessage.value = "Failed to save data. Please try again."; 
+      responseMessage.value = error.response?.data?.message || "Failed to save data. Please try again.";
     }
   } else {
     alert("Please fill all the details.");
   }
 };
+
+// Cleanup function to avoid memory leaks
+onUnmounted(() => {
+  console.log('Component unmounted, performing cleanup.');
+  // Perform cleanup tasks here
+  // For example, clearing intervals or unsubscribing from events
+});
+
+
+const showPopup = ref(false);
+const loading = ref(false);
+
+function openPopup() {
+  showPopup.value = true;
+  loading.value = true;
+};
+
+function handleClick() {
+  sendDataToBackend();
+  openPopup();
+}
+
+
 </script>
 
 
@@ -240,7 +266,6 @@ const sendDataToBackend = async () => {
   <main>
     <Header />
     <div class="header-bar">
-      <span href="#" class="text">&#60;&nbsp;Back</span>
       <div class="task-group">
         <div class="task">
           <span class="number">&#9312;<span class="tick">&#9989;</span></span>
@@ -262,7 +287,7 @@ const sendDataToBackend = async () => {
     <WhosFlying v-model="passengerDetails" @update-personal="updatePersonalDetails" />
     <TravelProtection v-model="travelProtection" @update-protection="updateProtection" />
     <lost_cancel 
-      v-model="lostBaggageProtection" v-model:cancellationProtection="cancellationProtection" 
+      v-model:baggageProtection="lostBaggageProtection" v-model:cancellationProtection="cancellationProtection" 
       @update-baggage="updateBaggageProtection"  @update-cancellation="updateCancellationProtection" 
     />
     <PremiumSupport v-model="premiumSupport" @update-support="updateSupport" />
@@ -270,7 +295,32 @@ const sendDataToBackend = async () => {
     <Bill_Pay v-model="billingDetails" @update-payment="updatePaymentDetails" />
     <T_C v-model="termsAccepted"/>
     <p class="total-price">Total Price: {{ totalamount }}</p>
-    <button class="book-button" @click="sendDataToBackend">Submit</button>
+    <button class="book-button" @click="handleClick">Submit</button>
+
+    <!-- Popup Overlay -->
+    <div v-if="showPopup" class="popup-overlay">
+      <div class="popup">
+        <h2>Popup Content</h2>
+
+        <!-- Show skeleton while loading -->
+        <div v-if="loading" class="skeleton-loader">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+        </div>
+
+        <!-- Show data when loaded -->
+        <div v-else>
+          <p><strong>Title:</strong>{{ responseMessage }}</p>
+          <p><strong>Description:</strong></p>
+        </div>
+
+        <!-- Close Button -->
+        <router-link to="/booking"><button @click="showPopup = false" class="close-btn">OK</button></router-link>
+      </div>
+    </div>
+
+
     <Footer />
   </main>
 </template>
@@ -286,6 +336,7 @@ main {
   display: flex;
   flex-direction: row;
   height: 100px;
+  width: 95%;
   border-radius: 20px;
   color: white;
   align-items: center;
@@ -294,6 +345,7 @@ main {
   margin-top: 14px;
   font-size: 20px;
   padding: 6px;
+  padding-inline: 20px;
 }
 .header-bar .text {
   font-size: 20px;
@@ -350,4 +402,75 @@ main {
   border-radius: 8px;
   padding: 10px 20px;
 }
+
+/* Popup Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 300px;
+}
+
+/* Close Button */
+.close-btn {
+  margin-top: 10px;
+  padding: 5px 15px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Skeleton Loader */
+.skeleton-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.skeleton {
+  background: #ddd;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-title {
+  width: 60%;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.skeleton-text {
+  width: 80%;
+  height: 15px;
+  border-radius: 5px;
+}
+
+@keyframes pulse {
+  0% {
+    background: #ddd;
+  }
+  50% {
+    background: #ccc;
+  }
+  100% {
+    background: #ddd;
+  }
+}
+
 </style>

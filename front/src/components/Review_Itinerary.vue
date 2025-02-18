@@ -51,7 +51,7 @@
           required
           :class="{ 'invalid': phone_numberError }"
         />
-        <span v-if="phone_numberError" class="error-message">Invalid phone number. Format: (xxx) xxx-xxxx</span>
+        <span v-if="phone_numberError" class="error-message">Invalid phone number. Format: xxxxxxxxxx</span>
         
         <input
           type="email"
@@ -96,13 +96,13 @@ export default {
       this.emailError = !this.validateEmail(this.email);
     },
     validatephone_number(phone) {
-      // USA phone number regex: (xxx) xxx-xxxx
-      const phoneRegex = /^(?:\(\d{3}\)\s?)?\d{3}[-\s]?\d{4}$/;
+      // USA phone number regex: xxxxxxxxxx
+      const phoneRegex = /^\d{10}$/;
       return phoneRegex.test(phone);
     },
     validateEmail(email) {
       // Basic email regex validation
-      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       return emailRegex.test(email);
     },
     formatDateTime(dateTimeString) {

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SearchResultView from '../views/SearchResultView.vue'
 import PayView from '../views/PaymentView.vue'
-import LoginForBooking from '../components/MyBookingForm/LoginForBooking.vue'
+import LoginForBooking from '../views/BookingLoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

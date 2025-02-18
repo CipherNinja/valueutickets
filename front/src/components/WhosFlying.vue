@@ -41,7 +41,6 @@ const updatePassengerData = (index, field, value) => {
             <option disabled value="">Gender</option>
             <option>Male</option>
             <option>Female</option>
-            <option>Prefer not to say</option>
           </select>
         </div>
       </div>

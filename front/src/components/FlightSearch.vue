@@ -135,3 +135,113 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* Global Styling */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa00; /* Soft background to contrast the form */
+}
+
+/* Container and Background */
+.container {
+  max-width: 100vw;
+  width: 100%; /* Ensures it spans the full width of the viewport */
+  height: auto;
+  display: flex;
+  max-width: 2000px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Image inside the container */
+.container img {
+  width: 100%; /* Ensures the image takes full width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+
+.background-image {
+  width: 99.15vw;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  top: 0;
+  z-index: 1;
+
+  /* Background Settings */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Ensure no default background (no white screen) */
+  background-image: url('../assets/images/mountain.jpg'), 
+                    url('../assets/images/plane.jpg'), 
+                    url('../assets/images/city.jpg'), 
+                    url('../assets/images/dark.jpg');
+
+  /* Animation */
+  animation: backgroundAnimation 16s infinite;
+}
+
+@keyframes backgroundAnimation {
+  0%, 100% {
+    background-image: url('../assets/images/mountainn.png'), 
+                      url('../assets/images/plane.jpg'), 
+                      url('../assets/images/city.jpg'), 
+                      url('../assets/images/dark.jpg');
+  }
+  25% {
+    background-image: url('../assets/images/plane.jpg'), 
+                      url('../assets/images/mountainn.png'), 
+                      url('../assets/images/city.jpg'), 
+                      url('../assets/images/dark.jpg');
+  }
+  50% {
+    background-image: url('../assets/images/city.jpg'), 
+                      url('../assets/images/plane.jpg'), 
+                      url('../assets/images/mountainn.png'), 
+                      url('../assets/images/dark.jpg');
+  }
+  75% {
+    background-image: url('../assets/images/dark.jpg'), 
+                      url('../assets/images/plane.jpg'), 
+                      url('../assets/images/city.jpg'), 
+                      url('../assets/images/mountainn.png');
+  }
+}
+
+
+.content-wrapper {
+  background-color: rgba(255, 255, 255, 0);
+  padding: 10px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 150px;
+  margin-bottom: 10px;
+  z-index: 100; /* Ensures it’s above the background image */
+}
+
+.advertisement-wrapper {
+  width: 90%;
+  height: 130px;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.advertisement-img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+</style>
+
+  

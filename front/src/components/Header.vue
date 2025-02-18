@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header-nav-bar">
     <nav>
       <div class="menu-icon" @click="toggleMenu">
         <div></div>
@@ -91,7 +91,9 @@ export default {
 
 <style scoped>
 @import url(https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css);
-
+.header-nav-bar{
+  width: 100%;
+}
 nav {
   display: flex;
   justify-content: right;

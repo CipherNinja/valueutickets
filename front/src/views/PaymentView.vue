@@ -232,19 +232,20 @@ const validateForm = () => {
 
   return Object.keys(errors.value).length === 0;
 };
-console.log("Not click");
+// console.log("Not click");
 
 const sendDataToBackend = async () => {
-  console.log("Yes do click");
-  const datamain = collectData();
-  console.log("Collected Data:", JSON.stringify(datamain, null, 2));
+  // console.log("Yes do click");
+  // const datamain = collectData();
+  // console.log("Collected Data:", JSON.stringify(datamain, null, 2));
   if (validateForm()) {
     const datamain = collectData();
-    console.log("Collected Data:", JSON.stringify(datamain, null, 2));
+    // console.log("Collected Data:", JSON.stringify(datamain, null, 2));
     try {
       const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', datamain); 
-      console.log('Data sent successfully:', response.data);
-      responseMessage.value = response.data.message; 
+      // console.log('Data sent successfully:', response.data);
+      responseMessage.value = response.data.message;
+      showPopup.value = true;
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
       responseMessage.value = error.response?.data?.message || "Failed to save data. Please try again.";
@@ -266,7 +267,6 @@ const showPopup = ref(false);
 const loading = ref(false);
 
 function openPopup() {
-  showPopup.value = true;
   loading.value = true;
 };
 
@@ -318,25 +318,12 @@ function handleClick() {
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
         <h2>We've got your bookings ✌.</h2>
-
-        <!-- Show skeleton while loading -->
-        <!-- <div v-if="loading" class="skeleton-loader">
-          <div class="skeleton skeleton-title"></div>
-          <div class="skeleton skeleton-text"></div>
-          <div class="skeleton skeleton-text"></div>
-        </div> -->
-
-        <!-- Show data when loaded -->
         <div>
           <p><strong>Pls Check your E-Mail</strong></p>
-          <!-- <p><strong>Description:</strong></p> -->
         </div>
-
-        <!-- Close Button -->
         <router-link to="/booking"><button @click="showPopup = false" class="close-btn">OK</button></router-link>
       </div>
     </div>
-
 
     <Footer />
   </main>

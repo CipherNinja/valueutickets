@@ -16,7 +16,11 @@
             <strong class="price">${{ deal.price }}</strong>
           </div>
           <!-- Book Now Button -->
-          <button class="book-now">Book Now</button>
+          <button class="call-now">
+            <a :href="`tel:+18339316548`">
+              <i class="call-icon">📞</i> Call Now
+            </a>
+          </button>
         </li>
       </ul>
       <!-- Expand and Collapse Button -->
@@ -58,30 +62,20 @@ export default {
   data() {
     return {
       allDeals: [
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "57.55" },
-        { route: "Maxico - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "57.55" },
-        { route: "London - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "87.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "59.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "57.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "59.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "57.55" },
-        { route: "Los Angeles - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "67.55" },
-        { route: "Chicago - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "77.55" },
-         { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "59.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "57.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "59.55" },
-        { route: "New York - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "57.55" },
-        { route: "Los Angeles - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "67.55" },
-        { route: "Chicago - Japan", date: "Thursday 30 Jan 2025", airline: "Indigo", price: "77.55" },
+        { route: "New York - Cancún", date: "For Lucky Customers", airline: "American Airlines", price: "57.55" },
+        { route: "New York - Los Angeles", date: "For Lucky Customers", airline: "Delta", price: "97.55" },
+        { route: "Los Angeles - Mexico City", date: "For Lucky Customers", airline: "Frontier Airlines", price: "67.55" },
+        { route: "Chicago - Buenos Aires", date: "For Lucky Customers", airline: "Ryan Airlines", price: "77.55" },
+        { route: "Miami - Rio de Janeiro", date: "For Lucky Customers", airline: "Ethad", price: "87.55" },
+        { route: "Toronto - Lima", date: "For Lucky Customers", airline: "Delta", price: "97.55" },
       ],
       visibleDeals: [],
       expanded: false,
-       reviews: [
-        { name: "Jc Castillo", date: "April 14, 2025", text: "The booking process was seamless, and the flight was on time! Thank you for the excellent service.", initials: "JC", rating: 5 },
-        { name: "Jane Doe", date: "April 15, 2025", text: "The crew was very polite, but there was a slight delay. Overall, it was a good experience." , initials: "JD", rating: 4 },
-        { name: "John Smith", date: "April 16, 2025", text: "It was a very smooth journey. I highly recommend your service!", initials: "JS", rating: 3 },
+      reviews: [
+        { name: "Jessica Miller", date: "April 14, 2025", text: "The booking process was seamless, and the flight was on time! Thank you for the excellent service.", initials: "JC", rating: 5 },
+        { name: "David Brown", date: "April 15, 2025", text: "The crew was very polite, but there was a slight delay. Overall, it was a good experience.", initials: "JD", rating: 5 },
+        { name: "Samantha Wilson", date: "April 16, 2025", text: "It was a very smooth journey. I highly recommend your service!", initials: "JS", rating: 5 },
       ],
-       
     };
   },
   mounted() {
@@ -99,6 +93,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Global Styles */
@@ -161,6 +156,35 @@ export default {
 .price{
   margin-top: -2.2rem;
 }
+
+/* Call Now Button */
+.call-now {
+  background: #09C398;
+  border: none;
+  padding: 10px 20px;
+  color: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+.call-now a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.call-icon {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+/* Hover Effect */
+.call-now:hover {
+  background: linear-gradient(90deg, #00ced1, #1e90ff);
+}
+
 
 .deal-price span-deal {
   font-size: 16px;

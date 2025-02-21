@@ -22,7 +22,7 @@ const autocompleteContainer = ref(null)
 
 const fetchAllAirports = async () => {
   try {
-    const response = await axios.get('https://gcp.agratasinfotech.com/api/v1/airports/')
+    const response = await axios.get('https://crm.valueutickets.com/api/v1/airports/')
     allAirports.value = response.data
   } catch (error) {
     console.error('Error fetching airports:', error)
@@ -102,6 +102,7 @@ const selectSuggestion = (suggestion) => {
       :placeholder="placeholder" 
       v-model="query" 
       autocomplete="on"
+      required
     />
     <ul v-if="suggestions.length">
       <li 

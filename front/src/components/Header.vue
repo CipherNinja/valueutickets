@@ -14,10 +14,10 @@
       <ul :class="['nav-links', { active: isMenuActive }]">
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/booking">My Booking</router-link></li>
-        <li><router-link to="/blogs">Blogs</router-link></li>
-        <li><router-link to="/packages">Packages</router-link></li>
-        <li><router-link to="/services">Services</router-link></li>
-        <li><router-link to="/admin"><button class="login-btn">Login or Signup</button></router-link></li>
+        <!-- <li><router-link to="/blogs">Blogs</router-link></li>
+        <li><router-link to="/packages">Packages</router-link></li> -->
+        <li><router-link to="/services">Contact Us</router-link></li>
+        <li><a href="https://crm.valueutickets.com/admin"><button class="login-btn">Login or Signup</button></a></li>
       </ul>
       <div class="dropdown" @click.stop="toggleDropdown">
           <div class="dropdown-toggle">

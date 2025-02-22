@@ -29,13 +29,13 @@
         </div>
         <hr class="separator">
         <div class="actions">
-          <button class="call-now">Call now: +1-888-898-****</button>
+          <a href="tel:+1 8339316548"><button class="call-now">Call now: +1 (833)931-6548</button></a>
           <div class="price-info">
             <p class="Price-per-person">Price Per Person</p>
             <span class="additional-info">(incl. Taxes & Fees)</span>
           </div>
           <div class="price">${{ flightDetails.price }}</div>
-          <button class="book-now">Book Now</button>
+          <!-- <button class="book-now">Book Now</button> -->
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
+import _ from 'lodash'
 
 const props = defineProps({
   modelValue: {
@@ -61,10 +62,12 @@ const filterAirports = (searchTerm) => {
   suggestions.value = filtered
 }
 
+const filterAirportsThrottled = _.debounce(filterAirports, 300)
+
 watch(query, (newValue) => {
   emit('update:modelValue', newValue)
   if (newValue && newValue.length >= 3) {
-    filterAirports(newValue)
+    filterAirportsThrottled(newValue)
   } else {
     suggestions.value = []
   }
@@ -101,6 +104,7 @@ const selectSuggestion = (suggestion) => {
       type="text" 
       :placeholder="placeholder" 
       v-model="query" 
+      @keyup="filterAirports(query)"
       autocomplete="on"
       required
     />
@@ -153,7 +157,6 @@ const selectSuggestion = (suggestion) => {
   border-block: 1px solid #000000;
   cursor: pointer;
   z-index: 5000;
-
 }
 .airport-autocomplete li:hover {
   background-color: #f0f0f0;

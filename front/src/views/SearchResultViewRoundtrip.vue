@@ -5,7 +5,7 @@
   import Footer from "../components/Footer.vue";
   import Filter from "../components/Filter.vue";
   import FM from "../components/FM.vue";
-  import resultlist from '../components/resultlist.vue';
+  import resultlist from '../components/roundtrip/resultlist.vue';
 
   // Reactive state to track window width
   const windowWidth = ref(window.innerWidth);

@@ -7,7 +7,8 @@ import { useRouter } from "vue-router";
 const flightStore = useFlightStore();
 const postDataStore = usePostDataStore();
 const router = useRouter();
-const loading = ref(true); 
+const loading = ref(true);
+const screenWidth = ref(window.innerWidth);
 
 const formatDuration = (minutes) => {
   const hours = Math.floor(minutes / 60);
@@ -49,9 +50,13 @@ onMounted(() => {
   if (!flights.value.length) {
     console.warn("No flight data found!");
   }
+  window.addEventListener('resize', updateScreenWidth);
 });
 
-// New method to handle booking
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
 const bookFlight = (flight) => {
   router.push({
     path: "/pay",
@@ -71,6 +76,7 @@ const bookFlight = (flight) => {
     },
   });
 };
+
 // Watch flights data and update loading state
 watch(flights, (newFlights) => {
   if (newFlights.length > 0) {
@@ -87,44 +93,55 @@ watch(flights, (newFlights) => {
     </div>
   </div>
   <div v-else class="results-container">
-    <div v-for="(flight, index) in flights" :key="index" class="flight-card">
+    <div v-if="screenWidth > 600" v-for="(flight, index) in flights" :key="index" class="flight-card">
+      <!-- Original structure for screens wider than 600px -->
       <div class="color-bar"></div>
       <div class="airline-info" style="text-align: center;">
         <img :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo" />
         <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.legs[0].flight_name }}</span>
       </div>
-      <div class="flight-details">
-        <div class="departure">
-          <i class="fas fa-plane-departure"></i>
-          <p><strong>Departure:</strong> From: {{ postDataStore.postdata?.source_iata || "N/A" }}</p>
-          <p>{{ formatDateTime(flight.legs[0].departure) || "N/A" }}</p>
+      <div class="flight-details-box">
+        <div class="flight-details">
+          <div class="departure">
+            <p>
+              <i class="fas fa-plane-departure"></i>&nbsp;
+              <strong>Departure:</strong> {{ postDataStore.postdata?.source_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[0].departure) || "N/A" }}</p>
+          </div>
+          <div class="duration">
+            <i class="fas fa-stopwatch"></i>&nbsp;
+            <strong>Duration:</strong> {{ formatDuration(flight.legs[0].duration) || "N/A" }}
+            <p><strong>Stops:</strong> {{ flight.legs[0].stop_count || 0 }}</p>
+          </div>
+          <div class="arrival">
+            <p>
+              <i class="fas fa-plane-arrival"></i>&nbsp;
+              <strong>Arrival:</strong> {{ postDataStore.postdata?.destination_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[0].arrival) || "N/A" }}</p>
+          </div>
         </div>
-        <div class="duration">
-          <i class="fas fa-stopwatch"></i>&nbsp;
-          <strong>Duration:</strong> {{ formatDuration(flight.legs[0].duration) || "N/A" }}
-          <p><strong>Stops:</strong> {{ flight.legs[0].stop_count || 0 }}</p>
-        </div>
-        <div class="arrival">
-          <i class="fas fa-plane-arrival"></i>
-          <p><strong>Arrival:</strong> To: {{ postDataStore.postdata?.destination_iata || "N/A" }}</p>
-          <p>{{ formatDateTime(flight.legs[0].arrival) || "N/A" }}</p>
-        </div>
-      </div>
-      <div class="flight-details">
-        <div class="departure">
-          <i class="fas fa-plane-departure"></i>
-          <p><strong>Return Departure:</strong> From: {{ postDataStore.postdata?.destination_iata || "N/A" }}</p>
-          <p>{{ formatDateTime(flight.legs[1].departure) || "N/A" }}</p>
-        </div>
-        <div class="duration">
-          <i class="fas fa-stopwatch"></i>&nbsp;
-          <strong>Return Duration:</strong> {{ formatDuration(flight.legs[1].duration) || "N/A" }}
-          <p><strong>Stops:</strong> {{ flight.legs[1].stop_count || 0 }}</p>
-        </div>
-        <div class="arrival">
-          <i class="fas fa-plane-arrival"></i>
-          <p><strong>Return Arrival:</strong> To: {{ postDataStore.postdata?.source_iata || "N/A" }}</p>
-          <p>{{ formatDateTime(flight.legs[1].arrival) || "N/A" }}</p>
+        <div class="flight-details">
+          <div class="departure">
+            <p>
+              <i class="fas fa-plane-departure"></i>&nbsp;
+              <strong>Return Departure:</strong> {{ postDataStore.postdata?.destination_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[1].departure) || "N/A" }}</p>
+          </div>
+          <div class="duration">
+            <i class="fas fa-stopwatch"></i>&nbsp;
+            <strong>Return Duration:</strong> {{ formatDuration(flight.legs[1].duration) || "N/A" }}
+            <p><strong>Stops:</strong> {{ flight.legs[1].stop_count || 0 }}</p>
+          </div>
+          <div class="arrival">
+            <p>
+              <i class="fas fa-plane-arrival"></i>&nbsp;
+              <strong>Return Arrival:</strong> {{ postDataStore.postdata?.source_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[1].arrival) || "N/A" }}</p>
+          </div>
         </div>
       </div>
       <div class="pricing">
@@ -135,6 +152,72 @@ watch(flights, (newFlights) => {
         </div>
         <p><strong>${{ flight.total_price || "N/A" }}</strong></p>
         <button @click="bookFlight(flight)" class="book-now">Book Now</button>
+      </div>
+    </div>
+    <div v-else v-for="(flight, indexs) in flights" :key="indexs" class="flight-card">
+      <!-- Simplified structure for screens narrower than 600px -->
+      <div class="color-bar"></div>
+      <div class="airline-info" style="text-align: center;">
+        <img :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo" />
+        <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.legs[0].flight_name }}</span>
+      </div>
+      <div class="flight-details-box">
+        <div class="flight-details">
+          <div class="departure">
+            <p>
+              <i class="fas fa-plane-departure"></i>&nbsp;
+              {{ postDataStore.postdata?.source_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[0].departure) || "N/A" }}</p>
+          </div>
+          <div class="arrival">
+            <p>
+              <i class="fas fa-plane-arrival"></i>&nbsp;
+              {{ postDataStore.postdata?.destination_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[0].arrival) || "N/A" }}</p>
+          </div>
+        </div>
+        <div class="duration">
+          <i class="fas fa-stopwatch"></i>&nbsp;
+          {{ formatDuration(flight.legs[0].duration) || "N/A" }}
+          &nbsp;<strong>|&nbsp; Stops:</strong> {{ flight.legs[0].stop_count || 0 }}
+        </div>
+        <div class="line" style="background-color: black; height: 2px; width: 95%;"></div>
+        <div class="flight-details">
+          <div class="departure">
+            <p>
+              <i class="fas fa-plane-departure"></i>&nbsp;
+              {{ postDataStore.postdata?.destination_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[1].departure) || "N/A" }}</p>
+          </div>
+          <div class="arrival">
+            <p>
+              <i class="fas fa-plane-arrival"></i>&nbsp;
+              {{ postDataStore.postdata?.source_iata || "N/A" }}
+            </p>
+            <p>{{ formatDateTime(flight.legs[1].arrival) || "N/A" }}</p>
+          </div>
+        </div>
+        <div class="duration">
+          <i class="fas fa-stopwatch"></i>&nbsp;
+          {{ formatDuration(flight.legs[1].duration) || "N/A" }}
+          &nbsp;<strong>|&nbsp; Stops:</strong> {{ flight.legs[1].stop_count || 0 }}
+        </div>
+      </div>
+      <div class="price-box" style="display: flex; flex-direction: row;">
+        <div class="pricing">
+          <div>
+            <span><strong>Price per Person:</strong></span>
+            <br /><span>Incl. Taxes and Fees</span>
+          </div>
+          <button class="office-number">+1 (833)931-6548</button>
+        </div>
+        <div class="pricing">
+          <p><strong>${{ flight.total_price || "N/A" }}</strong></p>
+          <button @click="bookFlight(flight)" class="book-now">Book Now</button>
+        </div>
       </div>
     </div>
   </div>
@@ -235,11 +318,21 @@ watch(flights, (newFlights) => {
     align-items: center;
     text-align: center;
   }
-
+  .flight-details-box{ 
+    width: 100%; 
+    padding: 0px;
+    padding-inline: 20px;
+  }
   .flight-details {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-align: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px;
+    padding-inline: 0px;
+    margin: 0px;
+    gap: 0px;
   }
 
   .pricing {

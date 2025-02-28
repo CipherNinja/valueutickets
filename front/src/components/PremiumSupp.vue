@@ -26,7 +26,7 @@
         <!-- Premium Support Option -->
         <label 
           class="option" 
-          :class="{ 'selected': selectedSupport === 'premium' }"
+          :class="{ 'selected': selectedSupport === 'true' }"
         >
           <div class="option-content">
             <div class="option-header">
@@ -35,7 +35,7 @@
                 <input 
                   type="radio" 
                   name="support" 
-                  value="premium" 
+                  value="true" 
                   v-model="selectedSupport" 
                 />
                 <p class="option-title">Yes, I want Premium Support</p>
@@ -64,7 +64,7 @@
         <!-- No Thanks Option -->
         <label 
           class="option" 
-          :class="{ 'selected': selectedSupport === 'none' }"
+          :class="{ 'selected': selectedSupport === 'false' }"
         >
           <div class="option-content">
             <div class="option-header">
@@ -73,7 +73,7 @@
                 <input 
                   type="radio" 
                   name="support" 
-                  value="none" 
+                  value="false" 
                   v-model="selectedSupport" 
                 />
                 <p class="option-title">No thanks</p>
@@ -100,6 +100,11 @@ export default {
     return {
       selectedSupport: 'none', // Default selection
     };
+  },
+  watch: {
+    selectedSupport(newValue) {
+      this.$emit('update-support', newValue); // Emit value to parent
+    }
   }
 };
 </script>

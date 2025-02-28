@@ -1,13 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import SearchResultView from '../views/SearchResultView.vue'
+import Resultoneway from '../views/SearchResultViewOneway.vue'
+import Resultroundtrip from '../views/SearchResultViewRoundtrip.vue'
 import PayView from '../views/PaymentView.vue'
-
-
-
-import Booking from '../views/Booking.vue'
-
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,9 +18,15 @@ const router = createRouter({
       component: Booking,
     },
     {
-      path: '/results',
-      name: 'searchresult',
-      component: SearchResultView,
+      path: '/result-oneway',
+      name: 'searchresultoneway',
+      component: Resultoneway,
+      //props: route => ({ data: JSON.parse(route.query.data) })
+    },
+    {
+      path: '/result-roundtrip',
+      name: 'searchresultroundtrip',
+      component: Resultroundtrip,
       //props: route => ({ data: JSON.parse(route.query.data) })
     },
     {
@@ -34,13 +35,10 @@ const router = createRouter({
       component: PayView,
     },
     {
-      path: '/test',
-      name: 'test',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/test.vue'),
-    },
+      path: '/booking',
+      name: 'LoginForBooking',
+      component: LoginForBooking,
+    }
   ],
 })
 

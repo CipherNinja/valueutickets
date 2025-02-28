@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header-nav-bar">
     <nav>
       <div class="menu-icon" @click="toggleMenu">
         <div></div>
@@ -13,11 +13,11 @@
       </router-link>
       <ul :class="['nav-links', { active: isMenuActive }]">
         <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/pay">My Booking</router-link></li>
-        <li><router-link to="/blogs">Blogs</router-link></li>
-        <li><router-link to="/packages">Packages</router-link></li>
-        <li><router-link to="/services">Services</router-link></li>
-        <li><router-link to="/admin"><button class="login-btn">Login or Signup</button></router-link></li>
+        <li><router-link to="/booking">My Booking</router-link></li>
+        <!-- <li><router-link to="/blogs">Blogs</router-link></li>
+        <li><router-link to="/packages">Packages</router-link></li> -->
+        <li><router-link to="/services">Contact Us</router-link></li>
+        <li><a href="https://crm.valueutickets.com/admin"><button class="login-btn">Login or Signup</button></a></li>
       </ul>
       <div class="dropdown" @click.stop="toggleDropdown">
           <div class="dropdown-toggle">
@@ -91,7 +91,9 @@ export default {
 
 <style scoped>
 @import url(https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css);
-
+.header-nav-bar{
+  width: 100%;
+}
 nav {
   display: flex;
   justify-content: right;

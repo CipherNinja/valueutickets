@@ -143,7 +143,7 @@ export default {
   position: relative;
   width: 200px;
   height: 50px;
-  z-index: 9000;
+  z-index: 4000;
 }
 .w-100-fl.se-psng-cont {
   position: relative;

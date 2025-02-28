@@ -57,11 +57,11 @@ export default {
         {
           question: "Do you offer last-minute air tickets?",
           answer:
-            "Yes, we offer last-minute air tickets at competitive prices. Check our website for availability.",
+            "Yes, we offer last-minute air tickets at competitive prices. Call on the customer line or Check our flight search engine for availability.",
           open: false,
         },
         {
-          question: "How to search for the best deal or find the latest offer on WebsiteName?",
+          question: "How to search for the best deal or find the latest offer on Valueu Tickets?",
           answer:
             "Use the search bar and filter tools on our website to find the latest deals tailored to your needs.",
           open: false,
@@ -73,7 +73,7 @@ export default {
           open: false,
         },
         {
-          question: "How can you confirm that your flight reservation with WebsiteName is successful?",
+          question: "How can you confirm that your flight reservation with Valueu Tickets is successful?",
           answer:
             "You will receive a confirmation email with your ticket details after completing the booking process.",
           open: false,

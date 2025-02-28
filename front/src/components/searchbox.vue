@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue';
 import axios from 'axios'
 import { RouterLink, useRouter } from 'vue-router'
 import { useFlightStore } from "@/stores/flightStore";
@@ -57,24 +57,24 @@ function collectPostData() {
     tripDetails = {
       source_iata: roundTrip.value.from,
       destination_iata: roundTrip.value.to,
-      date: roundTrip.value.date,
-      return_date: roundTrip.value.returnDate,
+      outbound: roundTrip.value.date,
+      inbound: roundTrip.value.returnDate,
       adults: passengerData.value.adults || 1,
       children: passengerData.value.children || 0,
       infants: passengerData.value.infants || 0,
       ticket_class: passengerData.value.ticket_class || 'Economy'
     }
-  } else if (tripType.value === 'multiCity') {
-    tripDetails = multiCity.value.map((segment) => ({
-      source_iata: segment.from,
-      destination_iata: segment.to,
-      date: segment.date,
-      adults: passengerData.value.adults || 1,
-      children: passengerData.value.children || 0,
-      infants: passengerData.value.infants || 0,
-      ticket_class: passengerData.value.ticket_class || 'Economy'
-    }))
-  }
+  } //else if (tripType.value === 'multiCity') {
+    //tripDetails = multiCity.value.map((segment) => ({
+    //  source_iata: segment.from,
+    //  destination_iata: segment.to,
+    //  date: segment.date,
+    //  adults: passengerData.value.adults || 1,
+    //  children: passengerData.value.children || 0,
+    //  infants: passengerData.value.infants || 0,
+    //  ticket_class: passengerData.value.ticket_class || 'Economy'
+    //}))
+  //}
 
   postdata.value = tripDetails
   console.log('Post Data:', postdata.value)
@@ -87,14 +87,23 @@ function collectPostData() {
   console.log("Stored postdata:", postDataStore.postdata)
 
   // API Call
-  axios.post("https://gcp.agratasinfotech.com/api/v1/flight/search/onewaytrip/", postdata.value)
+  if (tripType.value === 'oneWay') {
+    axios.post("https://crm.valueutickets.com/api/v1/flight/search/onewaytrip/", postdata.value)
     .then(response => {
       flightStore.setFlightData(response.data) // Store data in Pinia
       router.push({ name: "results" }) // Navigate to results page
     })
     .catch(error => console.error('Error:', error))
+  } else if (tripType.value === 'roundTrip') {
+    axios.post("https://crm.valueutickets.com/api/v1/flight/search/roundtrip/", postdata.value)
+    .then(response => {
+      flightStore.setFlightData(response.data) // Store data in Pinia
+      router.push({ name: "results" }) // Navigate to results page
+    })
+    .catch(error => console.error('Error:', error))
+  } //else if (tripType.value === 'multiCity') {}
+  
 }
-
 
   const today = new Date().toISOString().split('T')[0]
 
@@ -130,6 +139,16 @@ function collectPostData() {
       [segment.from, segment.to] = [segment.to, segment.from];
     }
   }
+
+const computedRoute = computed(() => {
+  if (tripType.value === 'oneWay') {
+    return '/result-oneway';
+  } else if (tripType.value === 'roundTrip') {
+    return '/result-roundtrip';
+  }
+  return '/'; // Default route
+});
+
 </script>
 
 <template>
@@ -218,20 +237,20 @@ function collectPostData() {
 
       <!-- Multi-City -->
       <div v-if="tripType === 'multiCity'">
-        <div v-for="(segment, index) in multiCity" :key="index" class="multi-city-segment">
+        <!--<div v-for="(segment, index) in multiCity" :key="index" class="multi-city-segment">
           <AirportAuto v-model="segment.from" @input="autoFillFrom(index)" />
           <AirportAuto v-model="segment.to" />
           <input type="date" v-model="segment.date" :min="today" />
           <button v-if="index >= 1" @click="removeSegment(index)">➖</button>
           <button v-if="index === multiCity.length - 1 && index < 3" @click="addSegment">➕</button>
-        </div>
+        </div>-->(currently disabled for maintainance)
       </div>
 
-      <router-link to="/results"><button class="search-button" @click="collectPostData">Search Flight</button></router-link>
+      <router-link :to='computedRoute'><button class="search-button" @click="collectPostData">Search Flight</button></router-link>
     </div>
 
     <div v-else>
-      <p>Tour section (same content for now)</p>
+      <p>Tour section (content will be added soon)</p>
     </div>
   </div>
 </template>

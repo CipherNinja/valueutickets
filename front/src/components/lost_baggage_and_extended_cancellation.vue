@@ -24,11 +24,10 @@
                 <div class="option-content">
                     <div class="option-header">
                         <!-- Left side: Radio button and title in one row -->
-                        <div class="option-left">
-                            <input type="radio" name="support" value="premium" v-model="selectedSupport" />
-                            <p class="option-title">Yes, I want to protect my baggage</p>
-                        </div>
-
+                        <label class="option-left">
+                            <input type="radio" name="baggage" :checked="baggageProtection" @change="updateBaggageSelection(true)" />
+                            <p class="option-title">&nbsp;&nbsp;Yes, I want to protect my baggage</p>
+                        </label>
                         <!-- Right side: Price and "Per Person" text -->
                         <div class="option-right">
                             <p class="option-price">$305</p>
@@ -50,11 +49,10 @@
                 <div class="option-content">
                     <div class="option-header">
                         <!-- Left side: Radio button and title in one row -->
-                        <div class="option-left">
-                            <input type="radio" name="support" value="none" v-model="selectedSupport" />
+                        <label class="option-left">
+                            <input type="radio" name="baggage" :checked="!baggageProtection" @change="updateBaggageSelection(false)" />
                             <p class="option-title">No, I’m willing to risk losing my baggage</p>
-                        </div>
-
+                        </label>
                         <!-- Right side: Price and "Per Person" text -->
                         <div class="option-right">
                             <p class="option-price">$0.00</p>
@@ -87,11 +85,10 @@
                 <div class="option-content">
                     <div class="option-header">
                         <!-- Left side: Radio button and title in one row -->
-                        <div class="option-left">
-                            <input type="radio" name="support" value="premium" v-model="selectedSupport" />
-                            <p class="option-title">Yes, I want to protect my baggage</p>
-                        </div>
-
+                        <label class="option-left">
+                            <input type="radio" name="cancellation" :checked="cancellationProtection" @change="updateCancellationSelection(true)" />
+                            <p class="option-title">Yes, I want cancellation protection</p>
+                        </label>
                         <!-- Right side: Price and "Per Person" text -->
                         <div class="option-right">
                             <p class="option-price">$305</p>
@@ -113,11 +110,10 @@
                 <div class="option-content">
                     <div class="option-header">
                         <!-- Left side: Radio button and title in one row -->
-                        <div class="option-left">
-                            <input type="radio" name="support" value="none" v-model="selectedSupport" />
+                        <label class="option-left">
+                            <input type="radio" name="cancellation" :checked="!cancellationProtection" @change="updateCancellationSelection(false)" />
                             <p class="option-title">No thanks</p>
-                        </div>
-
+                        </label>
                         <!-- Right side: Price and "Per Person" text -->
                         <div class="option-right">
                             <p class="option-price">$0.00</p>
@@ -134,9 +130,25 @@
 
 <script>
 export default {
-    name: 'App',
+  data() {
+    return {
+      baggageProtection: false, // Default: No baggage protection
+      cancellationProtection: false, // Default: No cancellation protection
+    };
+  },
+  methods: {
+    updateBaggageSelection(value) {
+      this.baggageProtection = value;
+      this.$emit("update-baggage", value); // Emit value to parent
+    },
+    updateCancellationSelection(value) {
+      this.cancellationProtection = value;
+      this.$emit("update-cancellation", value); // Emit value to parent
+    }
+  }
 };
 </script>
+
 
 <style scoped>
 * {
@@ -249,7 +261,7 @@ body {
 /* Header section for the option */
 .option-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     width: 100%;
     padding: 10px;
@@ -262,6 +274,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 50%;
 }
 
 /* Radio button */
@@ -281,6 +294,7 @@ body {
 .option-right {
     text-align: right;
     margin-right: 50px;
+    width: 50%;
 }
 
 /* Price styling */

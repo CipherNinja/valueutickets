@@ -6,93 +6,166 @@
         {{ detailsVisible ? 'Hide Details' : 'Show All' }} <span class="dot"></span>
       </button>
     </div>
-    <!----------------- Conditionally render the itinerary card based on detailsVisible ------------>
+    
     <div v-if="detailsVisible" class="itinerary-card">
+      <p style="margin: 0px; text-align: center; margin-bottom: 10px;"><strong class="CityName">{{ flightDetails.flight_name }}</strong></p>     
       <div class="flight-info">
         <div class="route">
-          <div class="super-saver">Time <span class="saver">Saver</span></div>
           <div class="from">
-            <strong class="CityName">New York (JFK)</strong>
-            <p class="Date">Mon, Feb 10</p>
+            <p class="SRC" style="margin: 0px;">
+              <i class="fas fa-plane-departure"></i>&nbsp;
+              {{ flightDetails.src }}
+            </p>
+            <p class="Date" style="margin: 0px;">{{ formatDateTime(flightDetails.departure) }}</p>
           </div>
+          
           <div class="flight-path">
             <div class="icon">✈️</div>
             <div class="dotted-line"></div>
             <div class="destination-point"></div>
           </div>
+          
           <div class="to">
-            <strong class="CityName">Denver (DEN)</strong>
-            <p class="Date">Mon, Feb 10</p>
+            <strong class="CityName">{{ flightDetails.destination_iata }}</strong>
+            <p class="DEST" style="margin: 0px;">
+              <i class="fas fa-plane-arrival"></i>&nbsp;
+              {{ flightDetails.dest }}
+            </p>
+            <p class="Date" style="margin: 0px;">{{ formatDateTime(flightDetails.arrival) }}</p>
           </div>
         </div>
+        <p style="margin: 0px; text-align: center;">
+          <span class="duration">Duration: {{ flightDetails.duration }} mins</span>&nbsp;&nbsp;&nbsp;
+          <span class="stops">Stops: {{ flightDetails.stop_count }}</span>
+        </p>
+        <div v-if="isRoundTrip" class="return-route">
+          <hr class="separator">
+          <div class="route">
+            <div class="from">
+              <p class="SRC" style="margin: 0px;">
+                <i class="fas fa-plane-departure"></i>&nbsp;
+                {{ flightDetails.dest }}
+              </p>
+              <p class="Date" style="margin: 0px;">{{ formatDateTime(flightDetails.return_departure) }}</p>
+            </div>
+            
+            <div class="flight-path">
+              <div class="icon">✈️</div>
+              <div class="dotted-line"></div>
+              <div class="destination-point"></div>
+            </div>
+            
+            <div class="to">
+              <p class="DEST" style="margin: 0px;">
+                <i class="fas fa-plane-arrival"></i>&nbsp;
+                {{ flightDetails.src }}
+              </p>
+              <p class="Date" style="margin: 0px;">{{ formatDateTime(flightDetails.return_arrival) }}</p>
+            </div>
+          </div>
+        </div>
+        <p style="margin: 0px; text-align: center;">
+          <span class="duration">Duration: {{ flightDetails.return_duration }} mins</span>&nbsp;&nbsp;&nbsp;
+          <span class="stops">Stops: {{ flightDetails.return_stop_count }}</span>
+        </p>
         <hr class="separator">
         <div class="actions">
-          <button class="call-now">Call now: +1-888-898-****</button>
+          <a href="tel:+1 8339316548"><button class="call-now">Call now: +1 (833)931-6548</button></a>
           <div class="price-info">
-            <p class="Price-per-person">Price Per Person</p>
+            &nbsp;&nbsp;<span class="Price-per-person">Price Per Person</span>&nbsp;
             <span class="additional-info">(incl. Taxes & Fees)</span>
           </div>
-          <div class="price">$98.48</div>
-          <button class="book-now">Book Now</button>
+          <div class="price">${{ flightDetails.price }}</div>
         </div>
       </div>
     </div>
+    
     <div class="contact-form">
       <h4 class="heading-contact-info">How do we contact you?</h4>
       <div class="info-box">
         <div class="inputs">
-          <input type="text" v-model="phoneNumber" placeholder="Phone Number *" required :class="{'invalid': phoneNumberError}" />
-          <span v-if="phoneNumberError" class="error-message">Invalid phone number. Format: (xxx) xxx-xxxx</span>
-          <input type="email" v-model="email" placeholder="Email *" required :class="{'invalid': emailError}" />
+          <input
+            type="text"
+            v-model="phone_number"
+            @input="updateContactInfo"
+            placeholder="Phone Number *"
+            required
+            :class="{ 'invalid': phone_numberError }"
+          />
+          <span v-if="phone_numberError" class="error-message">Invalid phone number. Format: xxxxxxxxxx</span>
+          
+          <input
+            type="email"
+            v-model="email"
+            @input="updateContactInfo"
+            placeholder="Email *"
+            required
+            :class="{ 'invalid': emailError }"
+          />
           <span v-if="emailError" class="error-message">Please enter a valid email address.</span>
         </div>
       </div>
     </div>
   </div>
 </template>
-/*---------------------##################-----------------------*/
+
 <script>
+import { useRoute } from "vue-router";
+
 export default {
   name: "FlightItinerary",
   data() {
     return {
-      detailsVisible: true, // Initially, the details are visible
-      phoneNumber: "",
+      detailsVisible: true,
+      phone_number: "",
       email: "",
-      phoneNumberError: false,
+      phone_numberError: false,
       emailError: false,
+      flightDetails: {},
+      isRoundTrip: false,
     };
   },
   methods: {
+    updateContactInfo() {
+      this.validateForm();
+      this.$emit("update-contact", { email: this.email, phone_number: this.phone_number });
+    },
     toggleDetails() {
-      this.detailsVisible = !this.detailsVisible; // Toggle the visibility of the details
+      this.detailsVisible = !this.detailsVisible;
     },
     validateForm() {
-      this.phoneNumberError = !this.validatePhoneNumber(this.phoneNumber);
+      this.phone_numberError = !this.validatephone_number(this.phone_number);
       this.emailError = !this.validateEmail(this.email);
     },
-    validatePhoneNumber(phone) {
-      // USA phone number regex: (xxx) xxx-xxxx
-      const phoneRegex = /^(?:\(\d{3}\)\s?)?\d{3}[-\s]?\d{4}$/;
+    validatephone_number(phone) {
+      const phoneRegex = /^\d{10}$/;
       return phoneRegex.test(phone);
     },
     validateEmail(email) {
-      // Basic email regex validation
-      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       return emailRegex.test(email);
     },
+    formatDateTime(dateTimeString) {
+      if (!dateTimeString) return "N/A";
+      const date = new Date(dateTimeString);
+      if (isNaN(date)) return "N/A";
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }).format(date);
+    },
   },
-  watch: {
-    phoneNumber() {
-      this.validateForm();
-    },
-    email() {
-      this.validateForm();
-    },
+  mounted() {
+    const route = useRoute();
+    this.flightDetails = route.query;
+    this.isRoundTrip = !!this.flightDetails.return_departure;
   },
 };
 </script>
-
 
 <style scoped>
 .container {
@@ -180,7 +253,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 
 .flight-path {
@@ -228,30 +301,31 @@ export default {
   margin-top: -2px;
 }
 
-.to {
-  text-align: right;
+.from, .to {
+  text-align: center;
 }
 
 .separator {
   border: none;
-  height: 1px;
-  background-color: #ccc;
-  margin: 15px 0;
+  height: 2px;
+  background-color: #00c896;
+  margin: 0px 0px;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 0px;
+  margin-top: 0%;
 }
 
 .call-now {
   background: #00c896;
   color: white;
   border: none;
-  padding: 12px 18px;
+  margin-top: 5px;
+  padding: 6px 12px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
@@ -264,16 +338,14 @@ export default {
 }
 
 .price-info {
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  margin-left: 10px;
+  margin-left: 0px;
 }
 
 .additional-info {
   font-size: 12px;
   color: #666;
-  margin-top: -5px;
+  margin-top: 0px;
 }
 
 .book-now {
@@ -380,10 +452,16 @@ export default {
     width: 90%;
   }
 
-  .route, .actions {
+  .route{
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
+    width: 100%;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
     width: 100%;
   }
 
@@ -421,9 +499,9 @@ export default {
   }
 
   .call-now, .book-now {
-    padding: 12px 20px;
+    padding: 6px 12px;
     font-size: 16px;
-    margin: 10px 0;
+    margin: 4px 0;
   }
 
   .price {

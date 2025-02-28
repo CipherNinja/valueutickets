@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
+import _ from 'lodash'
 
 const props = defineProps({
   modelValue: {
@@ -22,7 +23,7 @@ const autocompleteContainer = ref(null)
 
 const fetchAllAirports = async () => {
   try {
-    const response = await axios.get('https://gcp.agratasinfotech.com/api/v1/airports/')
+    const response = await axios.get('https://crm.valueutickets.com/api/v1/airports/')
     allAirports.value = response.data
   } catch (error) {
     console.error('Error fetching airports:', error)
@@ -61,10 +62,12 @@ const filterAirports = (searchTerm) => {
   suggestions.value = filtered
 }
 
+const filterAirportsThrottled = _.debounce(filterAirports, 300)
+
 watch(query, (newValue) => {
   emit('update:modelValue', newValue)
   if (newValue && newValue.length >= 3) {
-    filterAirports(newValue)
+    filterAirportsThrottled(newValue)
   } else {
     suggestions.value = []
   }
@@ -101,7 +104,9 @@ const selectSuggestion = (suggestion) => {
       type="text" 
       :placeholder="placeholder" 
       v-model="query" 
+      @keyup="filterAirports(query)"
       autocomplete="on"
+      required
     />
     <ul v-if="suggestions.length">
       <li 
@@ -142,7 +147,7 @@ const selectSuggestion = (suggestion) => {
   border-radius: 10px;
   max-height: 250px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 5000;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -151,6 +156,7 @@ const selectSuggestion = (suggestion) => {
   padding: 5px;
   border-block: 1px solid #000000;
   cursor: pointer;
+  z-index: 5000;
 }
 .airport-autocomplete li:hover {
   background-color: #f0f0f0;

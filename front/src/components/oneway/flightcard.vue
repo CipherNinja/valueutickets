@@ -34,14 +34,22 @@ const flights = computed(() => flightStore.flightData || []);
 
 // Placeholder for airline logos
 const airlineLogos = {
-  jetBlue: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
-  "American Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png",
-  "Delta": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/220px-Delta_logo.svg.png",
-  "United Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png",
-  "Frontier Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Frontier_Airlines_logo.svg/220px-Frontier_Airlines_logo.svg.png",
-  "Hawaiian Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Hawaiian_Airlines_logo_2017.svg/137px-Hawaiian_Airlines_logo_2017.svg.png",
-  "Southwest Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Southwest_Airlines_logo_2014.svg/220px-Southwest_Airlines_logo_2014.svg.png",
-  "Alaska Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Alaska_Airlines_logo.svg/220px-Alaska_Airlines_logo.svg.png",
+  jetBlue:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
+  "American Airlines":
+    "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png",
+  Delta:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/220px-Delta_logo.svg.png",
+  "United Airlines":
+    "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png",
+  "Frontier Airlines":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Frontier_Airlines_logo.svg/220px-Frontier_Airlines_logo.svg.png",
+  "Hawaiian Airlines":
+    "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Hawaiian_Airlines_logo_2017.svg/137px-Hawaiian_Airlines_logo_2017.svg.png",
+  "Southwest Airlines":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Southwest_Airlines_logo_2014.svg/220px-Southwest_Airlines_logo_2014.svg.png",
+  "Alaska Airlines":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Alaska_Airlines_logo.svg/220px-Alaska_Airlines_logo.svg.png",
 };
 
 // Default logo for undefined airlines
@@ -50,7 +58,9 @@ const defaultLogo = "https://via.placeholder.com/150?text=No+Logo";
 onMounted(() => {
   console.log("Flight data:", flights.value); // Check the length and content of flights array
   if (!flights.value.length) {
-    console.warn("No flight data found! Make sure it's stored before navigating.");
+    console.warn(
+      "No flight data found! Make sure it's stored before navigating."
+    );
   }
 });
 
@@ -76,58 +86,144 @@ watch(flights, (newFlights) => {
     loading.value = false;
   }
 });
+
+const flightColors = ["#09c398", "#F40000B5", "#BAA035"];
+
+const getColor = (index) => {
+  return flightColors[index % flightColors.length];
+};
+
+const officeNumber = ["#09c398", "#F40000B5", "#BAA035"];
+
+const selectColor = (index) => {
+  return officeNumber[index % officeNumber.length];
+};
+
+const buttonGradients = [
+  "linear-gradient(to right, #3E41EC, #09C398)",
+  "linear-gradient(to right, #3E41EC, #F4000061)",
+];
+
+const getGradient = (index) => {
+  return buttonGradients[index % buttonGradients.length];
+};
 </script>
 
 <template>
-      <!-- Loading Skeleton -->
-      <div v-if="loading" class="loading-container">
-      <div class="loading-card" v-for="n in 3" :key="n">
-        <div class="loading-bar"></div>
-        <div class="loading-content"></div>
-      </div>
+  <!-- Loading Skeleton -->
+  <div v-if="loading" class="loading-container">
+    <div class="loading-card" v-for="n in 3" :key="n">
+      <div class="loading-bar"></div>
+      <div class="loading-content"></div>
     </div>
-    <div v-else style="width: 100%;">
-  <div class="results-container">
-    <!-- Flight Data -->
-      <div v-for="(flight, index) in flights" :key="index" class="flight-card" :id="(index + 1)">
-        <div class="color-bar"></div>
+  </div>
+  <div v-else style="width: 100%">
+    <div class="results-container">
+      <!-- Flight Data -->
+      <div
+        v-for="(flight, index) in flights"
+        :key="index"
+        class="flight-card"
+        :id="index + 1"
+      >
+        <div
+          class="color-bar"
+          :style="{ backgroundColor: getColor(index) }"
+        ></div>
         <!-- Airline Details -->
-        <div class="airline-info" style="text-align: center;">
-          <img :src="airlineLogos[flight.flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo" />
-          <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.flight_name }}</span>
-        </div>
+        <!-- <div class="airline-info" style="text-align: center">
+          <img
+            :src="airlineLogos[flight.flight_name] || defaultLogo"
+            alt="Airline Logo"
+            class="airline-logo"
+          />
+          <span style="font-size: 25px"
+            >&nbsp;&nbsp;&nbsp;{{ flight.flight_name }}</span
+          >
+        </div> -->
 
         <!-- Flight Details -->
         <div class="flight-details">
+          <img
+            :src="airlineLogos[flight.flight_name] || defaultLogo"
+            alt="Airline Logo"
+            class="airline-logo"
+          />
           <div class="departure">
             <i class="fas fa-plane-departure"></i>
-            <p><strong>Departure:</strong>&nbsp;From: {{ postDataStore.postdata?.source_iata || "N/A" }}</p>
-            <p>{{ formatDateTime(flight.departure) || "N/A" }}</p>
+            <p>
+              <strong>Departure:</strong>&nbsp;From:
+              <span style="font-size: 17px; font-weight: 700">
+                {{ postDataStore.postdata?.source_iata || "N/A" }}</span
+              >
+            </p>
+            <p style="color: #969696; font-size: 15px; font-weight: 500">
+              {{ formatDateTime(flight.departure) || "N/A" }}
+            </p>
           </div>
 
           <div class="duration">
-            <i class="fas fa-stopwatch"></i>&nbsp;
+            <!-- <i class="fas fa-stopwatch"></i>&nbsp;
             <strong>Duration:</strong>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ formatDuration(flight.duration) || "N/A" }}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong> {{ flight.stop_count || 0 }}</p>
+            <p>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+                formatDuration(flight.duration) || "N/A"
+              }}
+            </p> -->
+            <!-- <p>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong>
+              {{ flight.stop_count || 0 }}
+            </p> -->
+
+            
+            <img src="/icons8-airplane-24 (1).png" />
+            -----------------------------------------------------------------------------------------------------------------
+            <img src="/icons8-dot-24.png" />
           </div>
 
           <div class="arrival">
             <i class="fas fa-plane-arrival"></i>&nbsp;
-            <p><strong>Arrival:</strong>&nbsp;To: {{ postDataStore.postdata?.destination_iata || "N/A" }}</p>
-            <p>{{ formatDateTime(flight.arrival) || "N/A" }}</p>
+            <p>
+              <strong>Arrival:</strong>&nbsp;To:
+              <span style="font-size: 17px; font-weight: 700">
+                {{ postDataStore.postdata?.destination_iata || "N/A" }}</span
+              >
+            </p>
+            <p style="color: #969696; font-size: 15px; font-weight: 500">
+              {{ formatDateTime(flight.arrival) || "N/A" }}
+            </p>
           </div>
         </div>
-
+        <hr style="width: auto" />
         <!-- Pricing & Stops -->
         <div class="pricing">
-          <button class="office-number">+1 (833)931-6548</button>
+          <span
+            class="office-number"
+            :style="{ backgroundColor: selectColor(index) }"
+          >
+            <i class="fas fa-stopwatch"></i>&nbsp;
+            <strong>Duration:</strong>
+
+            &nbsp;{{ formatDuration(flight.duration) || "N/A" }}
+          </span>
           <div>
-            <span><strong>Price per Person:</strong></span>
-            <br /><span>Incl. Taxes and Fees</span>
+            <!-- <span><strong>Price per Person:</strong></span>
+            <br /><span>Incl. Taxes and Fees</span> -->
+            <p>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong>
+              {{ flight.stop_count || 0 }}
+            </p>
           </div>
-          <p><strong>${{ flight.price || "N/A" }}</strong></p>
-          <button @click="bookFlight(flight)" class="book-now">Book Now</button>
+          <p :style="{ color: getColor(index) }" style="font-size: 22px">
+            <strong>${{ flight.price || "N/A" }}</strong>
+          </p>
+          <button
+            @click="bookFlight(flight)"
+            class="book-now"
+            :style="{ background: getGradient(index) }"
+          >
+            Book Now
+          </button>
         </div>
       </div>
     </div>
@@ -145,15 +241,15 @@ watch(flights, (newFlights) => {
   border: 1px solid #ddd;
   padding: 0%;
   margin: 10px 0;
-  border-radius: 8px;
+  border-radius: 21px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .color-bar {
-  height: 35px;
+  height: 50px;
   width: 100%;
-  border-radius: 8px 8px 0 0;
-  background-color: #ff7b00;
+  border-radius: 21px 21px 0 0;
+  /* background-color: #09c398; */
 }
 
 .airline-info {
@@ -171,6 +267,7 @@ watch(flights, (newFlights) => {
 .flight-details {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 15px;
 }
 
@@ -179,18 +276,18 @@ watch(flights, (newFlights) => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 15px;
 }
 
-.pricing p {
+/* .pricing p {
   margin: 0;
   color: #ff7b00;
   font-size: 27px;
-}
+} */
 
 .office-number {
-  background-color: #ff7b00;
+  background-color: #09c398;
   color: white;
   font-weight: 700;
   padding: 7px;
@@ -202,7 +299,7 @@ watch(flights, (newFlights) => {
 }
 
 .book-now {
-  background-image: linear-gradient(to right, #dbac13, #e77911);
+  background-image: linear-gradient(to right, #3e41ec, #09c398);
   color: white;
   padding: 7px;
   font-weight: 700;

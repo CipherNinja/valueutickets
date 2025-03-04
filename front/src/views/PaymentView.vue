@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onUnmounted , computed } from 'vue';
+import { ref, onUnmounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import Header from '../components/Header.vue';
@@ -66,7 +66,7 @@ const flightDetails = route.query;
 const totalamount = flightDetails.price || 0.0;
 
 const collectData = () => {
-  return {
+  let data = {
     phone_number: itineraryDetails.value.phone_number || 'NA',
     email: itineraryDetails.value.email || 'NA',
     date: new Date().toISOString(),
@@ -75,7 +75,7 @@ const collectData = () => {
     arrival_iata: flightDetails.dest || 'NA',
     departure_date: flightDetails.departure || 'NA',
     arrival_date: flightDetails.arrival || 'NA',
-    passengers:  JSON.parse(JSON.stringify(passengersmain.value)),
+    passengers: JSON.parse(JSON.stringify(passengersmain.value)),
     payment: {
       address_line1: billingDetails.value.address_line1 || 'NA',
       address_line2: billingDetails.value.address_line2 || 'NA',
@@ -96,6 +96,18 @@ const collectData = () => {
     total_refund_protection: travelProtection.value,
     payble_amount: flightDetails.price || 0.0,
   };
+
+  if (flightDetails.return_departure && flightDetails.return_arrival) {
+    data = {
+      ...data,
+      return_departure_iata: flightDetails.dest,
+      return_arrival_iata: flightDetails.src,
+      return_departure_date: flightDetails.return_departure || 'NA',
+      return_arrival_date: flightDetails.return_arrival || 'NA',
+    };
+  }
+
+  return data;
 };
 
 const errors = ref({});
@@ -103,37 +115,6 @@ const responseMessage = ref("");
 
 const validateForm = () => {
   errors.value = {};
-
-  // if (!/^[0-9]{10}$/.test(itineraryDetails.value.phone_number)) {
-  //   console.log("Phone number invalid");
-  //   errors.value.phone_number = "Please enter a valid 10-digit phone number.";
-  // }
-
-
-  // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(itineraryDetails.value.email)) {
-  //   console.log("Email invalid");
-  //   errors.value.email = "Invalid email format.";
-  // }
-
-
-  // Additional validation for required fields, dates, passengers, etc.
-  // const requiredFields = ["date", "flight_name", "departure_iata", "arrival_iata", "departure_date", "arrival_date"];
-  // requiredFields.forEach(field => {
-  //   if (!itineraryDetails.value[field]) {
-  //   console.log("itineraryDetails invalid")
-  //     errors.value[field] = "This field is required.";
-  //   }
-  // });
-
-  // if (flightDetails.departure && flightDetails.arrival) {
-  //   let departure = new Date(flightDetails.departure);
-  //   let arrival = new Date(flightDetails.arrival);
-
-  //   if (arrival <= departure) {
-  //     console.log("itineraryDetails invalid")
-  //     errors.value.arrival_date = "Arrival date must be after departure date.";
-  //   }
-  // }
 
   // Validate passengers details
   if (passengerDetails.value.length > 8) {
@@ -146,7 +127,6 @@ const validateForm = () => {
   const today = new Date();
 
   passengerDetails.value.forEach((passenger, index) => {
-
     if (!passenger.first_name || !passenger.last_name || !passenger.dob || !passenger.gender) {
       console.log("passengerdetails invalid 2")
       errors.value[`passenger_${index}`] = `Passenger ${index + 1} details are incomplete.`;
@@ -175,7 +155,6 @@ const validateForm = () => {
     console.log("infants > 3 && adults < 2")
     errors.value.passengers = "If there are more than 3 infants, at least 2 adults must travel.";
   }
-
 
   // Validate required fields
   const requiredField = [
@@ -232,18 +211,12 @@ const validateForm = () => {
 
   return Object.keys(errors.value).length === 0;
 };
-// console.log("Not click");
 
 const sendDataToBackend = async () => {
-  // console.log("Yes do click");
-  // const datamain = collectData();
-  // console.log("Collected Data:", JSON.stringify(datamain, null, 2));
   if (validateForm()) {
     const datamain = collectData();
-    // console.log("Collected Data:", JSON.stringify(datamain, null, 2));
     try {
-      const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', datamain); 
-      // console.log('Data sent successfully:', response.data);
+      const response = await axios.post('https://crm.valueutickets.com/api/v2/flight/booking/', datamain);
       responseMessage.value = response.data.message;
       showPopup.value = true;
     } catch (error) {
@@ -262,7 +235,6 @@ onUnmounted(() => {
   // For example, clearing intervals or unsubscribing from events
 });
 
-
 const showPopup = ref(false);
 const loading = ref(false);
 
@@ -274,8 +246,6 @@ function handleClick() {
   sendDataToBackend();
   openPopup();
 }
-
-
 </script>
 
 

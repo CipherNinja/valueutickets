@@ -7,6 +7,9 @@
   import FM from "../components/FM.vue";
   import resultlist from '../components/oneway/resultlist.vue';
 
+
+  import OneWaycard from '../components/oneway/OneWaycard.vue';
+
   // Reactive state to track window width
   const windowWidth = ref(window.innerWidth);
 
@@ -29,6 +32,8 @@
 <template>
   <main>
     <Header />
+
+    <OneWaycard/>
     <FlightSearch />
     <!-- Conditional rendering based on screen size -->
     <div class="main-box">  

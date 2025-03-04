@@ -30,7 +30,17 @@ const formatDateTime = (dateTimeString) => {
 };
 
 // Retrieve flight data from store
-const flights = computed(() => flightStore.flightData || []);
+const flights = computed(() => {
+  if (!flightStore.flightData) return [];
+
+  // Sort flights by stops and then by price
+  return [...flightStore.flightData].sort((a, b) => {
+    if (a.stop_count === b.stop_count) {
+      return a.price - b.price;
+    }
+    return a.stop_count - b.stop_count;
+  });
+});
 
 // Placeholder for airline logos
 const airlineLogos = {
@@ -179,7 +189,6 @@ const getGradient = (index) => {
           >
             <i class="fas fa-stopwatch"></i>&nbsp;
             <strong>Duration:</strong>
-
             &nbsp;{{ formatDuration(flight.duration) || "N/A" }}
           </span>
           <div>
@@ -237,14 +246,6 @@ const getGradient = (index) => {
   height: 50px;
   width: 100%;
   border-radius: 21px 21px 0 0;
-  /* background-color: #09c398; */
-}
-
-.airline-info {
-  font-size: 18px;
-  font-weight: bold;
-  padding: 15px;
-  text-align: center;
 }
 
 .airline-logo {
@@ -259,7 +260,6 @@ const getGradient = (index) => {
   padding: 15px;
 }
 
-/* Pricing Section */
 .pricing {
   display: flex;
   flex-direction: row;
@@ -267,12 +267,6 @@ const getGradient = (index) => {
   justify-content: space-around;
   padding: 15px;
 }
-
-/* .pricing p {
-  margin: 0;
-  color: #ff7b00;
-  font-size: 27px;
-} */
 
 .office-number {
   background-color: #09c398;
@@ -333,6 +327,7 @@ const getGradient = (index) => {
     max-width: 250px;
   }
 }
+
 /* Loading Skeleton */
 .loading-container {
   display: flex;
@@ -383,3 +378,4 @@ const getGradient = (index) => {
   }
 }
 </style>
+

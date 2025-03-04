@@ -11,7 +11,6 @@
         <button @click="toggleFaq(index)" class="faq-question">
           <span>{{ faq.question }}</span>
           <i :class="['fas', faq.open ? 'fa-angle-up' : 'fa-angle-down']" class="toggle-icon"></i>
-          
         </button>
         <transition name="fade">
           <div v-if="faq.open" class="faq-answer">
@@ -20,19 +19,6 @@
         </transition>
       </div>
     </section>
-
-    <!-- <section class="faq-section">
-        <div v-for="(faq, index) in faqs" :key="index" class="faq-item">
-          <button @click="toggleFaq(index)" class="faq-question">
-            {{ faq.question }}
-            <i class = "fas fa-angle-down"></i>
-            <span class="toggle-icon">{{ faq.open ? '>' : 'v' }}</span>
-          </button>
-          <div v-if="faq.open" class="faq-answer">
-            {{ faq.answer }}
-          </div>
-        </div>
-      </section> -->
   </div>
 </template>
 
@@ -79,11 +65,20 @@ export default {
           open: false,
         },
       ],
+      activeFaqIndex: null,
     };
   },
   methods: {
     toggleFaq(index) {
-      this.faqs[index].open = !this.faqs[index].open;
+      if (this.activeFaqIndex === index) {
+        this.faqs[index].open = !this.faqs[index].open;
+      } else {
+        if (this.activeFaqIndex !== null) {
+          this.faqs[this.activeFaqIndex].open = false;
+        }
+        this.faqs[index].open = true;
+      }
+      this.activeFaqIndex = index;
     },
   },
 };

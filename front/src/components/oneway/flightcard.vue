@@ -130,17 +130,6 @@ const getGradient = (index) => {
           class="color-bar"
           :style="{ backgroundColor: getColor(index) }"
         ></div>
-        <!-- Airline Details -->
-        <!-- <div class="airline-info" style="text-align: center">
-          <img
-            :src="airlineLogos[flight.flight_name] || defaultLogo"
-            alt="Airline Logo"
-            class="airline-logo"
-          />
-          <span style="font-size: 25px"
-            >&nbsp;&nbsp;&nbsp;{{ flight.flight_name }}</span
-          >
-        </div> -->
 
         <!-- Flight Details -->
         <div class="flight-details">
@@ -163,21 +152,8 @@ const getGradient = (index) => {
           </div>
 
           <div class="duration">
-            <!-- <i class="fas fa-stopwatch"></i>&nbsp;
-            <strong>Duration:</strong>
-            <p>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-                formatDuration(flight.duration) || "N/A"
-              }}
-            </p> -->
-            <!-- <p>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong>
-              {{ flight.stop_count || 0 }}
-            </p> -->
-
-            
             <img src="/icons8-airplane-24 (1).png" />
-            -----------------------------------------------------------------------------------------------------------------
+            <span class="dashed"></span>
             <img src="/icons8-dot-24.png" />
           </div>
 
@@ -207,8 +183,6 @@ const getGradient = (index) => {
             &nbsp;{{ formatDuration(flight.duration) || "N/A" }}
           </span>
           <div>
-            <!-- <span><strong>Price per Person:</strong></span>
-            <br /><span>Incl. Taxes and Fees</span> -->
             <p>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Stops:</strong>
               {{ flight.stop_count || 0 }}
@@ -231,6 +205,20 @@ const getGradient = (index) => {
 </template>
 
 <style scoped>
+.duration {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 10px;
+  width: 60%;
+}
+.dashed {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  width: 100%;
+  border: 2px dashed black;
+}
 .results-container {
   width: 100%;
   margin: auto;
@@ -318,7 +306,9 @@ const getGradient = (index) => {
     display: flex;
     flex-direction: column;
   }
-
+  .duration {
+    width: 100%;
+  }
   .flight-card {
     display: flex;
     flex-direction: column;

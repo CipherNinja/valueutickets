@@ -4,6 +4,10 @@ import Resultoneway from '../views/SearchResultViewOneway.vue'
 import Resultroundtrip from '../views/SearchResultViewRoundtrip.vue'
 import PayView from '../views/PaymentView.vue'
 
+import Booking from '../views/Booking.vue'
+import LoginForBooking from '../views/BookingLoginView.vue'
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

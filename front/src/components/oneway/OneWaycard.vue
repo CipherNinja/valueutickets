@@ -86,24 +86,6 @@
 export default {
 
   data() {
-
-
-// New method to handle booking
-const bookFlight = (flight) => {
-router.push({
-  path: "/pay",
-  query: {
-    flight_name: flight.flight_name,
-    src: postDataStore.postdata?.source_iata,
-    departure: flight.departure,
-    dest: postDataStore.postdata?.destination_iata,
-    arrival: flight.arrival,
-    duration: flight.duration,
-    stop_count: flight.stop_count,
-    price: flight.price,
-  },
-});
-};
     return {
       selected: 0, // Default selected tab
       options: [
@@ -112,8 +94,6 @@ router.push({
         { label: "Quickest", price: "$149.10" }
       ],
    
-
-
 
       deals: [
         {

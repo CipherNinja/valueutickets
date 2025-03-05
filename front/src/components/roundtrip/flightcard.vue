@@ -32,14 +32,22 @@ const flights = computed(() => flightStore.flightData || []);
 
 // Placeholder for airline logos
 const airlineLogos = {
-  "jetBlue": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
-  "American Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png",
-  "Delta": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/220px-Delta_logo.svg.png",
-  "United Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png",
-  "Frontier Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Frontier_Airlines_logo.svg/220px-Frontier_Airlines_logo.svg.png",
-  "Hawaiian Airlines": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Hawaiian_Airlines_logo_2017.svg/137px-Hawaiian_Airlines_logo_2017.svg.png",
-  "Southwest Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Southwest_Airlines_logo_2014.svg/220px-Southwest_Airlines_logo_2014.svg.png",
-  "Alaska Airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Alaska_Airlines_logo.svg/220px-Alaska_Airlines_logo.svg.png",
+  jetBlue:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/220px-JetBlue_Airways_Logo.svg.png",
+  "American Airlines":
+    "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/1920px-American_Airlines_logo_2013.svg.png",
+  Delta:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/220px-Delta_logo.svg.png",
+  "United Airlines":
+    "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png",
+  "Frontier Airlines":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Frontier_Airlines_logo.svg/220px-Frontier_Airlines_logo.svg.png",
+  "Hawaiian Airlines":
+    "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Hawaiian_Airlines_logo_2017.svg/137px-Hawaiian_Airlines_logo_2017.svg.png",
+  "Southwest Airlines":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Southwest_Airlines_logo_2014.svg/220px-Southwest_Airlines_logo_2014.svg.png",
+  "Alaska Airlines":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Alaska_Airlines_logo.svg/220px-Alaska_Airlines_logo.svg.png",
 };
 
 // Default logo for undefined airlines
@@ -50,7 +58,7 @@ onMounted(() => {
   if (!flights.value.length) {
     console.warn("No flight data found!");
   }
-  window.addEventListener('resize', updateScreenWidth);
+  window.addEventListener("resize", updateScreenWidth);
 });
 
 const updateScreenWidth = () => {
@@ -93,31 +101,44 @@ watch(flights, (newFlights) => {
     </div>
   </div>
   <div v-else class="results-container">
-    <div v-if="screenWidth > 600" v-for="(flight, index) in flights" :key="index" class="flight-card">
+    <div
+      v-if="screenWidth > 600"
+      v-for="(flight, index) in flights"
+      :key="index"
+      class="flight-card"
+    >
       <!-- Original structure for screens wider than 600px -->
       <div class="color-bar"></div>
-      <div class="airline-info" style="text-align: center;">
-        <img :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo" />
-        <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.legs[0].flight_name }}</span>
+      <div class="airline-info" style="text-align: center">
+        <img
+          :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo"
+          alt="Airline Logo"
+          class="airline-logo"
+        />
+        <span style="font-size: 25px"
+          >&nbsp;&nbsp;&nbsp;{{ flight.legs[0].flight_name }}</span
+        >
       </div>
       <div class="flight-details-box">
         <div class="flight-details">
           <div class="departure">
             <p>
               <i class="fas fa-plane-departure"></i>&nbsp;
-              <strong>Departure:</strong> {{ postDataStore.postdata?.source_iata || "N/A" }}
+              <strong>Departure:</strong>
+              {{ postDataStore.postdata?.source_iata || "N/A" }}
             </p>
             <p>{{ formatDateTime(flight.legs[0].departure) || "N/A" }}</p>
           </div>
           <div class="duration">
-            <i class="fas fa-stopwatch"></i>&nbsp;
-            <strong>Duration:</strong> {{ formatDuration(flight.legs[0].duration) || "N/A" }}
+            <i class="fas fa-stopwatch"></i>&nbsp; <strong>Duration:</strong>
+            {{ formatDuration(flight.legs[0].duration) || "N/A" }}
             <p><strong>Stops:</strong> {{ flight.legs[0].stop_count || 0 }}</p>
           </div>
           <div class="arrival">
             <p>
               <i class="fas fa-plane-arrival"></i>&nbsp;
-              <strong>Arrival:</strong> {{ postDataStore.postdata?.destination_iata || "N/A" }}
+              <strong>Arrival:</strong>
+              {{ postDataStore.postdata?.destination_iata || "N/A" }}
             </p>
             <p>{{ formatDateTime(flight.legs[0].arrival) || "N/A" }}</p>
           </div>
@@ -126,19 +147,22 @@ watch(flights, (newFlights) => {
           <div class="departure">
             <p>
               <i class="fas fa-plane-departure"></i>&nbsp;
-              <strong>Return Departure:</strong> {{ postDataStore.postdata?.destination_iata || "N/A" }}
+              <strong>Return Departure:</strong>
+              {{ postDataStore.postdata?.destination_iata || "N/A" }}
             </p>
             <p>{{ formatDateTime(flight.legs[1].departure) || "N/A" }}</p>
           </div>
           <div class="duration">
             <i class="fas fa-stopwatch"></i>&nbsp;
-            <strong>Return Duration:</strong> {{ formatDuration(flight.legs[1].duration) || "N/A" }}
+            <strong>Return Duration:</strong>
+            {{ formatDuration(flight.legs[1].duration) || "N/A" }}
             <p><strong>Stops:</strong> {{ flight.legs[1].stop_count || 0 }}</p>
           </div>
           <div class="arrival">
             <p>
               <i class="fas fa-plane-arrival"></i>&nbsp;
-              <strong>Return Arrival:</strong> {{ postDataStore.postdata?.source_iata || "N/A" }}
+              <strong>Return Arrival:</strong>
+              {{ postDataStore.postdata?.source_iata || "N/A" }}
             </p>
             <p>{{ formatDateTime(flight.legs[1].arrival) || "N/A" }}</p>
           </div>
@@ -150,16 +174,29 @@ watch(flights, (newFlights) => {
           <span><strong>Price per Person:</strong></span>
           <br /><span>Incl. Taxes and Fees</span>
         </div>
-        <p><strong>${{ flight.total_price || "N/A" }}</strong></p>
+        <p>
+          <strong>${{ flight.total_price || "N/A" }}</strong>
+        </p>
         <button @click="bookFlight(flight)" class="book-now">Book Now</button>
       </div>
     </div>
-    <div v-else v-for="(flight, indexs) in flights" :key="indexs" class="flight-card">
+    <div
+      v-else
+      v-for="(flight, indexs) in flights"
+      :key="indexs"
+      class="flight-card"
+    >
       <!-- Simplified structure for screens narrower than 600px -->
       <div class="color-bar"></div>
-      <div class="airline-info" style="text-align: center;">
-        <img :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo" alt="Airline Logo" class="airline-logo" />
-        <span style="font-size: 25px;">&nbsp;&nbsp;&nbsp;{{ flight.legs[0].flight_name }}</span>
+      <div class="airline-info" style="text-align: center">
+        <img
+          :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo"
+          alt="Airline Logo"
+          class="airline-logo"
+        />
+        <span style="font-size: 25px"
+          >&nbsp;&nbsp;&nbsp;{{ flight.legs[0].flight_name }}</span
+        >
       </div>
       <div class="flight-details-box">
         <div class="flight-details">
@@ -181,9 +218,13 @@ watch(flights, (newFlights) => {
         <div class="duration">
           <i class="fas fa-stopwatch"></i>&nbsp;
           {{ formatDuration(flight.legs[0].duration) || "N/A" }}
-          &nbsp;<strong>|&nbsp; Stops:</strong> {{ flight.legs[0].stop_count || 0 }}
+          &nbsp;<strong>|&nbsp; Stops:</strong>
+          {{ flight.legs[0].stop_count || 0 }}
         </div>
-        <div class="line" style="background-color: black; height: 2px; width: 95%;"></div>
+        <div
+          class="line"
+          style="background-color: black; height: 2px; width: 95%"
+        ></div>
         <div class="flight-details">
           <div class="departure">
             <p>
@@ -203,10 +244,11 @@ watch(flights, (newFlights) => {
         <div class="duration">
           <i class="fas fa-stopwatch"></i>&nbsp;
           {{ formatDuration(flight.legs[1].duration) || "N/A" }}
-          &nbsp;<strong>|&nbsp; Stops:</strong> {{ flight.legs[1].stop_count || 0 }}
+          &nbsp;<strong>|&nbsp; Stops:</strong>
+          {{ flight.legs[1].stop_count || 0 }}
         </div>
       </div>
-      <div class="price-box" style="display: flex; flex-direction: row;">
+      <div class="price-box" style="display: flex; flex-direction: row">
         <div class="pricing">
           <div>
             <span><strong>Price per Person:</strong></span>
@@ -215,14 +257,15 @@ watch(flights, (newFlights) => {
           <button class="office-number">+1 (833)931-6548</button>
         </div>
         <div class="pricing">
-          <p><strong>${{ flight.total_price || "N/A" }}</strong></p>
+          <p>
+            <strong>${{ flight.total_price || "N/A" }}</strong>
+          </p>
           <button @click="bookFlight(flight)" class="book-now">Book Now</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .results-container {
@@ -318,8 +361,8 @@ watch(flights, (newFlights) => {
     align-items: center;
     text-align: center;
   }
-  .flight-details-box{ 
-    width: 100%; 
+  .flight-details-box {
+    width: 100%;
     padding: 0px;
     padding-inline: 20px;
   }

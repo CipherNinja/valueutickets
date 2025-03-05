@@ -4,7 +4,7 @@ import Resultoneway from '../views/SearchResultViewOneway.vue'
 import Resultroundtrip from '../views/SearchResultViewRoundtrip.vue'
 import PayView from '../views/PaymentView.vue'
 import LoginForBooking from '../views/BookingLoginView.vue'
-
+import ContactUsView from '../views/ContactUsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,6 +34,11 @@ const router = createRouter({
       path: '/booking',
       name: 'LoginForBooking',
       component: LoginForBooking,
+    },
+    {
+      path: '/contact-us',
+      name: 'ContactUsView',
+      component: ContactUsView,
     }
   ],
 })

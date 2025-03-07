@@ -16,8 +16,8 @@
         <li><router-link to="/booking">My Booking</router-link></li>
         <!-- <li><router-link to="/blogs">Blogs</router-link></li>
         <li><router-link to="/packages">Packages</router-link></li> -->
-        <li><router-link to="/services">Contact Us</router-link></li>
-        <li><a href="https://crm.valueutickets.com/admin"><button class="login-btn">Login or Signup</button></a></li>
+        <li><router-link to="/contact-us">Contact Us</router-link></li>
+        <li><a href="http://127.0.0.1:8000/api/v3/contact-us"><button class="login-btn">Login or Signup</button></a></li>
       </ul>
       <div class="dropdown" @click.stop="toggleDropdown">
           <div class="dropdown-toggle">

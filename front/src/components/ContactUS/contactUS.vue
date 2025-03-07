@@ -171,10 +171,10 @@ export default {
       this.isSubmitting = true;
       try {
         const response = await axios.post(
-          "https://gripchain.in/api/contactus",
+          "https://crm.valueutickets.com/api/v3/contact-us/api/v3/contact-us/",
           this.formData
         );
-        if (response.status === 200) {
+        if (response.status === 201) {
           alert("Your response has been recorded.");
           this.resetForm();
           this.submissionSuccess = true;

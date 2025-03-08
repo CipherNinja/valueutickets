@@ -7,6 +7,10 @@ import PayView from '../views/PaymentView.vue'
 import Booking from '../views/Booking.vue'
 import LoginForBooking from '../views/BookingLoginView.vue'
 
+import HotelView from '../views/HotelView.vue'
+
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,7 +46,12 @@ const router = createRouter({
       path: '/booking',
       name: 'LoginForBooking',
       component: LoginForBooking,
-    }
+    },
+    {
+      path:'/hotel',
+      name:'HotelView',
+      component:HotelView,
+    },
   ],
 })
 

@@ -3,11 +3,46 @@ import { computed, watch, ref, onMounted } from "vue";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePostDataStore } from "@/stores/postDataStore";
 import { useRouter } from "vue-router";
+import axios from "axios"; // Axios for API calls
 
 const flightStore = useFlightStore();
 const postDataStore = usePostDataStore();
 const router = useRouter();
 const loading = ref(true); // Loading state
+
+// Reactive object to store IATA-to-City mapping
+const airportData = ref({});
+
+// Function to fetch and map airport data
+const fetchAirportData = async () => {
+  try {
+    const response = await axios.get("https://crm.valueutickets.com/api/v1/airports/");
+    response.data.forEach((airport) => {
+      if (airport.iata && airport.city) {
+        airportData.value[airport.iata] = airport.city; // Map IATA to City
+      }
+    });
+    console.log("Mapped Airport Data:", airportData.value); // Debugging log
+  } catch (error) {
+    console.error("Error fetching airport data:", error);
+  }
+};
+
+// Function to format City Name with IATA
+const formatCityWithIATA = (iata) => {
+  if (!iata) return "Unknown (N/A)"; // Handle missing IATA codes
+  const city = airportData.value[iata];
+  return city ? `${city} (${iata})` : `Unknown (${iata})`;
+};
+
+// Fetch airport data on component mount
+onMounted(async () => {
+  await fetchAirportData(); // Ensure airport data is fetched before rendering
+  console.log("Flight data:", flights.value); // Log flights data for debugging
+  if (!flights.value.length) {
+    console.warn("No flight data found! Make sure it's stored before navigating.");
+  }
+});
 
 // Function to format duration (minutes to hours & minutes)
 const formatDuration = (minutes) => {
@@ -32,11 +67,10 @@ const formatDateTime = (dateTimeString) => {
 // Retrieve flight data from store
 const flights = computed(() => {
   if (!flightStore.flightData) return [];
-
   // Sort flights by stops and then by price
   return [...flightStore.flightData].sort((a, b) => {
     if (a.stop_count === b.stop_count) {
-      return a.price - b.price;
+      return a.price - b.price
     }
     return a.stop_count - b.stop_count;
   });
@@ -65,16 +99,15 @@ const airlineLogos = {
 // Default logo for undefined airlines
 const defaultLogo = "https://via.placeholder.com/150?text=No+Logo";
 
-onMounted(() => {
-  console.log("Flight data:", flights.value); // Check the length and content of flights array
-  if (!flights.value.length) {
-    console.warn(
-      "No flight data found! Make sure it's stored before navigating."
-    );
-  }
-});
+const officeNumber = ["#09c398", "#F40000B5", "#BAA035"];
 
-// New method to handle booking
+// Function to determine the color based on index
+const selectColor = (index) => {
+  return officeNumber[index % officeNumber.length];
+};
+
+
+// Method to handle flight booking
 const bookFlight = (flight) => {
   router.push({
     path: "/pay",
@@ -90,33 +123,23 @@ const bookFlight = (flight) => {
     },
   });
 };
-// Watch flights data and update loading state
+
+// Watch flights data to update loading state
 watch(flights, (newFlights) => {
   if (newFlights.length > 0) {
     loading.value = false;
   }
 });
 
+// Color settings for styling
 const flightColors = ["#09c398", "#F40000B5", "#BAA035"];
-
-const getColor = (index) => {
-  return flightColors[index % flightColors.length];
-};
-
-const officeNumber = ["#09c398", "#F40000B5", "#BAA035"];
-
-const selectColor = (index) => {
-  return officeNumber[index % officeNumber.length];
-};
+const getColor = (index) => flightColors[index % flightColors.length];
 
 const buttonGradients = [
   "linear-gradient(to right, #3E41EC, #09C398)",
   "linear-gradient(to right, #3E41EC, #F4000061)",
 ];
-
-const getGradient = (index) => {
-  return buttonGradients[index % buttonGradients.length];
-};
+const getGradient = (index) => buttonGradients[index % buttonGradients.length];
 </script>
 
 <template>
@@ -148,13 +171,13 @@ const getGradient = (index) => {
             alt="Airline Logo"
             class="airline-logo"
           />
-          <div class="departure">
+                    <div class="departure">
             <i class="fas fa-plane-departure"></i>
             <p>
-              <strong>Departure:</strong>&nbsp;From:
+              <!-- <strong>Departure:</strong>&nbsp;From: -->
               <span style="font-size: 17px; font-weight: 700">
-                {{ postDataStore.postdata?.source_iata || "N/A" }}</span
-              >
+                {{ formatCityWithIATA(postDataStore.postdata?.source_iata) || "N/A" }}
+              </span>
             </p>
             <p style="color: #969696; font-size: 15px; font-weight: 500">
               {{ formatDateTime(flight.departure) || "N/A" }}
@@ -170,10 +193,10 @@ const getGradient = (index) => {
           <div class="arrival">
             <i class="fas fa-plane-arrival"></i>&nbsp;
             <p>
-              <strong>Arrival:</strong>&nbsp;To:
+              <!-- <strong>Arrival:</strong>&nbsp;To: -->
               <span style="font-size: 17px; font-weight: 700">
-                {{ postDataStore.postdata?.destination_iata || "N/A" }}</span
-              >
+                {{ formatCityWithIATA(postDataStore.postdata?.destination_iata) || "N/A" }}
+              </span>
             </p>
             <p style="color: #969696; font-size: 15px; font-weight: 500">
               {{ formatDateTime(flight.arrival) || "N/A" }}

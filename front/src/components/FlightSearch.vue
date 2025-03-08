@@ -178,16 +178,16 @@ body {
   background-repeat: no-repeat;
   
   /* Ensure no default background (no white screen) */
-  background-image: url('../assets/images/mountain.jpg'), 
-                    url('../assets/images/plane.jpg'), 
+  background-image: url('../assets/images/beach.jpg'); 
+                    /* url('../assets/images/plane.jpg'), 
                     url('../assets/images/city.jpg'), 
-                    url('../assets/images/dark.jpg');
+                    url('../assets/images/dark.jpg'); */
 
   /* Animation */
-  animation: backgroundAnimation 16s infinite;
+  /* animation: backgroundAnimation 16s infinite; */
 }
 
-@keyframes backgroundAnimation {
+/* @keyframes backgroundAnimation {
   0%, 100% {
     background-image: url('../assets/images/mountainn.png'), 
                       url('../assets/images/plane.jpg'), 
@@ -212,7 +212,7 @@ body {
                       url('../assets/images/city.jpg'), 
                       url('../assets/images/mountainn.png');
   }
-}
+} */
 
 
 .content-wrapper {

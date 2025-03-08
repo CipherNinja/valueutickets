@@ -80,9 +80,9 @@ United State
     <!-- Footer Policies and Payment Methods -->
     <div class="footer-bottom">
       <ul class="order">
-        <li><a href="#">Terms & Conditions</a></li>
-        <li><a href="#">Cookies Policy</a></li>
-        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="/terms-and-conditions#terms">Terms & Conditions</a></li>
+        <li><a href="/terms-and-conditions#cancellation">Cancellation Policy</a></li>
+        <li><a href="/terms-and-conditions#privacy">Privacy Policy</a></li>
       </ul>
 
       <div class="payment-icons">

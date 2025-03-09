@@ -2,7 +2,7 @@
   <div class="container">
     <div class="text-section">
       <h2 class="about-title">About Us <span class="underline"></span></h2>
-      <h1 class="welcome-title">Welcome to <span class="hotel-name">Hotel Name</span></h1>
+      <h1 class="welcome-title">Welcome to <span class="hotel-name">Valueu Tickets</span></h1>
       <p class="description">
         Valueu Tickets is your trusted travel partner, offering seamless solutions for hotel bookings, flight tickets, tour packages, cab services, and more. While we don't own hotels, we specialize in securing value-packed accommodations tailored to your preferences at unbeatable prices. Choose your destination and enjoy stunning views as per your desires.
       </p>

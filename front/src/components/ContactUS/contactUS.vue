@@ -171,7 +171,7 @@ export default {
       this.isSubmitting = true;
       try {
         const response = await axios.post(
-          "https://crm.valueutickets.com/api/v3/contact-us/api/v3/contact-us/",
+          "https://crm.valueutickets.com/api/v3/contact-us/",
           this.formData
         );
         if (response.status === 201) {

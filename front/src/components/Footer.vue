@@ -43,11 +43,11 @@ Proudly serving travelers with exceptional deals that reflect the American dream
   <div class="footer-column">
     <h2>Our Products</h2>
     <ul>
-      <li><a href="#">Domestic Flights</a></li>
-      <li><a href="#">International Flights</a></li>
-      <li><a href="#">Multi-city Flights</a></li>
-      <li><a href="#">Domestic Hotels</a></li>
-      <li><a href="#">International Hotels</a></li>
+      <li><a href="/">Domestic Flights</a></li>
+      <li><a href="/">International Flights</a></li>
+      <li><a href="/">Multi-city Flights</a></li>
+      <li><a href="/hotel-booking">Domestic Hotels</a></li>
+      <li><a href="/hotel-booking">International Hotels</a></li>
     </ul>
   </div>
 

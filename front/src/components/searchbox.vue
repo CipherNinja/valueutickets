@@ -157,9 +157,11 @@ const computedRoute = computed(() => {
       <button @click="activeTab = 'flight'" :class="{ active: activeTab === 'flight' }">
         <i class="fas fa-plane"></i> Flight
       </button>
-      <button @click="activeTab = 'tour'" :class="{ active: activeTab === 'tour' }">
-        <i class="fas fa-globe"></i> Tour
+      <a href="/hotel-booking">
+        <button @click="activeTab = 'tour'" :class="{ active: activeTab === 'tour' }">
+        <i class="fas fa-globe"></i> Hotels
       </button>
+      </a>
     </div>
     
     <div v-if="activeTab === 'flight'">

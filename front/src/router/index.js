@@ -6,6 +6,8 @@ import PayView from '../views/PaymentView.vue'
 import LoginForBooking from '../views/BookingLoginView.vue'
 import ContactUsView from '../views/ContactUsView.vue'
 import TermsViewPage from '../views/TermsViewPage.vue'
+import HotelPageView from '../views/HotelPageView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,6 +47,11 @@ const router = createRouter({
       path: '/terms-and-conditions',
       name: 'TermsViewPage',
       component: TermsViewPage,
+    },
+    {
+      path: '/hotel-booking',
+      name: 'HotelPageView',
+      component: HotelPageView,
     }
   ],
 })

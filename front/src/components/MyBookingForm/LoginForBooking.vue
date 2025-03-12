@@ -8,7 +8,7 @@
       <div class="form-container p-4">
         <div class="form-group">
           <label for="bookingId">Booking ID</label>
-          <input v-model="bookingId" type="text" class="form-control" id="bookingId" placeholder="BookingID" />
+          <input v-model="bookingId" type="text" class="form-control" id="bookingId" placeholder="Booking ID" />
         </div>
         <div class="form-group">
           <label for="email">Email ID</label>
@@ -42,6 +42,26 @@
             <th>Arrival Date</th>
             <td>{{ formatDateTime(bookingDetails.arrival_date) }}</td>
           </tr>
+          <tr v-if="bookingDetails.return_flight">
+            <th>Return Departure IATA</th>
+            <td>{{ bookingDetails.return_flight.return_departure_iata }}</td>
+          </tr>
+          <tr v-if="bookingDetails.return_flight">
+            <th>Return Arrival IATA</th>
+            <td>{{ bookingDetails.return_flight.return_arrival_iata }}</td>
+          </tr>
+          <tr v-if="bookingDetails.return_flight">
+            <th>Return Departure Date</th>
+            <td>{{ formatDateTime(bookingDetails.return_flight.return_departure_date) }}</td>
+          </tr>
+          <tr v-if="bookingDetails.return_flight">
+            <th>Return Arrival Date</th>
+            <td>{{ formatDateTime(bookingDetails.return_flight.return_arrival_date) }}</td>
+          </tr>
+          <tr>
+            <th>Ticket Status</th>
+            <td>{{ bookingDetails.TicketStatus }}</td>
+          </tr>
         </tbody>
       </table>
 
@@ -54,6 +74,7 @@
             <th>Gender</th>
             <th>Age</th>
             <th>Type</th>
+            <th>Ticket Details</th>
           </tr>
         </thead>
         <tbody>
@@ -63,6 +84,11 @@
             <td>{{ passenger.gender }}</td>
             <td>{{ passenger.age }}</td>
             <td>{{ getPassengerType(passenger.age) }}</td>
+            <td v-if="passenger.ticket_details">
+              <div><strong>E-ticket:</strong> {{ passenger.ticket_details.e_ticket_number }}</div>
+              <div><strong>Airline Confirmation:</strong> {{ passenger.ticket_details.airline_confirmation_number }}</div>
+            </td>
+            <td v-else>Not Available</td>
           </tr>
         </tbody>
       </table>
@@ -84,7 +110,7 @@
           </tr>
           <tr>
             <th>Card Number (Last 4 Digits)</th>
-            <td>{{ bookingDetails.contact_billings.card_number }}</td>
+            <td>************{{ bookingDetails.contact_billings.card_number }}</td>
           </tr>
         </tbody>
       </table>
@@ -94,31 +120,31 @@
         <tbody>
           <tr v-if="bookingDetails.orderings.payble_amount">
             <th>Payable Amount</th>
-            <td>{{ bookingDetails.orderings.payble_amount }}</td>
+            <td>{{ bookingDetails.orderings.payble_amount }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.flight_cancellation_protection">
             <th>Flight Cancellation Protection</th>
-            <td>{{ bookingDetails.orderings.flight_cancellation_protection }}</td>
+            <td>{{ bookingDetails.orderings.flight_cancellation_protection }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.sms_support">
             <th>SMS Support</th>
-            <td>{{ bookingDetails.orderings.sms_support }}</td>
+            <td>{{ bookingDetails.orderings.sms_support }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.baggage_protection">
             <th>Baggage Protection</th>
-            <td>{{ bookingDetails.orderings.baggage_protection }}</td>
+            <td>{{ bookingDetails.orderings.baggage_protection }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.premium_support">
             <th>Premium Support</th>
-            <td>{{ bookingDetails.orderings.premium_support }}</td>
+            <td>{{ bookingDetails.orderings.premium_support }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.total_refund_protection">
             <th>Total Refund Protection</th>
-            <td>{{ bookingDetails.orderings.total_refund_protection }}</td>
+            <td>{{ bookingDetails.orderings.total_refund_protection }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.total_amount">
             <th>Total Amount</th>
-            <td>{{ bookingDetails.orderings.total_amount }}</td>
+            <td>{{ bookingDetails.orderings.total_amount }} $</td>
           </tr>
         </tbody>
       </table>
@@ -142,11 +168,14 @@ export default {
   methods: {
     async searchBooking() {
       try {
-        const response = await axios.post('https://crm.valueutickets.com/api/login/', {
+        const response = await axios.post('http://127.0.0.1:8000/api/login/', {
           email: this.email,
           booking_id: this.bookingId,
         });
         this.bookingDetails = response.data;
+
+        // Emit the TicketStatus to the parent component
+        this.$emit('update-ticket-status', this.bookingDetails?.TicketStatus);
       } catch (error) {
         console.error('Error:', error.response ? error.response.data.error : error.message);
       }
@@ -165,7 +194,9 @@ export default {
 };
 </script>
 
+
 <style scoped>
+/* General Styles */
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -173,6 +204,7 @@ export default {
 
 .card {
   width: 100%;
+  background: #F9F2F2;
   max-width: 500px;
   margin: 0 auto;
   border-radius: 8px;
@@ -217,26 +249,70 @@ export default {
   border-radius: 8px;
 }
 
-
-.icon {
-  width: auto;
-  height: 100px;
-}
-
-
+/* Details Container */
 .details-container {
   background: white;
   padding: 20px;
-  margin-top:25px;
+  margin-top: 25px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  overflow-x: auto; /* Ensure content is scrollable horizontally if needed */
 }
 
+/* Tables */
 .table-responsive {
   margin-top: 20px;
 }
 
 .table {
   width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+  padding: 8px;
+}
+
+.table thead th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+/* Media Queries for Larger Screens */
+@media (min-width: 992px) {
+  .details-container {
+    max-width: 90%; /* Allow wider view for larger screens */
+  }
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center; /* Center align the content */
+}
+
+.footer,
+.header {
+  flex-shrink: 0;
+}
+
+/* Table Row Styling (Optional, Add Visual Enhancements) */
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
 </style>

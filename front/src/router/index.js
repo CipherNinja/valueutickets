@@ -7,6 +7,7 @@ import LoginForBooking from '../views/BookingLoginView.vue'
 import ContactUsView from '../views/ContactUsView.vue'
 import TermsViewPage from '../views/TermsViewPage.vue'
 import HotelPageView from '../views/HotelPageView.vue'
+import OfferView from '../views/OfferView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,11 @@ const router = createRouter({
       path: '/hotel-booking',
       name: 'HotelPageView',
       component: HotelPageView,
+    },
+    {
+      path: '/offer',
+      name: 'OfferView',
+      component: OfferView,
     }
   ],
 })

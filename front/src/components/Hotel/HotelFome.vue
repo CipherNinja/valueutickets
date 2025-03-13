@@ -125,16 +125,14 @@
         </div>
       </div>
 
-      <!-- Adults and Children in One Row -->
+      <!-- Adults, Children, Infants -->
       <div class="form-row">
         <div class="form-group">
           <label>Adult</label>
           <div class="counter-box">
-            <span>  <img src="@/assets/Hotel/adulticon.png" alt="Location" class="icon" />
-            {{ adults }} Adult</span>
-           
+            <img src="@/assets/Hotel/adulticon.png" alt="Location" class="icon" />
+            <span>{{ adults }} Adult</span>
             <button @click="changeCount('adult', -1)">-</button>
-            <span>{{ adults }}</span>
             <button @click="changeCount('adult', 1)">+</button>
           </div>
         </div>
@@ -142,14 +140,39 @@
         <div class="form-group">
           <label>Child</label>
           <div class="counter-box">
-            <span>  <img src="@/assets/Hotel/childicon.png" alt="Location" class="icon" />
-              {{ children }} Child</span>
+            <img src="@/assets/Hotel/childicon.png" alt="Location" class="icon" />
+            <span>{{ children }} Child</span>
             <button @click="changeCount('child', -1)">-</button>
-            <span>{{ children }}</span>
             <button @click="changeCount('child', 1)">+</button>
           </div>
         </div>
-        
+
+        <div class="form-group">
+          <label>Infant</label>
+          <div class="counter-box">
+            <img src="@/assets/Hotel/childicon.png" alt="Location" class="icon" />
+            <span>{{ infants }} Infant</span>
+            <button @click="changeCount('infant', -1)">-</button>
+            <button @click="changeCount('infant', 1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <div class="input-box">
+            <input type="email" v-model="email" placeholder="Enter your email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="input-box">
+            <input type="tel" v-model="phoneNumber" placeholder="Enter your phone number" />
+          </div>
+        </div>
       </div>
 
       <!-- Search Button -->
@@ -158,7 +181,10 @@
   </div>
 </template>
 
+
 <script>
+import axios from "axios"; // Ensure axios is installed in your project
+
 export default {
   data() {
     return {
@@ -167,21 +193,79 @@ export default {
       checkOut: "",
       adults: 2,
       children: 0,
+      infants: 0, // Added infants field
+      email: "", // Added email field
+      phoneNumber: "", // Added phone number field
     };
   },
   methods: {
     changeCount(type, value) {
       if (type === "adult" && this.adults + value >= 1) this.adults += value;
       if (type === "child" && this.children + value >= 0) this.children += value;
+      if (type === "infant" && this.infants + value >= 0) this.infants += value;
     },
-    searchHotel() {
-      alert(
-        `Searching hotels in ${this.destination} from ${this.checkIn} to ${this.checkOut}`
-      );
+    async searchHotel() {
+      // Prepare the request payload
+      const payload = {
+        phone_number: this.phoneNumber,
+        email: this.email,
+        checkin_datetime: this.checkIn + "T14:00:00", // Default check-in time
+        checkout_datetime: this.checkOut + "T11:00:00", // Default check-out time
+        adults: this.adults,
+        children: this.children,
+        infants: this.infants,
+        destination: this.destination,
+      };
+
+      try {
+        // Send booking details to the API
+        const response = await axios.post(
+          "https://crm.valueutickets.com/api/v4/hotel-booking/",
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Handle successful response
+        if (response.status === 201) {
+          alert(
+            `Congratulations! Your booking has been confirmed.`
+          );
+
+          // Clear all form data after success
+          this.resetForm();
+        }
+      } catch (error) {
+        // Handle errors gracefully
+        if (error.response && error.response.status === 406) {
+          const errorMessage = Object.entries(error.response.data.Error)
+            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+            .join("\n");
+          alert(`Booking failed due to the following errors:\n${errorMessage}`);
+        } else {
+          alert("An unexpected error occurred. Please try again later.");
+        }
+      }
+    },
+    resetForm() {
+      // Reset form fields to their default values
+      this.destination = "Miami";
+      this.checkIn = "";
+      this.checkOut = "";
+      this.adults = 2;
+      this.children = 0;
+      this.infants = 0;
+      this.email = "";
+      this.phoneNumber = "";
     },
   },
 };
 </script>
+
+
 
 <style scoped>
 
@@ -362,4 +446,70 @@ export default {
     padding: 10px;
   }
 }
+
+/* Input Box (Beautified for Email and Phone) */
+.input-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid #007BFF; /* Bright border for emphasis */
+  padding: 12px;
+  border-radius: 8px; /* Rounded corners */
+  background: #F9F9F9; /* Soft background */
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Input Fields */
+.input-box input {
+  border: none;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  background: transparent;
+}
+
+/* Input Box Hover and Focus */
+.input-box:hover {
+  border-color: #0056b3; /* Slightly darker blue on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.input-box input:focus {
+  border-color: #0056b3;
+  box-shadow: inset 0 0 5px rgba(0, 123, 255, 0.6); /* Inner focus shadow */
+}
+
+/* Placeholder Styling */
+.input-box input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Icon inside Input Box */
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  opacity: 0.7; /* Subtle transparency */
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .input-box {
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .icon {
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-box {
+    padding: 8px;
+    border-radius: 5px;
+  }
+}
+
 </style>

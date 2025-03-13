@@ -158,7 +158,7 @@ const computedRoute = computed(() => {
         <i class="fas fa-plane"></i> Flight
       </button>
       <a href="/hotel-booking">
-        <button @click="activeTab = 'tour'" :class="{ active: activeTab === 'tour' }">
+         <button> <!-- @click="activeTab = 'tour'" :class="{ active: activeTab === 'tour' }" -->
         <i class="fas fa-globe"></i> Hotels
       </button>
       </a>

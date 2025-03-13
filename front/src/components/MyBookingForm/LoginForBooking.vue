@@ -168,7 +168,7 @@ export default {
   methods: {
     async searchBooking() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+        const response = await axios.post('https://crm.valueutickets.com/api/login/', {
           email: this.email,
           booking_id: this.bookingId,
         });

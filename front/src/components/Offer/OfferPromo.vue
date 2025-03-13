@@ -1,64 +1,88 @@
-<template>
-  <div class="promo-container">
-    <div class="promo-content">
-      <h2>Upto  <br><span class="discount">$429.40 Off</span></h2>
-      <p>on Domestic & <br> International Flights</p>
-      <p class="terms">*T&C Apply</p>
-    </div>
-    
-    <!-- Flight Image  -->
-    <img src="@/assets/images/offers/flight.png" alt="Flight" class="flight-img" />
-
+  <template>
+    <div class="promo-container">
+      <div class="promo-content">
+        <h2>Upto <br /><span class="discount">$429.40 Off</span></h2>
+        <p>on Domestic & <br />International Flights</p>
+        <p class="terms">*T&C Apply</p>
+      </div>
+ <!-- Flight Image  -->
+      <img src="@/assets/images/offers/flight.png" alt="Flight" class="flight-img" />
     <!-- Promo Code -->
-    <div class="promo-code">
-      <span>Promocode:</span> <strong>ATFLY</strong>
+      <div class="promo-code">
+        <span>Promocode:</span> <strong>ATFLY</strong>
+      </div>
+    </div>
+ <!-- Offer Buttons -->
+    <div class="category-buttons">
+      <button v-for="(option, index) in categories" :key="index" @click="selectedCategory = option" :class="{ active: selectedCategory === option }">
+        {{ option }}
+      </button>
     </div>
 
-  </div>
+    <h3 class="category-title">Featured offers for you</h3>
+  <!-- Changes Based on Selected Category -->
+    <div class="offers-container">
+      <div class="offers-grid">
+        <div v-for="(offer, index) in filteredOffers" :key="index" class="offer-card">
+          <img :src="offer.image" :alt="offer.title" class="offer-image" />
+          <h3 class="offer-title">{{ offer.title }}</h3>
+          <p class="offer-validity">
+            <span v-if="offer.validUntil !== 'Limited Time'" class="fixed-date">
+              🗓️ Valid Till: {{ offer.validUntil }}
+            </span>
+            <span v-else class="limited-time">⏳ Limited Time Offer</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </template>
 
- <!-- Offer Buttons -->
- <div class="category-buttons">
-    <button v-for="(option, index) in categories" 
-            :key="index" 
-            @click="selectedCategory = option.name" 
-            :class="{ active: selectedCategory === option.name }">
-      {{ option.name }}
-    </button>
-  </div>
+  <script>
+  import { ref, computed } from "vue";
+  import offer1 from "@/assets/images/offers/offer1.jpg";
+  import offer2 from "@/assets/images/offers/offer2.jpg";
+  import offer3 from "@/assets/images/offers/offer3.jpg";
+  import offer4 from "@/assets/images/offers/offer4.jpg";
+  import offer5 from "@/assets/images/offers/offer5.jpg";
 
-  <!-- Colorful Box Changes Based on Selected Category -->
-  <div class="color-box" :style="{ backgroundColor: getColor(selectedCategory) }">
-    <h3>{{ selectedCategory }} Offers</h3>
-  </div>
-</template>
+  export default {
+    setup() {
+      const selectedCategory = ref("All");
+      const categories = ["All", "Bank", "Flights", "Hotels", "Cabs"];
 
-<script>
-import { ref } from "vue";
+      const offers = ref([
+      { image: offer1, title: "Flight Discount up to $200", validUntil: "2025-06-30", type: "Flights" },
+      { image: offer2, title: "Bank Cashback Offer", validUntil: "Limited Time", type: "Bank" },
+      { image: offer3, title: "Hotel Stay 30% Off", validUntil: "2025-07-15", type: "Hotels" },
+      { image: offer4, title: "Cab Rides at 50% Off", validUntil: "Limited Time", type: "Cabs" },
+      { image: offer5, title: "Buy 1 Get 1 Free on Flights", validUntil: "2025-05-20", type: "Flights" },
+      { image: offer1, title: "Hotel Weekend Offer", validUntil: "2025-07-10", type: "Hotels" },
+      { image: offer2, title: "Exclusive Bank Card Offer", validUntil: "Limited Time", type: "Bank" },
+      { image: offer3, title: "Luxury Hotels 40% Off", validUntil: "2025-09-01", type: "Hotels" },
+      { image: offer4, title: "Airport Cab Discount", validUntil: "2025-08-15", type: "Cabs" },
+      { image: offer5, title: "Flat $100 Off on Flights", validUntil: "Limited Time", type: "Flights" },
+      { image: offer1, title: "Bank Card EMI Offer", validUntil: "2025-06-01", type: "Bank" },
+      { image: offer2, title: "Flight Flash Sale", validUntil: "Limited Time", type: "Flights" },
+      { image: offer3, title: "Weekend Cab Ride Discounts", validUntil: "2025-07-20", type: "Cabs" },
+      { image: offer4, title: "5-Star Hotel Special", validUntil: "2025-10-05", type: "Hotels" },
+      { image: offer5, title: "Flight Deals for Students", validUntil: "Limited Time", type: "Flights" }
+    ]);
 
-export default {
-  setup() {
-    const selectedCategory = ref("All"); // Default selection
 
-    const categories = [
-      { name: "All", color: "#ffcc00" }, // Yellow
-      { name: "Bank Offer", color: "#ff4d4d" }, // Red
-      { name: "Flights", color: "#007bff" }, // Blue
-      { name: "Hotels", color: "#f4c542" }, // Yellow-Golden
-      { name: "Cabs", color: "#33cc33" }, // Green
-    ];
+      const filteredOffers = computed(() => {
+        return selectedCategory.value === "All"
+          ? offers.value
+          : offers.value.filter((offer) => offer.type === selectedCategory.value);
+      });
 
-    const getColor = (category) => {
-      const found = categories.find((c) => c.name === category);
-      return found ? found.color : "#fff";
-    };
+      return { selectedCategory, categories, filteredOffers };
+    },
+  };
+  </script>
 
-    return { selectedCategory, categories, getColor };
-  }
-};
-</script>
+  <style scoped>
 
-<style scoped>
-
+/* Background Image */
 /* Background Image */
 .promo-container {
   background: url('@/assets/images/offers/offerbackground.png') no-repeat center center;
@@ -178,6 +202,11 @@ p {
   font-weight: bold;
 }
 
+.category-title {
+  display: flex;
+  margin: 0px 10%;
+  font-size: 24px;
+}
 
 /* Color Box */
 .color-box {
@@ -361,4 +390,61 @@ p {
   }
 }
 
+/* offer cards' css */
+  .offers-container {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .offers-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .offer-card {
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .offer-card:hover {
+    transform: scale(1.05);
+  }
+
+  .offer-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .offer-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    margin: 10px 0px;
+    justify-self: left;
+  }
+
+  .offer-validity {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 3px 0px;
+    justify-self: left;
+  }
+
+  .fixed-date {
+    color: #333;
+  }
+
+  .limited-time {
+    color: red;
+    font-weight: bold;
+  }
 </style>

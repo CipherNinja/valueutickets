@@ -39,11 +39,21 @@
 
   <script>
   import { ref, computed } from "vue";
-  import offer1 from "@/assets/images/offers/offer1.jpg";
-  import offer2 from "@/assets/images/offers/offer2.jpg";
-  import offer3 from "@/assets/images/offers/offer3.jpg";
-  import offer4 from "@/assets/images/offers/offer4.jpg";
-  import offer5 from "@/assets/images/offers/offer5.jpg";
+  import offer1 from "@/assets/images/offers/images (1).png";
+  import offer2 from "@/assets/images/offers/images (2).png";
+  import offer3 from "@/assets/images/offers/images (3).png";
+  import offer4 from "@/assets/images/offers/images (4).png";
+  import offer5 from "@/assets/images/offers/images (5).png";
+  import offer6 from "@/assets/images/offers/images (6).png";
+  import offer7 from "@/assets/images/offers/images (7).png";
+  import offer8 from "@/assets/images/offers/images (8).png";
+  import offer9 from "@/assets/images/offers/images (9).png";
+  import offer10 from "@/assets/images/offers/images (10).png";
+  import offer11 from "@/assets/images/offers/images (11).png";
+  import offer12 from "@/assets/images/offers/images (12).png";
+  import offer13 from "@/assets/images/offers/images (13).png";
+  import offer14 from "@/assets/images/offers/images (14).png";
+  import offer15 from "@/assets/images/offers/images (15).png";
 
   export default {
     setup() {
@@ -56,16 +66,16 @@
       { image: offer3, title: "Hotel Stay 30% Off", validUntil: "2025-07-15", type: "Hotels" },
       { image: offer4, title: "Cab Rides at 50% Off", validUntil: "Limited Time", type: "Cabs" },
       { image: offer5, title: "Buy 1 Get 1 Free on Flights", validUntil: "2025-05-20", type: "Flights" },
-      { image: offer1, title: "Hotel Weekend Offer", validUntil: "2025-07-10", type: "Hotels" },
-      { image: offer2, title: "Exclusive Bank Card Offer", validUntil: "Limited Time", type: "Bank" },
-      { image: offer3, title: "Luxury Hotels 40% Off", validUntil: "2025-09-01", type: "Hotels" },
-      { image: offer4, title: "Airport Cab Discount", validUntil: "2025-08-15", type: "Cabs" },
-      { image: offer5, title: "Flat $100 Off on Flights", validUntil: "Limited Time", type: "Flights" },
-      { image: offer1, title: "Bank Card EMI Offer", validUntil: "2025-06-01", type: "Bank" },
-      { image: offer2, title: "Flight Flash Sale", validUntil: "Limited Time", type: "Flights" },
-      { image: offer3, title: "Weekend Cab Ride Discounts", validUntil: "2025-07-20", type: "Cabs" },
-      { image: offer4, title: "5-Star Hotel Special", validUntil: "2025-10-05", type: "Hotels" },
-      { image: offer5, title: "Flight Deals for Students", validUntil: "Limited Time", type: "Flights" }
+      { image: offer6, title: "Hotel Weekend Offer", validUntil: "2025-07-10", type: "Hotels" },
+      { image: offer7, title: "Exclusive Bank Card Offer", validUntil: "Limited Time", type: "Bank" },
+      { image: offer8, title: "Luxury Hotels 40% Off", validUntil: "2025-09-01", type: "Hotels" },
+      { image: offer9, title: "Airport Cab Discount", validUntil: "2025-08-15", type: "Cabs" },
+      { image: offer10, title: "Flat $100 Off on Flights", validUntil: "Limited Time", type: "Flights" },
+      { image: offer11, title: "Bank Card EMI Offer", validUntil: "2025-06-01", type: "Bank" },
+      { image: offer12, title: "Flight Flash Sale", validUntil: "Limited Time", type: "Flights" },
+      { image: offer13, title: "Weekend Cab Ride Discounts", validUntil: "2025-07-20", type: "Cabs" },
+      { image: offer14, title: "5-Star Hotel Special", validUntil: "2025-10-05", type: "Hotels" },
+      { image: offer15, title: "Flight Deals for Students", validUntil: "Limited Time", type: "Flights" }
     ]);
 
 

@@ -23,7 +23,7 @@
 <script>
 // Importing images dynamically
 import Image12Percent from '@/assets/images/offers/1.png';
-import ImageMMT12 from '@/assets/images/offers/2.png';
+import ImageMMT12 from '@/assets/images/offers/images (2).png';
 import ImagePaytm from '@/assets/images/offers/3.png';
 import ImageMMT from '@/assets/images/offers/4.png';
 import ImageCruise from '@/assets/images/cruise.jpg';
@@ -55,7 +55,7 @@ export default {
         },
       ],
       visibleRows: 1, // Number of rows initially visible
-      offersPerRow: 3, // Number of offers per row
+      offersPerRow: 4, // Number of offers per row
       showAll: false, // To toggle between show more and show less
     };
   },
@@ -71,7 +71,7 @@ export default {
       this.showAll = !this.showAll;
     },
     handleCardClick(offer) {
-      alert(`You clicked on: ${offer.description}`); // Replace with desired navigation logic
+      this.$router.push('/offer');
     },
   },
 };

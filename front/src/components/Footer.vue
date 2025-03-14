@@ -18,11 +18,11 @@ Proudly serving travelers with exceptional deals that reflect the American dream
   <div class="footer-column">
     <h2>Links</h2>
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">My Booking</a></li>
-      <li><a href="#">Blogs</a></li>
-      <li><a href="#">Packaging</a></li>
-      <li><a href="#">Services</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/booking">My Booking</a></li>
+      <li><a href="/this-page-is-under-maintenamce-content-will-be-available-soon">Blogs</a></li>
+      <li><a href="/this-page-is-under-maintenamce-content-will-be-available-soon">Packaging</a></li>
+      <li><a href="/this-page-is-under-maintenamce-content-will-be-available-soon">Services</a></li>
     </ul>
   </div>
   <div class="vertical-bar"></div>
@@ -30,11 +30,11 @@ Proudly serving travelers with exceptional deals that reflect the American dream
   <div class="footer-column">
     <h2>Offers</h2>
     <ul>
-      <li><a href="#">Gift Card</a></li>
-      <li><a href="#">Flights Offers</a></li>
-      <li><a href="#">Hotels Offers</a></li>
-      <li><a href="#">Bus Offers</a></li>
-      <li><a href="#">Cabs Offers</a></li>
+      <li><a href="/offer">Gift Card</a></li>
+      <li><a href="/offer">Flights Offers</a></li>
+      <li><a href="/offer">Hotels Offers</a></li>
+      <li><a href="/offer">Bus Offers</a></li>
+      <li><a href="/offer">Cabs Offers</a></li>
     </ul>
   </div>
 

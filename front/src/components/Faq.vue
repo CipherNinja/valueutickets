@@ -61,7 +61,7 @@ export default {
         {
           question: "How can you confirm that your flight reservation with Valueu Tickets is successful?",
           answer:
-            "You will receive a confirmation email with your ticket details after completing the booking process.",
+            "You will receive a confirmation email with your ticket details after completing the booking process or you can visit here 👉 https://valueutickets.com/booking .",
           open: false,
         },
       ],

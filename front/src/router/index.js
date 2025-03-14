@@ -8,6 +8,7 @@ import ContactUsView from '../views/ContactUsView.vue'
 import TermsViewPage from '../views/TermsViewPage.vue'
 import HotelPageView from '../views/HotelPageView.vue'
 import OfferView from '../views/OfferView.vue'
+import maintenance from '../views/maintenance.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,6 +59,11 @@ const router = createRouter({
       path: '/offer',
       name: 'OfferView',
       component: OfferView,
+    },
+    {
+      path: '/this-page-is-under-maintenamce-content-will-be-available-soon',
+      name: 'MaintenanceMessage',
+      component: maintenance,
     }
   ],
 })

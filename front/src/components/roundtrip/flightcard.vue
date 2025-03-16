@@ -74,12 +74,12 @@ const bookFlight = (flight) => {
       departure: flight.legs[0].departure,
       dest: postDataStore.postdata?.destination_iata,
       arrival: flight.legs[0].arrival,
-      return_departure: flight.legs[1].departure,
-      return_arrival: flight.legs[1].arrival,
+      return_departure: flight.legs[1]?.departure,
+      return_arrival: flight.legs[1]?.arrival,
       duration: flight.legs[0].duration,
-      return_duration: flight.legs[1].duration,
+      return_duration: flight.legs[1]?.duration,
       stop_count: flight.legs[0].stop_count,
-      return_stop_count: flight.legs[1].stop_count,
+      return_stop_count: flight.legs[1]?.stop_count,
       price: flight.total_price,
     },
   });
@@ -90,6 +90,31 @@ watch(flights, (newFlights) => {
   if (newFlights.length > 0) {
     loading.value = false;
   }
+});
+
+watch(screenWidth, (newWidth) => {
+  console.log("Updated screen width:", newWidth);
+});
+
+const flightColors = ["#09c398", "#F40000B5", "#BAA035"];
+const getColor = (index) => flightColors[index % flightColors.length];
+
+const buttonGradients = [
+  "linear-gradient(to right, #3E41EC, #09C398)",
+  "linear-gradient(to right, #3E41EC, #F4000061)",
+];
+const getGradient = (index) => buttonGradients[index % buttonGradients.length];
+
+// Function to get the color of .color-bar dynamically
+// const getColorBarColor = () => {
+//   const colorBarElement = document.querySelector(".color-bar");
+//   return colorBarElement
+//     ? getComputedStyle(colorBarElement).backgroundColor
+//     : "#ccc"; // Fallback color
+// };
+
+onMounted(() => {
+  getColorBarColor(); // Ensure function runs when component is mounted
 });
 </script>
 
@@ -102,13 +127,16 @@ watch(flights, (newFlights) => {
   </div>
   <div v-else class="results-container">
     <div
-      v-if="screenWidth > 600"
+      v-if="screenWidth > 768"
       v-for="(flight, index) in flights"
       :key="index"
       class="flight-card"
     >
       <!-- Original structure for screens wider than 600px -->
-      <div class="color-bar"></div>
+      <div
+        class="color-bar"
+        :style="{ backgroundColor: getColor(index) }"
+      ></div>
       <div class="airline-info" style="text-align: center">
         <img
           :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo"
@@ -143,6 +171,13 @@ watch(flights, (newFlights) => {
             <p>{{ formatDateTime(flight.legs[0].arrival) || "N/A" }}</p>
           </div>
         </div>
+
+        <!-- Line separator -->
+        <hr
+          v-if="flight.legs.length > 1"
+          :style="{ borderColor: getColor(index), borderWidth: '2px' }"
+        />
+
         <div class="flight-details">
           <div class="departure">
             <p>
@@ -175,9 +210,17 @@ watch(flights, (newFlights) => {
           <br /><span>Incl. Taxes and Fees</span>
         </div>
         <p>
-          <strong>${{ flight.total_price || "N/A" }}</strong>
+          <strong :style="{ color: getColor(index) }"
+            >${{ flight.total_price || "N/A" }}</strong
+          >
         </p>
-        <button @click="bookFlight(flight)" class="book-now">Book Now</button>
+        <button
+          @click="bookFlight(flight)"
+          class="book-now"
+          :style="{ background: getGradient(index) }"
+        >
+          Book Now
+        </button>
       </div>
     </div>
     <div
@@ -187,7 +230,10 @@ watch(flights, (newFlights) => {
       class="flight-card"
     >
       <!-- Simplified structure for screens narrower than 600px -->
-      <div class="color-bar"></div>
+      <div
+        class="color-bar"
+        :style="{ backgroundColor: getColor(index) }"
+      ></div>
       <div class="airline-info" style="text-align: center">
         <img
           :src="airlineLogos[flight.legs[0].flight_name] || defaultLogo"

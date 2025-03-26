@@ -8,16 +8,14 @@
       </div>
       <router-link to="/">
         <div class="logo">
-          <img :src="logo" alt="Logo" />
+          <img :src="logo" alt="ValueUTickets - American Travel Agency" />
         </div>
       </router-link>
       <ul :class="['nav-links', { active: isMenuActive }]">
-        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="/">Flight Search</router-link></li>
         <li><router-link to="/booking">My Booking</router-link></li>
-        <!-- <li><router-link to="/blogs">Blogs</router-link></li>
-        <li><router-link to="/packages">Packages</router-link></li> -->
         <li><router-link to="/contact-us">Contact Us</router-link></li>
-        <li><a href="http://127.0.0.1:8000/api/v3/contact-us"><button class="login-btn">Login or Signup</button></a></li>
+        <li><a href="https://crm.valueutickets.com/admin"><button class="login-btn">Login or Signup</button></a></li>
       </ul>
       <div class="dropdown" @click.stop="toggleDropdown">
           <div class="dropdown-toggle">
@@ -32,6 +30,7 @@
             >
               <img :src="flag.url" :alt="flag.name" />
               <span>{{ flag.lang }}</span>
+              <span class="hidden-seo">Cheap Flights in {{ flag.name }}</span>
             </li>
           </ul>
         </div>
@@ -94,6 +93,9 @@ export default {
 .header-nav-bar{
   width: 100%;
 }
+
+.hidden-seo { display: none; } /* Visible to crawlers, hidden from users */
+
 nav {
   display: flex;
   justify-content: right;

@@ -177,22 +177,22 @@ const computedRoute = computed(() => {
             <label>From</label>
             <span>
               <i class="fas fa-plane-departure"></i>
-              <AirportAuto @update:iata="source_iata = $event" />
-              <button class="swap-btn" @click="swap(oneWay)">🔄</button>
+              <AirportAuto @update:iata="source_iata = $event" placeholder="e.g., Los Angeles (LAX)" />
+              <button class="swap-btn" @click="swap(oneWay)" aria-label="Swap departure and arrival">🔄</button>
             </span>
           </div>
           <div class="input-box">
             <label>To</label>
             <span>
               <i class="fas fa-plane-arrival"></i>  
-              <AirportAuto @update:iata="destination_iata = $event" />
+              <AirportAuto @update:iata="destination_iata = $event" placeholder="e.g., Mexico City (MEX)" />
             </span>
           </div>
           <div class="input-box">
             <label>Departure Date</label>
             <span>
               <i class="fas fa-calendar-alt"></i>
-              <input type="date" v-model="oneWay.date" :min="today" />
+              <input type="date" v-model="oneWay.date" :min="today" aria-label="Select departure date" />
             </span>
           </div>
           <div class="input-box">
@@ -214,21 +214,21 @@ const computedRoute = computed(() => {
             <label>To</label>
             <span>
               <i class="fas fa-plane-arrival"></i>
-              <AirportAuto @update:iata="roundTrip.to = $event" />
+              <AirportAuto @update:iata="roundTrip.to = $event" placeholder="e.g., Mexico City (MEX)" />
             </span>
           </div>
           <div class="input-box">
             <label>Departure Date</label>
             <span>
               <i class="fas fa-calendar-alt"></i>
-              <input type="date" v-model="roundTrip.date" :min="today" />
+              <input type="date" v-model="roundTrip.date" :min="today" aria-label="Select departure date"/>
             </span>
           </div>
           <div class="input-box">
             <label>Return Date</label>
             <span>
               <i class="fas fa-calendar-alt"></i>
-              <input type="date" v-model="roundTrip.returnDate" :min="roundTrip.date || today" />
+              <input type="date" v-model="roundTrip.returnDate" :min="roundTrip.date || today" aria-label="Select arrival date"/>
             </span>
           </div>
           <div class="input-box">

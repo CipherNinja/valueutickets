@@ -4,10 +4,20 @@ import Header from '@/components/Header.vue';
 import LoginForBooking from '@/components/MyBookingForm/LoginForBooking.vue';
 import confirmedStamp from '@/assets/images/Confirmed-Stamp.webp';
 import cancelledStamp from '@/assets/images/Cancelled-Stamp.png';
+import { useHead } from '@vueuse/head';
 import { ref, watch } from 'vue'; // Import `watch`
 
-// Reactive variable for Ticket Status
-const ticketStatus = ref(''); // Default is empty
+
+useHead({
+  title: 'My Booking - ValueUTickets Flight Status',
+  meta: [
+    { name: 'description', content: 'View your flight status and itinerary details with ValueUTickets for seamless travel across America.' },
+    { name: 'keywords', content: 'ValueUTickets my booking, flight status USA, travel itinerary' },
+  ],
+});
+
+
+const ticketStatus = ref('');
 
 // Reactive variable for Background Image
 const backgroundImage = ref('');

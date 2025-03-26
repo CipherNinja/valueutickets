@@ -85,19 +85,34 @@
       </div>
 
       <!-- Section 5: Privacy Policy -->
-    <div id="privacy" class="terms-section">
-      <h2 class="section-heading">5. Privacy Policy</h2>
-      <p class="section-content">
-        Your privacy is important to us. Please review the following privacy guidelines:
-      </p>
-      <ul class="section-list">
-        <li>We collect personal information, including name, email, and payment details, for booking purposes.</li>
-        <li>Your information is securely stored and used solely to process your transactions and improve our services.</li>
-        <li>We do not share your personal information with third parties without your consent, except as required by law.</li>
-        <li>Cookies are used on our website to enhance the user experience. You can disable them through your browser settings.</li>
-        <li>For more information, contact us at <a href="mailto:customerservice@valueutickets.com">customerservice@valueutickets.com</a>.</li>
-      </ul>
-    </div>
+      <div id="privacy" class="terms-section">
+        <h2 class="section-heading">5. Privacy Policy</h2>
+        <p class="section-content">
+          Your privacy is important to us. Please review the following privacy guidelines:
+        </p>
+        <ul class="section-list">
+          <li>We collect personal information, including name, email, and payment details, for booking purposes.</li>
+          <li>Your information is securely stored and used solely to process your transactions and improve our services.</li>
+          <li>We do not share your personal information with third parties without your consent, except as required by law.</li>
+          <li>Cookies are used on our website to enhance the user experience. You can disable them through your browser settings.</li>
+          <li>For more information, contact us at <a href="mailto:customerservice@valueutickets.com">customerservice@valueutickets.com</a>.</li>
+        </ul>
+      </div>
+
+      <!-- Section 5: SMS Consent -->
+      <div class="terms-section">
+          <h2 class="section-heading">5. SMS Consent</h2>
+          <p class="section-content">
+              By consenting to receive SMS from Travelove, you agree to the following terms:
+          </p>
+          <ul class="section-list">
+              <li>You will receive SMS notifications including Flight Details, Flight Confirmations, and Flight Deals from Travelove.</li>
+              <li>To opt-out of SMS notifications, reply STOP to any message.</li>
+              <li>For support, reply HELP to any message.</li>
+              <li>Message and data rates may apply; messaging frequency may vary.</li>
+              <li>Please review our <a href="#privacy">Privacy Policy 9102</a> and <a href="#terms">Terms and Conditions</a> for more details.</li>
+          </ul>
+      </div>
   
       <!-- Close Terms Button -->
       <!-- <button class="close-btn" @click="closeTerms">Close Terms and Conditions</button> -->

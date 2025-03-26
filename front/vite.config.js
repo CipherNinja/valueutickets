@@ -18,7 +18,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://gcp.agratasinfotech.com/api/v1/airports/',
+        target: 'https://crm.valueutickets.com/api/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

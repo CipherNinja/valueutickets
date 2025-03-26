@@ -1,27 +1,31 @@
 <template>
-  <h2 class="offers-title">Exclusive Offers</h2>
-  <div class="offers-grid">
-    <div
-      v-for="(offer, index) in visibleOffers"
-      :key="index"
-      class="offer-card"
-      @click="handleCardClick(offer)"
-    >
-      <img :src="offer.image" :alt="offer.description" class="offer-image" />
-      <!-- <div class="offer-content">
+  <section class="offers-section">
+    <h2 class="offers-title">Exclusive Flight & Tour Offers</h2>
+    <div class="offers-grid">
+      <div
+        v-for="(offer, index) in visibleOffers"
+        :key="index"
+        class="offer-card"
+        @click="handleCardClick(offer)"
+      >
+        <img
+          :src="offer.image"
+          :alt="offer.altText"
+          class="offer-image"
+        />
+        <h3 class="offer-title">{{ offer.title }}</h3>
         <p class="offer-description">{{ offer.description }}</p>
-      </div> -->
+      </div>
     </div>
-  </div>
-  <div class="expand-btn-container">
-    <button class="expand-btn" @click="toggleOffers">
-      {{ showAll ? 'Show Less' : 'Show More' }}
-    </button>
-  </div>
+    <div class="expand-btn-container">
+      <button class="expand-btn" @click="toggleOffers">
+        {{ showAll ? 'Show Less' : 'Show More' }}
+      </button>
+    </div>
+  </section>
 </template>
 
 <script>
-// Importing images dynamically
 import Image12Percent from '@/assets/images/offers/1.png';
 import ImageMMT12 from '@/assets/images/offers/images (2).png';
 import ImagePaytm from '@/assets/images/offers/3.png';
@@ -34,29 +38,39 @@ export default {
     return {
       offers: [
         {
-          // description: "*Get 12% off on your first domestic flight booking with ValueU Tickets! Book now and save big on your travel.",
+          // title: "12% Off First Flight",
+          // description: "Get 12% off your first domestic flight with ValueUTickets! Book one-way or round-trip in America now.",
+          altText: "Cheap one-way flight deal with ValueUTickets - 12% off",
           image: Image12Percent,
         },
         {
-          // description: "*Your first flight just got more affordable! Book now and save up to 12% on flights across the USA.",
+          // title: "Save 12% on USA Flights",
+          // description: "Book fast with ValueUTickets and save 12% on flights across the USA in just 10 minutes!",
+          altText: "Affordable round-trip flights in America with ValueUTickets",
           image: ImageMMT12,
         },
         {
-          // description: "*Enjoy $50 cashback when you book your first flight with ValueU Tickets! Travel smart and save more.",
+          // title: "$50 Cashback Offer",
+          // description: "Enjoy $50 cashback on your first multicity flight booking with ValueUTickets—travel smart!",
+          altText: "Multicity flight cashback deal with ValueUTickets",
           image: ImagePaytm,
         },
         {
-          // description: "*Book now and get $100 off on your flight! Exclusive deal only on ValueU Tickets—don't miss out.",
+          // title: "$100 Off Flights",
+          // description: "Get $100 off your next flight with ValueUTickets! Fast 10-min booking for unbeatable deals.",
+          altText: "Cheap flight discount with ValueUTickets - $100 off",
           image: ImageMMT,
         },
         {
-          // description: "Exclusive Deals Await! Experience the ultimate sea voyage with luxury cruise deals starting at just $299! Book today for an unforgettable journey.",
+          // title: "Cruise Deals from $299",
+          // description: "Explore luxury cruises starting at $299 with ValueUTickets! Book your dream trip today.",
+          altText: "Luxury cruise tour package with ValueUTickets from $299",
           image: ImageCruise,
         },
       ],
-      visibleRows: 1, // Number of rows initially visible
-      offersPerRow: 4, // Number of offers per row
-      showAll: false, // To toggle between show more and show less
+      visibleRows: 1,
+      offersPerRow: 4,
+      showAll: false,
     };
   },
   computed: {

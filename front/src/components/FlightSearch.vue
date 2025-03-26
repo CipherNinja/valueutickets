@@ -1,6 +1,7 @@
 <script setup>
 import axios from 'axios';
 import box from './searchbox.vue';
+import { useHead } from '@vueuse/head';
 </script>
 
 <template>
@@ -25,6 +26,19 @@ import box from './searchbox.vue';
 </template>
 
 <script>
+
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'Flight Search - ValueUTickets',
+      description: 'Book cheap one-way, round-trip, and multicity flights in America with fast 10-minute service at ValueUTickets.',
+    }),
+  }],
+});
+
 export default {
   name: "FlightSearch",
   data() {

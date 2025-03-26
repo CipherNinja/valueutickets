@@ -23,51 +23,46 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head';
 export default {
   name: "FaqPage",
   data() {
-    return {
-      faqs: [
-        {
-          question: "Why should you book tickets from Valuetickets?",
-          answer:
-            "Valuetickets provides the best deals and exclusive offers on flights, tours, and accommodations. Their platform also offers competitive prices on events, making booking travel and entertainment easy and affordable.",
-          open: false,
-        },
-        {
-          question: "What is the best possible way to buy air tickets at a reasonable cost?",
-          answer:
-            "Unlock the best deals by booking early, using our powerful search tools, and discovering exclusive offers just for you!",
-          open: false,
-        },
-        {
-          question: "Do you offer last-minute air tickets?",
-          answer:
-            "Yes, we offer last-minute air tickets at competitive prices. Call on the customer line or Check our flight search engine for availability.",
-          open: false,
-        },
-        {
-          question: "How to search for the best deal or find the latest offer on Valueu Tickets?",
-          answer:
-            "Use the search bar and filter tools on our website to find the latest deals tailored to your needs.",
-          open: false,
-        },
-        {
-          question: "Can I book round-trip or one-way air tickets?",
-          answer:
-            "Yes, you can book round-trip or one-way tickets based on your travel requirements.",
-          open: false,
-        },
-        {
-          question: "How can you confirm that your flight reservation with Valueu Tickets is successful?",
-          answer:
-            "You will receive a confirmation email with your ticket details after completing the booking process or you can visit here 👉 https://valueutickets.com/booking .",
-          open: false,
-        },
-      ],
-      activeFaqIndex: null,
-    };
-  },
+  return {
+    faqs: [
+      {
+        question: "Why Book Cheap Flights with ValueUTickets?",
+        answer: "ValueUTickets offers the best deals on one-way, round-trip, and multicity flights in America, with fast 10-minute booking and exclusive offers.",
+        open: false,
+      },
+      {
+        question: "How to Find Affordable Air Tickets at ValueUTickets?",
+        answer: "Book early and use our fast search tools to unlock cheap flight deals in America within 10 minutes!",
+        open: false,
+      },
+      {
+        question: "Does ValueUTickets Offer Last-Minute Flight Tickets?",
+        answer: "Yes, we provide last-minute flights at competitive prices. Call us or use our search engine for quick bookings in 10 minutes!",
+        open: false,
+      },
+      {
+        question: "How to Search for the Best Flight Deals on ValueUTickets?",
+        answer: "Use our homepage search bar and filters to find cheap one-way or round-trip flights tailored to your needs.",
+        open: false,
+      },
+      {
+        question: "Can I Book One-Way or Round-Trip Flights with ValueUTickets?",
+        answer: "Absolutely! Book one-way, round-trip, or multicity flights in America with ease and speed.",
+        open: false,
+      },
+      {
+        question: "How to Confirm My Flight Booking with ValueUTickets?",
+        answer: "After your fast 10-minute booking, you’ll get a confirmation email or check https://valueutickets.com/booking.",
+        open: false,
+      },
+    ],
+    activeFaqIndex: null,
+  };
+},
   methods: {
     toggleFaq(index) {
       if (this.activeFaqIndex === index) {
@@ -81,7 +76,29 @@ export default {
       this.activeFaqIndex = index;
     },
   },
+
+  mounted() {
+    // Use `this.faqs` in mounted lifecycle to ensure data is available
+    useHead({
+      script: [{
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': this.faqs.map(faq => ({
+            '@type': 'Question',
+            'name': faq.question,
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': faq.answer,
+            },
+          })),
+        }),
+      }],
+    });
+  },
 };
+
 </script>
 
 <style scoped>

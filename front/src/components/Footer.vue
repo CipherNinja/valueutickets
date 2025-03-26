@@ -86,17 +86,41 @@ United State
       </ul>
 
       <div class="payment-icons">
-        <img src="@/assets/footer/Amx.jpeg" alt="Visa">
-        <img src="@/assets/footer/visa.png" alt="Google Pay">
-        <img src="@/assets/footer/masc.jpg" alt="Visa">
-        <img src="@/assets/footer/disc.png" alt="Google Pay">
-        <!-- <img src="@/assets/footer/amex.png" alt="Amex"> -->
+        <img src="@/assets/footer/Amx.jpeg" alt="American Express Payment Accepted">
+        <img src="@/assets/footer/visa.png" alt="Visa Payment Accepted">
+        <img src="@/assets/footer/masc.jpg" alt="MasterCard Payment Accepted">
+        <img src="@/assets/footer/disc.png" alt="Discover Payment Accepted">
       </div>
     </div>
   </footer>
 </template>
 
 <script>
+import { useHead } from '@vueuse/head';
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'TravelAgency',
+      'name': 'ValueUTickets',
+      'description': 'Book cheap one-way, round-trip, and multicity flights in America with fast 10-minute booking at ValueUTickets.',
+      'url': 'https://valueutickets.com',
+      'telephone': '+18339316548',
+      'email': 'support@valueutickets.com',
+      'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': '30 N Gould St #36918',
+        'addressLocality': 'Sheridan',
+        'addressRegion': 'WY',
+        'postalCode': '82801',
+        'addressCountry': 'US',
+      },
+      'paymentAccepted': ['Visa', 'MasterCard', 'American Express', 'Discover'],
+    }),
+  }],
+});
+
 export default {
   name: "FooterComponent",
 };

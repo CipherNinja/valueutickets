@@ -58,6 +58,99 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head';
+
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'OfferCatalog',
+      'name': 'ValueUTickets Flight Deals',
+      'itemListElement': [
+        {
+          '@type': 'Offer',
+          'itemOffered': { '@type': 'Flight', 'name': 'New York to Cancún' },
+          'price': '57.55',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock',
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': { '@type': 'Flight', 'name': 'New York to Los Angeles' },
+          'price': '97.55',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock',
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': { '@type': 'Flight', 'name': 'Los Angeles to Mexico City' },
+          'price': '67.55',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock',
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': { '@type': 'Flight', 'name': 'Chicago to Buenos Aires' },
+          'price': '77.55',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock',
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': { '@type': 'Flight', 'name': 'Miami to Rio de Janeiro' },
+          'price': '87.55',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock',
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': { '@type': 'Flight', 'name': 'Toronto to Lima' },
+          'price': '97.55',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock',
+        },
+      ],
+    }),
+  }, {
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      'name': 'ValueUTickets Flight Booking',
+      'aggregateRating': {
+        '@type': 'AggregateRating',
+        'ratingValue': '5',
+        'reviewCount': '3',
+      },
+      'review': [
+        {
+          '@type': 'Review',
+          'author': { '@type': 'Person', 'name': 'Jessica Miller' },
+          'datePublished': '2025-04-14',
+          'reviewRating': { '@type': 'Rating', 'ratingValue': '5' },
+          'reviewBody': 'The booking process was seamless, and the flight was on time! Thank you for the excellent service.',
+        },
+        {
+          '@type': 'Review',
+          'author': { '@type': 'Person', 'name': 'David Brown' },
+          'datePublished': '2025-04-15',
+          'reviewRating': { '@type': 'Rating', 'ratingValue': '5' },
+          'reviewBody': 'The crew was very polite, but there was a slight delay. Overall, it was a good experience.',
+        },
+        {
+          '@type': 'Review',
+          'author': { '@type': 'Person', 'name': 'Samantha Wilson' },
+          'datePublished': '2025-04-16',
+          'reviewRating': { '@type': 'Rating', 'ratingValue': '5' },
+          'reviewBody': 'It was a very smooth journey. I highly recommend your service!',
+        },
+      ],
+    }),
+  }],
+});
+
+
 export default {
   data() {
     return {

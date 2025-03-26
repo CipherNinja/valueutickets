@@ -19,51 +19,60 @@
     </div>
 
     <div v-if="bookingDetails" class="details-container">
-      <h3>Booking Details</h3>
-      <table class="table table-bordered table-responsive w-100">
-        <tbody>
-          <tr>
-            <th>Flight Name</th>
-            <td>{{ bookingDetails.flight_name }}</td>
-          </tr>
-          <tr>
-            <th>Departure IATA</th>
-            <td>{{ bookingDetails.departure_iata }}</td>
-          </tr>
-          <tr>
-            <th>Arrival IATA</th>
-            <td>{{ bookingDetails.arrival_iata }}</td>
-          </tr>
-          <tr>
-            <th>Departure Date</th>
-            <td>{{ formatDateTime(bookingDetails.departure_date) }}</td>
-          </tr>
-          <tr>
-            <th>Arrival Date</th>
-            <td>{{ formatDateTime(bookingDetails.arrival_date) }}</td>
-          </tr>
-          <tr v-if="bookingDetails.return_flight">
-            <th>Return Departure IATA</th>
-            <td>{{ bookingDetails.return_flight.return_departure_iata }}</td>
-          </tr>
-          <tr v-if="bookingDetails.return_flight">
-            <th>Return Arrival IATA</th>
-            <td>{{ bookingDetails.return_flight.return_arrival_iata }}</td>
-          </tr>
-          <tr v-if="bookingDetails.return_flight">
-            <th>Return Departure Date</th>
-            <td>{{ formatDateTime(bookingDetails.return_flight.return_departure_date) }}</td>
-          </tr>
-          <tr v-if="bookingDetails.return_flight">
-            <th>Return Arrival Date</th>
-            <td>{{ formatDateTime(bookingDetails.return_flight.return_arrival_date) }}</td>
-          </tr>
-          <tr>
-            <th>Ticket Status</th>
-            <td>{{ bookingDetails.TicketStatus }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Show Flight Data if Available -->
+      <div v-if="bookingDetails.flight_data" class="flight-data-container">
+        <h3>Flight Informations</h3>
+        <div v-html="bookingDetails.flight_data"></div>
+      </div>
+
+      <!-- Show Flight Details only if flight_data is NOT available -->
+      <div v-else>
+        <h3>Booking Details</h3>
+        <table class="table table-bordered table-responsive w-100">
+          <tbody>
+            <tr>
+              <th>Flight Name</th>
+              <td>{{ bookingDetails.flight_name }}</td>
+            </tr>
+            <tr>
+              <th>Departure IATA</th>
+              <td>{{ bookingDetails.departure_iata }}</td>
+            </tr>
+            <tr>
+              <th>Arrival IATA</th>
+              <td>{{ bookingDetails.arrival_iata }}</td>
+            </tr>
+            <tr>
+              <th>Departure Date</th>
+              <td>{{ formatDateTime(bookingDetails.departure_date) }}</td>
+            </tr>
+            <tr>
+              <th>Arrival Date</th>
+              <td>{{ formatDateTime(bookingDetails.arrival_date) }}</td>
+            </tr>
+            <tr v-if="bookingDetails.return_flight">
+              <th>Return Departure IATA</th>
+              <td>{{ bookingDetails.return_flight.return_departure_iata }}</td>
+            </tr>
+            <tr v-if="bookingDetails.return_flight">
+              <th>Return Arrival IATA</th>
+              <td>{{ bookingDetails.return_flight.return_arrival_iata }}</td>
+            </tr>
+            <tr v-if="bookingDetails.return_flight">
+              <th>Return Departure Date</th>
+              <td>{{ formatDateTime(bookingDetails.return_flight.return_departure_date) }}</td>
+            </tr>
+            <tr v-if="bookingDetails.return_flight">
+              <th>Return Arrival Date</th>
+              <td>{{ formatDateTime(bookingDetails.return_flight.return_arrival_date) }}</td>
+            </tr>
+            <tr>
+              <th>Ticket Status</th>
+              <td>{{ bookingDetails.TicketStatus }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h3>Passengers</h3>
       <table class="table table-bordered table-responsive w-100">
@@ -84,14 +93,21 @@
             <td>{{ passenger.gender }}</td>
             <td>{{ passenger.age }}</td>
             <td>{{ getPassengerType(passenger.age) }}</td>
-            <td v-if="passenger.ticket_details">
-              <div><strong>E-ticket:</strong> {{ passenger.ticket_details.e_ticket_number }}</div>
-              <div><strong>Airline Confirmation:</strong> {{ passenger.ticket_details.airline_confirmation_number }}</div>
+            <td v-if="bookingDetails.TicketStatus === 'Confirmed' && passenger.ticket_details">
+              <div v-if="passenger.ticket_details.e_ticket_number">
+                <strong>E-ticket:</strong> {{ passenger.ticket_details.e_ticket_number }}
+              </div>
+              <div v-if="passenger.ticket_details.airline_confirmation_number">
+                <strong>Airline Confirmation:</strong> {{ passenger.ticket_details.airline_confirmation_number }}
+              </div>
             </td>
-            <td v-else>Not Available</td>
+            <td v-else>
+              Not Available
+            </td>
           </tr>
         </tbody>
       </table>
+
 
       <h3>Contact & Billings</h3>
       <table class="table table-bordered table-responsive w-100">
@@ -110,7 +126,7 @@
           </tr>
           <tr>
             <th>Card Number (Last 4 Digits)</th>
-            <td>************{{ bookingDetails.contact_billings.card_number }}</td>
+            <td>**** **** **** {{ bookingDetails.contact_billings.card_number }}</td>
           </tr>
         </tbody>
       </table>
@@ -119,7 +135,7 @@
       <table class="table table-bordered table-responsive w-100">
         <tbody>
           <tr v-if="bookingDetails.orderings.payble_amount">
-            <th>Payable Amount</th>
+            <th>Ticket Cost</th>
             <td>{{ bookingDetails.orderings.payble_amount }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.flight_cancellation_protection">
@@ -143,11 +159,12 @@
             <td>{{ bookingDetails.orderings.total_refund_protection }} $</td>
           </tr>
           <tr v-if="bookingDetails.orderings.total_amount">
-            <th>Total Amount</th>
+            <th>Total Cost</th>
             <td>{{ bookingDetails.orderings.total_amount }} $</td>
           </tr>
         </tbody>
       </table>
+
     </div>
   </div>
 </template>
@@ -188,11 +205,12 @@ export default {
     formatDateTime(dateTime) {
       return moment(dateTime)
         .tz('America/New_York')
-        .format('D MMM, YYYY [at] h:mm:ss A [America/New_York Timezone]');
+        .format('MM-DD-YY [at] h:mm:ss A [America/New_York Timezone]');
     },
   },
 };
 </script>
+
 
 
 <style scoped>
